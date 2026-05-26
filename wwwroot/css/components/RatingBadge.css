@@ -1,0 +1,195 @@
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    line-height: 1;
+    vertical-align: middle;
+    position: relative;
+    transition: filter .18s ease, transform .18s ease;
+}
+
+.rating-badge-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: .12rem;
+}
+
+.rating-badge-star {
+    display: inline-block;
+    font-size: 1.12em;
+}
+
+.rating-badge-star-empty {
+    opacity: .42;
+}
+
+.rating-badge-value {
+    color: var(--bs-body-color);
+    font-size: .875em;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.rating-badge-cartouche {
+    border: 1px solid currentColor;
+    border-radius: 999rem;
+    padding: .32rem .58rem;
+    background-color: var(--bs-tertiary-bg);
+}
+
+.rating-badge-cartouche-primary {
+    background-color: var(--bs-primary-bg-subtle);
+}
+
+.rating-badge-cartouche-secondary {
+    background-color: var(--bs-secondary-bg-subtle);
+}
+
+.rating-badge-cartouche-success {
+    background-color: var(--bs-success-bg-subtle);
+}
+
+.rating-badge-cartouche-info {
+    background-color: var(--bs-info-bg-subtle);
+}
+
+.rating-badge-cartouche-warning {
+    background-color: var(--bs-warning-bg-subtle);
+}
+
+.rating-badge-cartouche-danger {
+    background-color: var(--bs-danger-bg-subtle);
+}
+
+.rating-badge-cartouche-light {
+    background-color: var(--bs-light-bg-subtle);
+}
+
+.rating-badge-cartouche-dark {
+    background-color: var(--bs-dark-bg-subtle);
+}
+
+.rating-badge-sm {
+    font-size: .875rem;
+}
+
+.rating-badge-lg {
+    font-size: 1.35rem;
+}
+
+.rating-badge-effect-pop .rating-badge-star {
+    animation: rating-badge-pop .46s cubic-bezier(.2, 1.45, .45, 1) both;
+}
+
+.rating-badge-effect-pop .rating-badge-star:nth-child(2) {
+    animation-delay: .04s;
+}
+
+.rating-badge-effect-pop .rating-badge-star:nth-child(3) {
+    animation-delay: .08s;
+}
+
+.rating-badge-effect-pop .rating-badge-star:nth-child(4) {
+    animation-delay: .12s;
+}
+
+.rating-badge-effect-pop .rating-badge-star:nth-child(5) {
+    animation-delay: .16s;
+}
+
+.rating-badge-effect-pop .rating-badge-star:nth-child(n + 6) {
+    animation-delay: .2s;
+}
+
+.rating-badge-effect-pulse .rating-badge-star:not(.rating-badge-star-empty) {
+    animation: rating-badge-pulse 1.7s ease-in-out infinite;
+}
+
+.rating-badge-effect-sparkle:not(.rating-badge-cartouche) .rating-badge-stars {
+    position: relative;
+    overflow: hidden;
+}
+
+.rating-badge-effect-sparkle:not(.rating-badge-cartouche) .rating-badge-stars::after,
+.rating-badge-effect-sparkle.rating-badge-cartouche::after {
+    content: "";
+    position: absolute;
+    inset: -35% auto -35% -45%;
+    width: 35%;
+    transform: skewX(-22deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .82), transparent);
+    animation: rating-badge-sparkle 2.3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.rating-badge-effect-sparkle.rating-badge-cartouche {
+    overflow: hidden;
+}
+
+.rating-badge-effect-sparkle.rating-badge-cartouche > * {
+    position: relative;
+    z-index: 1;
+}
+
+.rating-badge-effect-sparkle.rating-badge-cartouche::after {
+    z-index: 2;
+}
+
+.rating-badge-effect-hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+.rating-badge-effect-hover-glow:not(.rating-badge-cartouche):hover .rating-badge-star:not(.rating-badge-star-empty) {
+    filter: drop-shadow(0 0 .28rem currentColor);
+}
+
+.rating-badge-effect-hover-glow.rating-badge-cartouche:hover {
+    box-shadow: 0 0 .55rem -.08rem currentColor;
+}
+
+@keyframes rating-badge-pop {
+    0% {
+        opacity: 0;
+        transform: scale(.35) rotate(-10deg);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.18) rotate(3deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes rating-badge-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+@keyframes rating-badge-sparkle {
+    0%, 35% {
+        left: -45%;
+    }
+
+    65%, 100% {
+        left: 110%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rating-badge,
+    .rating-badge-star,
+    .rating-badge::after,
+    .rating-badge-stars::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

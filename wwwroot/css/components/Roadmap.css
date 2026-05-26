@@ -1,0 +1,294 @@
+.roadmap {
+    --roadmap-line-color: var(--bs-border-color);
+    --roadmap-line-width: 2px;
+    --roadmap-gap: 2rem;
+    --roadmap-marker-size: 1.4rem;
+    --roadmap-card-width: 18rem;
+
+    overflow-x: auto;
+    padding: 2rem 1rem;
+}
+
+.roadmap-track {
+    position: relative;
+    display: flex;
+    gap: var(--roadmap-gap);
+    min-width: max-content;
+    padding-top: 2.5rem;
+}
+
+.roadmap-track::before {
+    content: "";
+    position: absolute;
+    top: .7rem;
+    left: 0;
+    right: 0;
+    height: var(--roadmap-line-width);
+    background: var(--roadmap-line-color);
+}
+
+.roadmap-item {
+    position: relative;
+    width: var(--roadmap-card-width);
+    flex: 0 0 var(--roadmap-card-width);
+}
+
+.roadmap-date {
+    min-height: 2rem;
+    margin-bottom: .65rem;
+    color: var(--bs-secondary-color);
+    font-size: .825rem;
+    line-height: 1.2;
+}
+
+.roadmap-date-title {
+    display: block;
+    font-weight: 600;
+}
+
+.roadmap-date-subtitle {
+    display: block;
+    font-size: .75rem;
+}
+
+.roadmap-marker {
+    position: absolute;
+    top: -2.4rem;
+    left: 0;
+    width: var(--roadmap-marker-size);
+    height: var(--roadmap-marker-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    background: var(--bs-body-bg);
+    z-index: 2;
+}
+
+.roadmap-marker .dmb-icon,
+.roadmap-marker i {
+    font-size: .8rem;
+}
+
+.roadmap-card {
+    min-height: 100%;
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius-lg);
+    box-shadow: var(--bs-box-shadow-sm);
+    padding: 1rem;
+}
+
+.roadmap-title {
+    font-weight: 600;
+}
+
+.roadmap-subtitle {
+    margin-top: .25rem;
+    color: var(--bs-secondary-color);
+    font-size: .875rem;
+}
+
+.roadmap-description {
+    margin-top: .75rem;
+}
+
+.roadmap-description > :last-child {
+    margin-bottom: 0;
+}
+
+.roadmap-card-primary {
+    border-color: var(--bs-primary);
+}
+
+.roadmap-card-secondary {
+    border-color: var(--bs-secondary);
+}
+
+.roadmap-card-success {
+    border-color: var(--bs-success);
+}
+
+.roadmap-card-warning {
+    border-color: var(--bs-warning);
+}
+
+.roadmap-card-danger {
+    border-color: var(--bs-danger);
+}
+
+.roadmap-card-info {
+    border-color: var(--bs-info);
+}
+
+.roadmap-card-light {
+    border-color: var(--bs-light);
+}
+
+.roadmap-card-dark {
+    border-color: var(--bs-dark);
+}
+
+.roadmap-state-past .roadmap-marker {
+    background: var(--bs-success);
+    border-color: var(--bs-success) !important;
+    color: var(--bs-white);
+}
+
+.roadmap-state-current .roadmap-marker {
+    background: var(--bs-primary);
+    border-color: var(--bs-primary) !important;
+    color: var(--bs-white);
+    box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--bs-primary) 25%, transparent);
+}
+
+.roadmap-state-future {
+    opacity: .78;
+}
+
+.roadmap-state-blocked .roadmap-marker {
+    background: var(--bs-warning);
+    border-color: var(--bs-warning) !important;
+    color: var(--bs-dark);
+}
+
+.roadmap-state-cancelled {
+    opacity: .55;
+}
+
+.roadmap-effect-opacity .roadmap-item,
+.roadmap-effect-slide-left .roadmap-item,
+.roadmap-effect-slide-right .roadmap-item,
+.roadmap-effect-slide-bottom .roadmap-item,
+.roadmap-effect-scale .roadmap-item {
+    --roadmap-reveal-x: 0;
+    --roadmap-reveal-y: 0;
+    --roadmap-reveal-scale: 1;
+
+    opacity: 1;
+    transform:
+            translateX(var(--roadmap-reveal-x))
+            translateY(var(--roadmap-reveal-y))
+            scale(var(--roadmap-reveal-scale));
+    transition: opacity .45s ease, transform .45s ease;
+}
+
+.roadmap-effect-opacity .roadmap-item:not(.roadmap-item-visible) {
+    opacity: 0;
+}
+
+.roadmap-effect-slide-left .roadmap-item:not(.roadmap-item-visible) {
+    --roadmap-reveal-x: -1rem;
+}
+
+.roadmap-effect-slide-right .roadmap-item:not(.roadmap-item-visible) {
+    --roadmap-reveal-x: 1rem;
+}
+
+.roadmap-effect-slide-bottom .roadmap-item:not(.roadmap-item-visible) {
+    --roadmap-reveal-y: 1rem;
+}
+
+.roadmap-effect-scale .roadmap-item:not(.roadmap-item-visible) {
+    --roadmap-reveal-scale: .96;
+}
+
+.roadmap-effect-plot .roadmap-marker::after {
+    content: "";
+    position: absolute;
+    inset: -.35rem;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0;
+    animation: roadmap-marker-pulse 1.8s ease infinite;
+}
+
+@keyframes roadmap-marker-pulse {
+    0% {
+        transform: scale(.6);
+        opacity: .45;
+    }
+
+    100% {
+        transform: scale(1.75);
+        opacity: 0;
+    }
+}
+
+.roadmap-effect-hover-lift .roadmap-card,
+.roadmap-effect-hover-scale .roadmap-card {
+    --roadmap-hover-y: 0;
+    --roadmap-hover-scale: 1;
+
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.roadmap-effect-hover-lift .roadmap-card:hover {
+    --roadmap-hover-y: -.25rem;
+}
+
+.roadmap-effect-hover-scale .roadmap-card:hover {
+    --roadmap-hover-scale: 1.025;
+}
+
+.roadmap-effect-hover-lift .roadmap-card:hover,
+.roadmap-effect-hover-scale .roadmap-card:hover {
+    transform: translateY(var(--roadmap-hover-y)) scale(var(--roadmap-hover-scale));
+    box-shadow: var(--bs-box-shadow);
+}
+
+@media (max-width: 767.98px) {
+    .roadmap {
+        overflow-x: visible;
+        padding: 1rem 0;
+    }
+
+    .roadmap-track {
+        min-width: 0;
+        display: block;
+        padding-top: 0;
+        padding-left: 2.5rem;
+    }
+
+    .roadmap-track::before {
+        top: 0;
+        bottom: 0;
+        left: .7rem;
+        right: auto;
+        width: var(--roadmap-line-width);
+        height: auto;
+    }
+
+    .roadmap-item {
+        width: 100%;
+        flex: none;
+        margin-bottom: 1rem;
+    }
+
+    .roadmap-marker {
+        top: .9rem;
+        left: -2.5rem;
+    }
+
+    .roadmap-item:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .roadmap-effect-opacity .roadmap-item,
+    .roadmap-effect-slide-left .roadmap-item,
+    .roadmap-effect-slide-right .roadmap-item,
+    .roadmap-effect-slide-bottom .roadmap-item,
+    .roadmap-effect-scale .roadmap-item,
+    .roadmap-effect-hover-lift .roadmap-card,
+    .roadmap-effect-hover-scale .roadmap-card,
+    .roadmap-effect-plot .roadmap-marker::after {
+        animation: none;
+        transition: none;
+        transform: none;
+        opacity: 1;
+    }
+}

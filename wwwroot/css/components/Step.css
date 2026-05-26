@@ -1,0 +1,171 @@
+.step-area {
+    --step-axis-width: 3.25rem;
+    --step-marker-size: 2.5rem;
+    --step-line-width: 2px;
+    --step-line-color: var(--bs-border-color);
+    --step-gap: 1.5rem;
+    --step-content-muted-opacity: .58;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.step-block {
+    display: grid;
+    grid-template-columns: var(--step-axis-width) minmax(0, 1fr);
+    align-items: start;
+    position: relative;
+    min-width: 0;
+    margin: 0;
+    padding-inline: 0;
+    border: 0;
+}
+
+.step-block:not(:last-child) {
+    padding-bottom: var(--step-gap);
+}
+
+.step-axis {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-height: 100%;
+}
+
+.step-axis::before {
+    content: "";
+    position: absolute;
+    top: var(--step-marker-size);
+    bottom: calc(-1 * var(--step-gap));
+    left: 50%;
+    width: var(--step-line-width);
+    transform: translateX(-50%);
+    background: var(--step-line-color);
+}
+
+.step-block:last-child .step-axis::before {
+    display: none;
+}
+
+.step-marker {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--step-marker-size);
+    height: var(--step-marker-size);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    background: var(--bs-body-bg);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.step-body {
+    min-width: 0;
+    padding-top: .15rem;
+}
+
+.step-header {
+    margin-bottom: .75rem;
+}
+
+.step-title {
+    margin: 0;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.step-subtitle {
+    margin-top: .4rem;
+    color: var(--bs-secondary-color);
+    font-weight: 600;
+}
+
+.step-content {
+    color: var(--bs-body-color);
+}
+
+.step-content > :last-child {
+    margin-bottom: 0;
+}
+
+.step-state-current .step-title,
+.step-state-done .step-title {
+    color: var(--bs-body-color);
+}
+
+.step-state-current .step-marker {
+    background: var(--bs-body-bg);
+}
+
+.step-state-done .step-marker {
+    color: var(--bs-body-bg) !important;
+}
+
+.step-state-future,
+.step-state-disabled {
+    opacity: var(--step-content-muted-opacity);
+}
+
+.step-state-disabled {
+    pointer-events: none;
+}
+
+.step-state-disabled .step-marker {
+    color: var(--bs-secondary-color) !important;
+    border-color: var(--bs-secondary-color) !important;
+}
+
+.step-state-disabled .step-content,
+.step-state-disabled .step-subtitle {
+    color: var(--bs-secondary-color);
+}
+
+.step-variant-primary.step-state-done .step-marker {
+    background: var(--bs-primary);
+}
+
+.step-variant-secondary.step-state-done .step-marker {
+    background: var(--bs-secondary);
+}
+
+.step-variant-success.step-state-done .step-marker {
+    background: var(--bs-success);
+}
+
+.step-variant-danger.step-state-done .step-marker {
+    background: var(--bs-danger);
+}
+
+.step-variant-warning.step-state-done .step-marker {
+    background: var(--bs-warning);
+}
+
+.step-variant-info.step-state-done .step-marker {
+    background: var(--bs-info);
+}
+
+.step-variant-light.step-state-done .step-marker {
+    background: var(--bs-light);
+    color: var(--bs-dark) !important;
+}
+
+.step-variant-dark.step-state-done .step-marker {
+    background: var(--bs-dark);
+}
+
+@media (max-width: 575.98px) {
+    .step-area {
+        --step-axis-width: 2.75rem;
+        --step-marker-size: 2.1rem;
+        --step-gap: 1.25rem;
+    }
+
+    .step-title {
+        font-size: 1.15rem;
+    }
+}

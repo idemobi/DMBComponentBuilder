@@ -1,0 +1,56 @@
+.shield {
+    display: inline-flex;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: .25rem;
+    box-shadow: 0 0 2px rgba(40, 40, 40, .19), inset 0 0 0 1px rgba(0, 0, 0, .08);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
+    margin-left: 2px;
+    margin-right: 2px;
+    text-shadow: 0 0 2px #686868;
+    transition: box-shadow .16s ease, margin .16s ease;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+a .shield {
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+a .shield:hover {
+    box-shadow: 0 2px 2px rgba(40, 40, 40, .19);
+    margin-bottom: 2px;
+    margin-top: 0;
+}
+
+.shield-label,
+.shield-value {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.35rem;
+    padding: .25rem .48rem;
+    color: #fff;
+    position: relative;
+}
+
+.shield-label {
+    border-radius: .25rem 0 0 .25rem;
+}
+
+.shield-value {
+    border-radius: 0 .25rem .25rem 0;
+}
+
+.shield-label::after,
+.shield-value::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .15) 100%);
+    pointer-events: none;
+}

@@ -1,0 +1,222 @@
+.checkout-progress-builder {
+    --checkout-progress-marker-size: 2.75rem;
+    --checkout-progress-line-size: 2px;
+    --checkout-progress-line-color: var(--bs-border-color);
+    --checkout-progress-muted-opacity: .45;
+    --checkout-progress-gap: 1rem;
+    width: 100%;
+}
+
+.checkout-progress-list {
+    display: flex;
+    align-items: start;
+    gap: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.checkout-progress-item {
+    position: relative;
+    display: grid;
+    grid-template-rows: var(--checkout-progress-marker-size) auto;
+    justify-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: .35rem;
+    color: var(--bs-body-color);
+}
+
+.checkout-progress-connector {
+    position: absolute;
+    top: calc(var(--checkout-progress-marker-size) / 2);
+    left: calc(-50% + var(--checkout-progress-marker-size) / 2);
+    z-index: 0;
+    width: calc(100% - var(--checkout-progress-marker-size));
+    height: var(--checkout-progress-line-size);
+    transform: translateY(-50%);
+    background: var(--checkout-progress-line-color);
+}
+
+.checkout-progress-item:first-child .checkout-progress-connector {
+    display: none;
+}
+
+.checkout-progress-marker {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--checkout-progress-marker-size);
+    height: var(--checkout-progress-marker-size);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    background: var(--bs-body-bg);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.checkout-progress-marker .bi {
+    font-size: 1.15em;
+    line-height: 1;
+}
+
+.checkout-progress-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .2rem;
+    min-width: 0;
+    max-width: 13rem;
+    margin-top: .75rem;
+    text-align: center;
+}
+
+.checkout-progress-title,
+.checkout-progress-subtitle {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.checkout-progress-title {
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.checkout-progress-subtitle {
+    color: var(--bs-secondary-color);
+    font-size: .875rem;
+    line-height: 1.25;
+}
+
+.checkout-progress-state-inactive {
+    opacity: var(--checkout-progress-muted-opacity);
+}
+
+.checkout-progress-state-inactive .checkout-progress-marker {
+    border-color: var(--bs-secondary-color) !important;
+    color: var(--bs-secondary-color) !important;
+}
+
+.checkout-progress-state-complete .checkout-progress-marker {
+    color: var(--bs-body-bg) !important;
+}
+
+.checkout-progress-previous-complete .checkout-progress-connector {
+    background-color: var(--bs-success);
+}
+
+.checkout-progress-variant-primary.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-primary.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-primary);
+}
+
+.checkout-progress-variant-secondary.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-secondary.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-secondary);
+}
+
+.checkout-progress-variant-success.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-success.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-success);
+}
+
+.checkout-progress-variant-danger.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-danger.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-danger);
+}
+
+.checkout-progress-variant-warning.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-warning.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-warning);
+}
+
+.checkout-progress-variant-info.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-info.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-info);
+}
+
+.checkout-progress-variant-light.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-light.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-light);
+    color: var(--bs-dark) !important;
+}
+
+.checkout-progress-variant-dark.checkout-progress-state-complete .checkout-progress-marker,
+.checkout-progress-variant-dark.checkout-progress-state-complete .checkout-progress-connector {
+    background-color: var(--bs-dark);
+}
+
+.checkout-progress-builder-compact {
+    --checkout-progress-marker-size: 2.25rem;
+}
+
+.checkout-progress-builder-compact .checkout-progress-text {
+    margin-top: .55rem;
+}
+
+.checkout-progress-builder-compact .checkout-progress-subtitle {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .checkout-progress-builder {
+        --checkout-progress-marker-size: 2.35rem;
+        --checkout-progress-mobile-gap: 1rem;
+    }
+
+    .checkout-progress-list {
+        display: block;
+    }
+
+    .checkout-progress-item {
+        display: grid;
+        grid-template-columns: var(--checkout-progress-marker-size) minmax(0, 1fr);
+        grid-template-rows: auto;
+        justify-items: stretch;
+        align-items: start;
+        min-height: var(--checkout-progress-marker-size);
+        padding-inline: 0;
+        padding-bottom: var(--checkout-progress-mobile-gap);
+        column-gap: .85rem;
+    }
+
+    .checkout-progress-item:last-child {
+        padding-bottom: 0;
+    }
+
+    .checkout-progress-connector {
+        top: calc(-1 * var(--checkout-progress-mobile-gap));
+        bottom: calc(100% - var(--checkout-progress-marker-size) / 2);
+        left: calc(var(--checkout-progress-marker-size) / 2);
+        width: var(--checkout-progress-line-size);
+        height: auto;
+        transform: translateX(-50%);
+    }
+
+    .checkout-progress-marker {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .checkout-progress-text {
+        grid-column: 2;
+        grid-row: 1;
+        align-items: flex-start;
+        max-width: none;
+        margin-top: .2rem;
+        text-align: left;
+    }
+
+    .checkout-progress-title {
+        font-size: .95rem;
+    }
+
+    .checkout-progress-subtitle {
+        display: none;
+    }
+}
