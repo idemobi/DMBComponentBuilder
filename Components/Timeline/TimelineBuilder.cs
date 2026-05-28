@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the timeline visual component for Razor views.
+    /// </summary>
     public sealed class TimelineBuilder :
         HtmlBuilderBase<TimelineBuilder>,
         ICanUseCustomClasses,
@@ -31,7 +34,11 @@ namespace DMBComponentBuilder
             get => GetInternal("_started", false);
             set => SetInternal("_started", value);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimelineBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public TimelineBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -41,7 +48,10 @@ namespace DMBComponentBuilder
             this.AddClass("timeline");
             SetData("timeline", "true");
         }
-
+        /// <summary>
+        /// Starts the timeline rendering or capture scope.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public TimelineBuilder Begin()
         {
             if (_started)
@@ -114,12 +124,12 @@ namespace DMBComponentBuilder
 
             _items.Add(definition);
         }
-
+        /// <inheritdoc />
         protected override TimelineBuilder CreateInstance()
         {
             return new TimelineBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(TimelineBuilder source)
         {
             base.InternalClone(source);
@@ -143,7 +153,7 @@ namespace DMBComponentBuilder
             _disposed = false;
             _started = false;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             EnsureAssets();
@@ -153,7 +163,7 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             if (_items.Count == 0)
@@ -291,7 +301,9 @@ namespace DMBComponentBuilder
             writer.Write(item.ContentHtml);
             writer.Write("</div>");
         }
-
+        /// <summary>
+        /// Completes the active timeline rendering or capture scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)

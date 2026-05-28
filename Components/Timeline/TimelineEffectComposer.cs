@@ -2,6 +2,9 @@ using DMBPageBuilder;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Represents timeline effect composer data used by timeline components.
+    /// </summary>
     public sealed class TimelineEffectComposer : IIsCssClassComposer
     {
         private bool _opacity;
@@ -10,43 +13,70 @@ namespace DMBComponentBuilder
         private bool _hoverScale;
         private bool _hoverLift;
         private TimelineSlideEffect _slide = TimelineSlideEffect.None;
-
+        /// <summary>
+        /// Configures the opacity for the timeline component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated timeline value.</returns>
         public TimelineEffectComposer SetOpacity(bool value = true)
         {
             _opacity = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the scale for the timeline component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated timeline value.</returns>
         public TimelineEffectComposer SetScale(bool value = true)
         {
             _scale = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the plot for the timeline component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated timeline value.</returns>
         public TimelineEffectComposer SetPlot(bool value = true)
         {
             _plot = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the hover scale for the timeline component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated timeline value.</returns>
         public TimelineEffectComposer SetHoverScale(bool value = true)
         {
             _hoverScale = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the hover lift for the timeline component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated timeline value.</returns>
         public TimelineEffectComposer SetHoverLift(bool value = true)
         {
             _hoverLift = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the slide for the timeline component.
+        /// </summary>
+        /// <param name="effect">The effect value.</param>
+        /// <returns>The generated timeline value.</returns>
         public TimelineEffectComposer SetSlide(TimelineSlideEffect effect)
         {
             _slide = effect;
             return this;
         }
-
+        /// <summary>
+        /// Builds the CSS classes configured for timeline rendering.
+        /// </summary>
+        /// <returns>The generated timeline value.</returns>
         public IReadOnlyList<string> BuildClasses()
         {
             List<string> classes = new();
@@ -74,7 +104,10 @@ namespace DMBComponentBuilder
 
             return classes;
         }
-
+        /// <summary>
+        /// Creates a copy of the current timeline definition.
+        /// </summary>
+        /// <returns>The generated timeline value.</returns>
         public IIsCssClassComposer Clone()
         {
             return new TimelineEffectComposer()

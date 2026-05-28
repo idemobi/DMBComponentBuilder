@@ -133,7 +133,11 @@ namespace DMBComponentBuilder
             _showCopyButton = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the download file name for the code block component.
+        /// </summary>
+        /// <param name="fileName">The file name value.</param>
+        /// <returns>The configured builder instance.</returns>
         public CodeBlockBuilder SetDownloadFileName(string? fileName)
         {
             _downloadFileName = fileName;
@@ -198,7 +202,11 @@ namespace DMBComponentBuilder
             _errorMessage = message;
             return this;
         }
-
+        /// <summary>
+        /// Starts the code block rendering or capture scope.
+        /// </summary>
+        /// <param name="renderCapturedRawHtml">The render captured raw html value.</param>
+        /// <returns>The configured builder instance.</returns>
         public CodeBlockBuilder Begin(bool renderCapturedRawHtml = true)
         {
             if (_started)
@@ -305,7 +313,9 @@ namespace DMBComponentBuilder
 
             writer.Write($"</{GetTag()}>");
         }
-
+        /// <summary>
+        /// Completes the active code block rendering or capture scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)

@@ -70,6 +70,8 @@ namespace DMBComponentBuilder
         private Shadow?       _titleShadow;
 
         /// <summary>Initializes a new <see cref="BlockTitleBuilder"/>.</summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public BlockTitleBuilder(TextWriter writer, IHtmlHelper html) : base(writer, html)
         {
             _tag = "div";

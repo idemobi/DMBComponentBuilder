@@ -62,6 +62,8 @@ namespace DMBComponentBuilder
         private bool _checkable;
 
         /// <summary>Initializes a new <see cref="TodoBlockBuilder"/>.</summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public TodoBlockBuilder(TextWriter writer, IHtmlHelper html) : base(writer, html)
         {
             _tag = "div";

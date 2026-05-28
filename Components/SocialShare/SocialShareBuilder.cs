@@ -13,13 +13,21 @@ namespace DMBComponentBuilder
     {
         private readonly IHtmlHelper _htmlHelper;
         private readonly SocialShareDefinition _definition;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SocialShareBuilder"/> class.
+        /// </summary>
+        /// <param name="htmlHelper">The html helper value.</param>
+        /// <param name="definition">The definition value.</param>
         public SocialShareBuilder(IHtmlHelper htmlHelper, SocialShareDefinition definition)
         {
             _htmlHelper = htmlHelper ?? throw new ArgumentNullException(nameof(htmlHelper));
             _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         }
-
+        /// <summary>
+        /// Writes the configured social share component to the target HTML writer.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="encoder">The HTML encoder used for writer output.</param>
         public void WriteTo(TextWriter writer, HtmlEncoder encoder)
         {
             if (string.IsNullOrWhiteSpace(_definition.Url))

@@ -107,12 +107,12 @@ namespace DMBComponentBuilder
             _label = label;
             return this;
         }
-
+        /// <inheritdoc />
         protected override RatingBadgeBuilder CreateInstance()
         {
             return new RatingBadgeBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(RatingBadgeBuilder source)
         {
             base.InternalClone(source);
@@ -135,7 +135,7 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             EnsureAssets();

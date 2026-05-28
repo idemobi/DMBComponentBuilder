@@ -30,7 +30,11 @@ namespace DMBComponentBuilder
         private string _text = string.Empty;
         private IconStruct _icon = IconStruct.Empty;
         private bool _pageSpacing;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SeparatorBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public SeparatorBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -38,26 +42,42 @@ namespace DMBComponentBuilder
             InternalAddClasses("d-flex", "align-items-center");
             SetData("separator", "true");
         }
-
+        /// <summary>
+        /// Configures the text for the separator component.
+        /// </summary>
+        /// <param name="text">The text value.</param>
+        /// <returns>The configured builder instance.</returns>
         public SeparatorBuilder SetText(string? text)
         {
             _text = text ?? string.Empty;
             _icon = IconStruct.Empty;
             return this;
         }
-
+        /// <summary>
+        /// Configures the icon for the separator component.
+        /// </summary>
+        /// <param name="icon">The icon value.</param>
+        /// <returns>The configured builder instance.</returns>
         public SeparatorBuilder SetIcon(IconStruct icon)
         {
             _icon = icon;
             _text = string.Empty;
             return this;
         }
-
+        /// <summary>
+        /// Configures the icon for the separator component.
+        /// </summary>
+        /// <param name="icon">The icon value.</param>
+        /// <returns>The configured builder instance.</returns>
         public SeparatorBuilder SetIcon(string? icon)
         {
             return SetIcon(IconStruct.Parse(icon));
         }
-
+        /// <summary>
+        /// Configures whether the page spacing option is used by the separator component.
+        /// </summary>
+        /// <param name="active">True to mark the item active; false to clear the active state.</param>
+        /// <returns>The configured builder instance.</returns>
         public SeparatorBuilder UsePageSpacing(bool active = true)
         {
             _pageSpacing = active;
@@ -69,19 +89,19 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             using StringWriter writer = new();
             WriteToCore(writer, HtmlEncoder.Default);
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override SeparatorBuilder CreateInstance()
         {
             return new SeparatorBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(SeparatorBuilder source)
         {
             base.InternalClone(source);
@@ -89,7 +109,7 @@ namespace DMBComponentBuilder
             _icon = source._icon;
             _pageSpacing = source._pageSpacing;
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             writer.Write($"<{GetTag()}{BuildAttributes()}>");

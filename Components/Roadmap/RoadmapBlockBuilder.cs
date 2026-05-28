@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the roadmap visual component for Razor views.
+    /// </summary>
     public sealed class RoadmapBlockBuilder :
         HtmlBuilderBase<RoadmapBlockBuilder>,
         IDisposable
@@ -65,14 +68,21 @@ namespace DMBComponentBuilder
             get => GetInternal("_state", RoadmapState.Future);
             set => SetInternal("_state", value);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoadmapBlockBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public RoadmapBlockBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
             _tag = "div";
             SetData("roadmap-block", "true");
         }
-
+        /// <summary>
+        /// Starts the roadmap rendering or capture scope.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder Begin()
         {
             if (_started)
@@ -94,74 +104,114 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Configures the title for the roadmap component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder WithTitle(string? title)
         {
             _title = title;
             return this;
         }
-
+        /// <summary>
+        /// Configures the subtitle for the roadmap component.
+        /// </summary>
+        /// <param name="subtitle">The subtitle value.</param>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder WithSubtitle(string? subtitle)
         {
             _subtitle = subtitle;
             return this;
         }
-
+        /// <summary>
+        /// Configures the date for the roadmap component.
+        /// </summary>
+        /// <param name="dateTitle">The date title value.</param>
+        /// <param name="dateSubtitle">The date subtitle value.</param>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder WithDate(string? dateTitle, string? dateSubtitle = null)
         {
             _dateTitle = dateTitle;
             _dateSubtitle = dateSubtitle;
             return this;
         }
-
+        /// <summary>
+        /// Configures the icon for the roadmap component.
+        /// </summary>
+        /// <param name="icon">The icon value.</param>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder WithIcon(IconStruct icon)
         {
             _icon = icon;
             return this;
         }
-
+        /// <summary>
+        /// Configures the variant for the roadmap component.
+        /// </summary>
+        /// <param name="variant">The variant value.</param>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder SetVariant(VariantStyle variant)
         {
             _variant = variant;
             return this;
         }
-
+        /// <summary>
+        /// Configures the state for the roadmap component.
+        /// </summary>
+        /// <param name="state">The state value.</param>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder SetState(RoadmapState state)
         {
             _state = state;
             return this;
         }
-
+        /// <summary>
+        /// Configures as past behavior for the roadmap component.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder AsPast()
         {
             return SetState(RoadmapState.Past);
         }
-
+        /// <summary>
+        /// Configures as current behavior for the roadmap component.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder AsCurrent()
         {
             return SetState(RoadmapState.Current);
         }
-
+        /// <summary>
+        /// Configures as future behavior for the roadmap component.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder AsFuture()
         {
             return SetState(RoadmapState.Future);
         }
-
+        /// <summary>
+        /// Configures as blocked behavior for the roadmap component.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder AsBlocked()
         {
             return SetState(RoadmapState.Blocked);
         }
-
+        /// <summary>
+        /// Configures as cancelled behavior for the roadmap component.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public RoadmapBlockBuilder AsCancelled()
         {
             return SetState(RoadmapState.Cancelled);
         }
-
+        /// <inheritdoc />
         protected override RoadmapBlockBuilder CreateInstance()
         {
             return new RoadmapBlockBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(RoadmapBlockBuilder source)
         {
             base.InternalClone(source);
@@ -180,17 +230,19 @@ namespace DMBComponentBuilder
             _variant = source._variant;
             _state = source._state;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             throw new InvalidOperationException("RoadmapBlockBuilder does not render directly. Use Begin()/Dispose() inside RoadmapBuilder.");
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             throw new InvalidOperationException("RoadmapBlockBuilder does not render directly. Use Begin()/Dispose() inside RoadmapBuilder.");
         }
-
+        /// <summary>
+        /// Completes the active roadmap rendering or capture scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the step visual component for Razor views.
+    /// </summary>
     public sealed class StepBlockBuilder :
         HtmlBuilderBase<StepBlockBuilder>,
         IDisposable
@@ -72,14 +75,21 @@ namespace DMBComponentBuilder
             get => GetInternal("_variant", VariantStyle.Primary);
             set => SetInternal("_variant", value);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StepBlockBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public StepBlockBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
             _tag = "section";
             SetData("step-block", "true");
         }
-
+        /// <summary>
+        /// Starts the step rendering or capture scope.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder Begin()
         {
             if (_started)
@@ -101,85 +111,134 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Creates or renders the step component through the id helper.
+        /// </summary>
+        /// <param name="id">The HTML id or stable component id.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder Id(string id)
         {
             SetId(HtmlIdGenerator.CleanId(id) ?? string.Empty);
             return this;
         }
-
+        /// <summary>
+        /// Configures as fieldset behavior for the step component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder AsFieldset(bool value = true)
         {
             _asFieldset = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the title for the step component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <param name="level">The level value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder WithTitle(string? title, TitleLevel level = TitleLevel.Three)
         {
             _title = title;
             _titleLevel = level;
             return this;
         }
-
+        /// <summary>
+        /// Configures the subtitle for the step component.
+        /// </summary>
+        /// <param name="subtitle">The subtitle value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder WithSubtitle(string? subtitle)
         {
             _subtitle = subtitle;
             return this;
         }
-
+        /// <summary>
+        /// Configures the label for the step component.
+        /// </summary>
+        /// <param name="label">The label value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder WithLabel(string? label)
         {
             _label = label;
             return this;
         }
-
+        /// <summary>
+        /// Configures the step for the step component.
+        /// </summary>
+        /// <param name="step">The step value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder WithStep(int step)
         {
             _label = step.ToString();
             return this;
         }
-
+        /// <summary>
+        /// Configures the icon for the step component.
+        /// </summary>
+        /// <param name="icon">The icon value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder WithIcon(IconStruct icon)
         {
             _icon = icon;
             return this;
         }
-
+        /// <summary>
+        /// Configures the state for the step component.
+        /// </summary>
+        /// <param name="state">The state value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder SetState(StepBlockState state)
         {
             _state = state;
             return this;
         }
-
+        /// <summary>
+        /// Configures current behavior for the step component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder Current(bool value = true)
         {
             _state = value ? StepBlockState.Current : StepBlockState.Future;
             return this;
         }
-
+        /// <summary>
+        /// Configures done behavior for the step component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder Done(bool value = true)
         {
             _state = value ? StepBlockState.Done : StepBlockState.Future;
             return this;
         }
-
+        /// <summary>
+        /// Configures disabled behavior for the step component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder Disabled(bool value = true)
         {
             _state = value ? StepBlockState.Disabled : StepBlockState.Future;
             return this;
         }
-
+        /// <summary>
+        /// Configures the variant for the step component.
+        /// </summary>
+        /// <param name="variant">The variant value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepBlockBuilder SetVariant(VariantStyle variant)
         {
             _variant = variant;
             return this;
         }
-
+        /// <inheritdoc />
         protected override StepBlockBuilder CreateInstance()
         {
             return new StepBlockBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(StepBlockBuilder source)
         {
             base.InternalClone(source);
@@ -199,17 +258,19 @@ namespace DMBComponentBuilder
             _titleLevel = source._titleLevel;
             _variant = source._variant;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             throw new InvalidOperationException("StepBlockBuilder does not render directly. Use Begin()/Dispose() inside StepAreaBuilder.");
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             throw new InvalidOperationException("StepBlockBuilder does not render directly. Use Begin()/Dispose() inside StepAreaBuilder.");
         }
-
+        /// <summary>
+        /// Completes the active step rendering or capture scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)

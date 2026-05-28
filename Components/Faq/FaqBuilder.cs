@@ -36,7 +36,11 @@ namespace DMBComponentBuilder
         private string _contactText = string.Empty;
         private string _contactUrl = string.Empty;
         private bool _showIfEmpty = true;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FaqBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public FaqBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -44,26 +48,45 @@ namespace DMBComponentBuilder
             InternalAddClasses("faq-builder", "card", "mt-3");
             SetData("faq", "true");
         }
-
+        /// <summary>
+        /// Configures the title for the faq component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <param name="icon">The icon value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder SetTitle(string? title, IconStruct icon = default)
         {
             _title = title ?? string.Empty;
             _icon = icon.IsEmpty ? _icon : icon;
             return this;
         }
-
+        /// <summary>
+        /// Configures the empty message for the faq component.
+        /// </summary>
+        /// <param name="message">The message value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder SetEmptyMessage(string? message)
         {
             _emptyMessage = message ?? string.Empty;
             return this;
         }
-
+        /// <summary>
+        /// Configures the show if empty for the faq component.
+        /// </summary>
+        /// <param name="showIfEmpty">The show if empty value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder SetShowIfEmpty(bool showIfEmpty)
         {
             _showIfEmpty = showIfEmpty;
             return this;
         }
-
+        /// <summary>
+        /// Configures the contact action for the faq component.
+        /// </summary>
+        /// <param name="separatorText">The separator text value.</param>
+        /// <param name="text">The text value.</param>
+        /// <param name="url">The url value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder SetContactAction(string? separatorText, string? text, string? url)
         {
             _contactSeparatorText = separatorText ?? string.Empty;
@@ -71,7 +94,11 @@ namespace DMBComponentBuilder
             _contactUrl = url ?? string.Empty;
             return this;
         }
-
+        /// <summary>
+        /// Adds item to the faq component.
+        /// </summary>
+        /// <param name="item">The item value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder AddItem(FaqItem? item)
         {
             if (item != null)
@@ -81,7 +108,12 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Adds item to the faq component.
+        /// </summary>
+        /// <param name="question">The question value.</param>
+        /// <param name="answer">The answer value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder AddItem(string? question, string? answer)
         {
             return AddItem(new FaqItem
@@ -90,7 +122,11 @@ namespace DMBComponentBuilder
                 Answer = answer ?? string.Empty
             });
         }
-
+        /// <summary>
+        /// Adds items to the faq component.
+        /// </summary>
+        /// <param name="items">The items value.</param>
+        /// <returns>The configured builder instance.</returns>
         public FaqBuilder AddItems(IEnumerable<FaqItem>? items)
         {
             if (items == null)
@@ -105,19 +141,19 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             using StringWriter writer = new();
             WriteToCore(writer, HtmlEncoder.Default);
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override FaqBuilder CreateInstance()
         {
             return new FaqBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(FaqBuilder source)
         {
             base.InternalClone(source);
@@ -131,7 +167,7 @@ namespace DMBComponentBuilder
             _contactUrl = source._contactUrl;
             _showIfEmpty = source._showIfEmpty;
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             List<FaqItem> visibleItems = _items

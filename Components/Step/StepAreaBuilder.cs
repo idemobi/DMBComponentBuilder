@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the step visual component for Razor views.
+    /// </summary>
     public sealed class StepAreaBuilder :
         HtmlBuilderBase<StepAreaBuilder>,
         ICanUseCustomClasses,
@@ -45,7 +48,11 @@ namespace DMBComponentBuilder
             get => GetInternal("_started", false);
             set => SetInternal("_started", value);
         }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StepAreaBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public StepAreaBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -55,7 +62,10 @@ namespace DMBComponentBuilder
             this.AddClass("step-area");
             SetData("step-area", "true");
         }
-
+        /// <summary>
+        /// Starts the step rendering or capture scope.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public StepAreaBuilder Begin()
         {
             if (_started)
@@ -77,29 +87,52 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Configures numbered behavior for the step component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepAreaBuilder Numbered(bool value = true)
         {
             _numbered = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures whether the fieldsets option is used by the step component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepAreaBuilder UseFieldsets(bool value = true)
         {
             _useFieldsets = value;
             return this;
         }
-
+        /// <summary>
+        /// Adds an enablement rule for step when value in the step component.
+        /// </summary>
+        /// <param name="targetStepId">The target step id value.</param>
+        /// <param name="fieldId">The field id value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepAreaBuilder EnableStepWhenValue(string targetStepId, string fieldId)
         {
             return AddRule(targetStepId, fieldId, "value");
         }
-
+        /// <summary>
+        /// Adds an enablement rule for step when checked in the step component.
+        /// </summary>
+        /// <param name="targetStepId">The target step id value.</param>
+        /// <param name="fieldId">The field id value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepAreaBuilder EnableStepWhenChecked(string targetStepId, string fieldId)
         {
             return AddRule(targetStepId, fieldId, "checked");
         }
-
+        /// <summary>
+        /// Adds an enablement rule for step when all values in the step component.
+        /// </summary>
+        /// <param name="targetStepId">The target step id value.</param>
+        /// <param name="fieldIds">The field ids value.</param>
+        /// <returns>The configured builder instance.</returns>
         public StepAreaBuilder EnableStepWhenAllValues(string targetStepId, params string[] fieldIds)
         {
             string? cleanTargetStepId = HtmlIdGenerator.CleanId(targetStepId);
@@ -205,12 +238,12 @@ namespace DMBComponentBuilder
 
             _items.Add(definition);
         }
-
+        /// <inheritdoc />
         protected override StepAreaBuilder CreateInstance()
         {
             return new StepAreaBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(StepAreaBuilder source)
         {
             base.InternalClone(source);
@@ -227,7 +260,7 @@ namespace DMBComponentBuilder
             _numbered = source._numbered;
             _useFieldsets = source._useFieldsets;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             EnsureAssets();
@@ -237,7 +270,7 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             if (_items.Count == 0)
@@ -346,7 +379,9 @@ namespace DMBComponentBuilder
             writer.Write(item.ContentHtml);
             writer.Write("</div>");
         }
-
+        /// <summary>
+        /// Completes the active step rendering or capture scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)

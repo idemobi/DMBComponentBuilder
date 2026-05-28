@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the web comic visual component for Razor views.
+    /// </summary>
     public sealed class WebComicViewerBuilder :
         HtmlBuilderBase<WebComicViewerBuilder>,
         ICanUseCustomClasses
@@ -30,7 +33,11 @@ namespace DMBComponentBuilder
         private WebComicDisplayMode _displayMode = WebComicDisplayMode.FitWidth;
         private WebComicSocialPlatform _platforms = WebComicSocialPlatform.All;
         private int _storySliceCount = 3;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebComicViewerBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public WebComicViewerBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -38,32 +45,53 @@ namespace DMBComponentBuilder
             this.AddClass("web-comic-viewer");
             SetData("web-comic-viewer", "true");
         }
-
+        /// <summary>
+        /// Configures the image url for the web comic component.
+        /// </summary>
+        /// <param name="imageUrl">The URL of the comic image to render.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetImageUrl(string? imageUrl)
         {
             _imageUrl = imageUrl;
             return this;
         }
-
+        /// <summary>
+        /// Configures the comic folder for the web comic component.
+        /// </summary>
+        /// <param name="folderUrl">The base folder URL that contains the expected comic assets.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetComicFolder(string? folderUrl)
         {
             _comicFolderUrl = NormalizeFolder(folderUrl);
             _imageUrl = GetComicAssetUrl("Strip_Final.png");
             return this;
         }
-
+        /// <summary>
+        /// Configures the title for the web comic component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetTitle(string? title)
         {
             _title = title;
             return this;
         }
-
+        /// <summary>
+        /// Configures the caption for the web comic component.
+        /// </summary>
+        /// <param name="caption">The caption value.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetCaption(string? caption)
         {
             _caption = caption;
             return this;
         }
-
+        /// <summary>
+        /// Configures the author for the web comic component.
+        /// </summary>
+        /// <param name="author">The author value.</param>
+        /// <param name="handle">The handle value.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetAuthor(string? author, string? handle = null)
         {
             _author = author;
@@ -75,61 +103,94 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Configures the alt for the web comic component.
+        /// </summary>
+        /// <param name="alt">The alt value.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetAlt(string? alt)
         {
             _alt = alt;
             return this;
         }
-
+        /// <summary>
+        /// Configures the display mode for the web comic component.
+        /// </summary>
+        /// <param name="displayMode">The reader display mode applied to the comic image.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetDisplayMode(WebComicDisplayMode displayMode)
         {
             _displayMode = displayMode;
             return this;
         }
-
+        /// <summary>
+        /// Configures the social platforms for the web comic component.
+        /// </summary>
+        /// <param name="platforms">The social platforms included in generated share previews.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetSocialPlatforms(WebComicSocialPlatform platforms)
         {
             _platforms = platforms;
             return this;
         }
-
+        /// <summary>
+        /// Configures the story slice count for the web comic component.
+        /// </summary>
+        /// <param name="count">The number of story slices to render.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetStorySliceCount(int count)
         {
             _storySliceCount = Math.Max(0, count);
             return this;
         }
-
+        /// <summary>
+        /// Configures whether the reader section is rendered by the web comic component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder ShowReader(bool value = true)
         {
             _showReader = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures whether the social preview section is rendered by the web comic component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder ShowSocialPreview(bool value = true)
         {
             _showSocialPreview = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures whether the diagnostics section is rendered by the web comic component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder ShowDiagnostics(bool value = true)
         {
             _showDiagnostics = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures the expected minimum size for the web comic component.
+        /// </summary>
+        /// <param name="width">The width value.</param>
+        /// <param name="height">The height value.</param>
+        /// <returns>The configured builder instance.</returns>
         public WebComicViewerBuilder SetExpectedMinimumSize(int width, int height)
         {
             _expectedMinWidth = Math.Max(1, width);
             _expectedMinHeight = Math.Max(1, height);
             return this;
         }
-
+        /// <inheritdoc />
         protected override WebComicViewerBuilder CreateInstance()
         {
             return new WebComicViewerBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(WebComicViewerBuilder source)
         {
             base.InternalClone(source);
@@ -150,7 +211,7 @@ namespace DMBComponentBuilder
             _platforms = source._platforms;
             _storySliceCount = source._storySliceCount;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             EnsureAssets();
@@ -160,7 +221,7 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             EnsureAssets();

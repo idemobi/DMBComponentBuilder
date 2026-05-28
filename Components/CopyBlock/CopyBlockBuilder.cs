@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the copy block visual component for Razor views.
+    /// </summary>
     public sealed class CopyBlockBuilder :
         HtmlBuilderBase<CopyBlockBuilder>,
         ICanUseCustomClasses,
@@ -33,7 +36,11 @@ namespace DMBComponentBuilder
         private BootstrapFullKindOfStyle _style = BootstrapFullKindOfStyle.OutlinePrimary;
         private bool _started;
         private bool _disposed;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CopyBlockBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public CopyBlockBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -43,19 +50,30 @@ namespace DMBComponentBuilder
             this.AddClass("align-items-start");
             SetData("copy-block", "true");
         }
-
+        /// <summary>
+        /// Configures the content for the copy block component.
+        /// </summary>
+        /// <param name="content">The content value.</param>
+        /// <returns>The configured builder instance.</returns>
         public CopyBlockBuilder SetContent(string? content)
         {
             _content = content ?? string.Empty;
             return this;
         }
-
+        /// <summary>
+        /// Configures the style for the copy block component.
+        /// </summary>
+        /// <param name="style">The style value.</param>
+        /// <returns>The configured builder instance.</returns>
         public CopyBlockBuilder SetStyle(BootstrapFullKindOfStyle style)
         {
             _style = style;
             return this;
         }
-
+        /// <summary>
+        /// Starts the copy block rendering or capture scope.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
         public CopyBlockBuilder Begin()
         {
             if (_started)
@@ -70,19 +88,19 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             using StringWriter writer = new();
             WriteToCore(writer, HtmlEncoder.Default);
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override CopyBlockBuilder CreateInstance()
         {
             return new CopyBlockBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(CopyBlockBuilder source)
         {
             base.InternalClone(source);
@@ -94,7 +112,7 @@ namespace DMBComponentBuilder
             _started = false;
             _disposed = false;
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             EnsureAssets();
@@ -135,7 +153,9 @@ namespace DMBComponentBuilder
         {
             return _style.ToString().Replace("Outline", "outline-").ToLowerInvariant();
         }
-
+        /// <summary>
+        /// Completes the active copy block rendering or capture scope.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)

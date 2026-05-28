@@ -101,12 +101,12 @@ namespace DMBComponentBuilder
         {
             return SetLabelColor(labelColor).SetValueColor(valueColor);
         }
-
+        /// <inheritdoc />
         protected override ShieldBuilder CreateInstance()
         {
             return new ShieldBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(ShieldBuilder source)
         {
             base.InternalClone(source);
@@ -129,7 +129,7 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             EnsureAssets();

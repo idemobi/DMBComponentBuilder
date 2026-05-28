@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Builds and renders the checkout progress visual component for Razor views.
+    /// </summary>
     public sealed class CheckoutProgressBuilder :
         HtmlBuilderBase<CheckoutProgressBuilder>,
         ICanUseCustomClasses
@@ -16,7 +19,11 @@ namespace DMBComponentBuilder
         private readonly List<CheckoutProgressDefinition> _items = new();
         private bool _showSubtitles = true;
         private bool _compact;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckoutProgressBuilder"/> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         public CheckoutProgressBuilder(TextWriter writer, IHtmlHelper html)
             : base(writer, html)
         {
@@ -25,7 +32,17 @@ namespace DMBComponentBuilder
             SetAttribute("aria-label", "Checkout steps");
             SetData("checkout-progress-builder", "true");
         }
-
+        /// <summary>
+        /// Adds step to the checkout progress component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <param name="subtitle">The subtitle value.</param>
+        /// <param name="active">True to mark the item active; false to clear the active state.</param>
+        /// <param name="icon">The icon value.</param>
+        /// <param name="variant">The variant value.</param>
+        /// <param name="id">The HTML id or stable component id.</param>
+        /// <param name="cssClass">The CSS class appended to the rendered component.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder AddStep(
             string? title,
             string? subtitle = null,
@@ -37,7 +54,17 @@ namespace DMBComponentBuilder
         {
             return AddStep(title, subtitle, icon, variant, active ? CheckoutProgressState.Active : CheckoutProgressState.Inactive, id, cssClass);
         }
-
+        /// <summary>
+        /// Adds step to the checkout progress component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <param name="subtitle">The subtitle value.</param>
+        /// <param name="icon">The icon value.</param>
+        /// <param name="variant">The variant value.</param>
+        /// <param name="state">The state value.</param>
+        /// <param name="id">The HTML id or stable component id.</param>
+        /// <param name="cssClass">The CSS class appended to the rendered component.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder AddStep(
             string? title,
             string? subtitle,
@@ -60,7 +87,17 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Adds step to the checkout progress component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <param name="state">The state value.</param>
+        /// <param name="icon">The icon value.</param>
+        /// <param name="variant">The variant value.</param>
+        /// <param name="subtitle">The subtitle value.</param>
+        /// <param name="id">The HTML id or stable component id.</param>
+        /// <param name="cssClass">The CSS class appended to the rendered component.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder AddStep(
             string? title,
             CheckoutProgressState state,
@@ -72,7 +109,11 @@ namespace DMBComponentBuilder
         {
             return AddStep(title, subtitle, icon, variant, state, id, cssClass);
         }
-
+        /// <summary>
+        /// Configures the current step for the checkout progress component.
+        /// </summary>
+        /// <param name="stepNumber">The step number value.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder SetCurrentStep(int stepNumber)
         {
             for (int i = 0; i < _items.Count; i++)
@@ -87,7 +128,12 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Configures the step active for the checkout progress component.
+        /// </summary>
+        /// <param name="stepNumber">The step number value.</param>
+        /// <param name="active">True to mark the item active; false to clear the active state.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder SetStepActive(int stepNumber, bool active = true)
         {
             CheckoutProgressDefinition? step = GetStep(stepNumber);
@@ -98,7 +144,12 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Configures the step complete for the checkout progress component.
+        /// </summary>
+        /// <param name="stepNumber">The step number value.</param>
+        /// <param name="complete">True to mark the step complete; false to clear the complete state.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder SetStepComplete(int stepNumber, bool complete = true)
         {
             CheckoutProgressDefinition? step = GetStep(stepNumber);
@@ -109,13 +160,21 @@ namespace DMBComponentBuilder
 
             return this;
         }
-
+        /// <summary>
+        /// Configures whether the subtitles section is rendered by the checkout progress component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder ShowSubtitles(bool value = true)
         {
             _showSubtitles = value;
             return this;
         }
-
+        /// <summary>
+        /// Configures compact behavior for the checkout progress component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
         public CheckoutProgressBuilder Compact(bool value = true)
         {
             _compact = value;
@@ -137,12 +196,12 @@ namespace DMBComponentBuilder
             PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
             page.SetStylesheet(CheckoutProgressCssPath);
         }
-
+        /// <inheritdoc />
         protected override CheckoutProgressBuilder CreateInstance()
         {
             return new CheckoutProgressBuilder(_textWriter, _htmlHelper);
         }
-
+        /// <inheritdoc />
         protected override void InternalClone(CheckoutProgressBuilder source)
         {
             base.InternalClone(source);
@@ -152,7 +211,7 @@ namespace DMBComponentBuilder
             _showSubtitles = source._showSubtitles;
             _compact = source._compact;
         }
-
+        /// <inheritdoc />
         public override IHtmlContent Render()
         {
             EnsureAssets();
@@ -162,7 +221,7 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
-
+        /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
             EnsureAssets();

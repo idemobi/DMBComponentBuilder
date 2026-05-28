@@ -19,6 +19,9 @@ using Microsoft.Extensions.Options;
 
 namespace DMBComponentBuilder
 {
+    /// <summary>
+    /// Configures component builder configuration services and embedded assets for consuming applications.
+    /// </summary>
     public class ComponentBuilderConfigureOptions : IPostConfigureOptions<StaticFileOptions>
     {
         #region Constants
@@ -34,7 +37,10 @@ namespace DMBComponentBuilder
         #endregion
 
         #region Instance constructors and destructors
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComponentBuilderConfigureOptions"/> class.
+        /// </summary>
+        /// <param name="environment">The environment value.</param>
         public ComponentBuilderConfigureOptions(IWebHostEnvironment environment)
         {
             Environment = environment;
@@ -45,7 +51,11 @@ namespace DMBComponentBuilder
         #region Instance methods
 
         #region From interface IPostConfigureOptions<StaticFileOptions>
-
+        /// <summary>
+        /// Creates or renders the component builder configuration component through the post configure helper.
+        /// </summary>
+        /// <param name="name">The name value.</param>
+        /// <param name="options">The options value.</param>
         public void PostConfigure(string? name, StaticFileOptions options)
         {
             name = name ?? throw new ArgumentNullException(nameof(name));
