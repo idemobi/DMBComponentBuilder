@@ -3,10 +3,11 @@
         <RootNamespace>DMBComponentBuilder</RootNamespace>
         <Title>DMBComponentBuilder</Title>
         <PackageTags>idemobi Component Builder</PackageTags>
-        <Description>DMBComponentBuilder</Description>
+        <Description>Reusable visual component builders for timelines, code blocks, roadmaps, file trees, sharing, and editorial blocks.</Description>
         <PackageReleaseNotes>note</PackageReleaseNotes>
         <PackageIcon>DMBComponentBuilder.png</PackageIcon>
         <AssemblyOriginatorKeyFile>DMBComponentBuilder.snk</AssemblyOriginatorKeyFile>
+        <PackageId>DMBComponentBuilder</PackageId>
     </PropertyGroup>
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -33,7 +34,7 @@
         <FileVersion>0.12.0.0</FileVersion>
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
         <Company>idéMobi</Company>
-        <Authors>Jean-François CONTART, Camille GODIOT and Quentin BOULOGNE</Authors>
+        <Authors>Jean-François CONTART, Quentin BOULOGNE, Camille GOLLIOT</Authors>
         <Copyright>Copyright © $(Company) $([System.DateTime]::UtcNow.ToString("yyyy"))</Copyright>
         <NeutralLanguage>en</NeutralLanguage>
         <PackageProjectUrl>https://dev.azure.com/Game-Data-Forge/Game-Data-Forge</PackageProjectUrl>
