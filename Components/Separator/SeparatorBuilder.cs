@@ -1,17 +1,15 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj SeparatorBuilder.cs create at 2026/05/12
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
 #region
 
 using System.Text.Encodings.Web;
-using DMBPageBuilder;
 using DMBBootstrapBuilder;
+using DMBPageBuilder;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -20,18 +18,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Renders a horizontal separator with optional text or icon content.
+    ///     Renders a horizontal separator with optional text or icon content.
     /// </summary>
     public sealed class SeparatorBuilder :
         HtmlBuilderBase<SeparatorBuilder>,
         ICanUseCustomClasses,
         ICanUseMargin
     {
-        private string _text = string.Empty;
+        #region Instance fields and properties
+
         private IconStruct _icon = IconStruct.Empty;
         private bool _pageSpacing;
+        private string _text = string.Empty;
+
+        #endregion
+
+        #region Instance constructors and destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="SeparatorBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="SeparatorBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer that receives the rendered HTML output.</param>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
@@ -42,19 +47,36 @@ namespace DMBComponentBuilder
             InternalAddClasses("d-flex", "align-items-center");
             SetData("separator", "true");
         }
-        /// <summary>
-        /// Configures the text for the separator component.
-        /// </summary>
-        /// <param name="text">The text value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public SeparatorBuilder SetText(string? text)
+
+        #endregion
+
+        #region Instance methods
+
+        /// <inheritdoc />
+        protected override SeparatorBuilder CreateInstance()
         {
-            _text = text ?? string.Empty;
-            _icon = IconStruct.Empty;
-            return this;
+            return new SeparatorBuilder(_textWriter, _htmlHelper);
         }
+
+        /// <inheritdoc />
+        protected override void InternalClone(SeparatorBuilder source)
+        {
+            base.InternalClone(source);
+            _text = source._text;
+            _icon = source._icon;
+            _pageSpacing = source._pageSpacing;
+        }
+
+        /// <inheritdoc />
+        public override IHtmlContent Render()
+        {
+            using StringWriter writer = new();
+            WriteToCore(writer, HtmlEncoder.Default);
+            return new HtmlString(writer.ToString());
+        }
+
         /// <summary>
-        /// Configures the icon for the separator component.
+        ///     Configures the icon for the separator component.
         /// </summary>
         /// <param name="icon">The icon value.</param>
         /// <returns>The configured builder instance.</returns>
@@ -64,8 +86,9 @@ namespace DMBComponentBuilder
             _text = string.Empty;
             return this;
         }
+
         /// <summary>
-        /// Configures the icon for the separator component.
+        ///     Configures the icon for the separator component.
         /// </summary>
         /// <param name="icon">The icon value.</param>
         /// <returns>The configured builder instance.</returns>
@@ -73,8 +96,21 @@ namespace DMBComponentBuilder
         {
             return SetIcon(IconStruct.Parse(icon));
         }
+
         /// <summary>
-        /// Configures whether the page spacing option is used by the separator component.
+        ///     Configures the text for the separator component.
+        /// </summary>
+        /// <param name="text">The text value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public SeparatorBuilder SetText(string? text)
+        {
+            _text = text ?? string.Empty;
+            _icon = IconStruct.Empty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures whether the page spacing option is used by the separator component.
         /// </summary>
         /// <param name="active">True to mark the item active; false to clear the active state.</param>
         /// <returns>The configured builder instance.</returns>
@@ -89,26 +125,7 @@ namespace DMBComponentBuilder
 
             return this;
         }
-        /// <inheritdoc />
-        public override IHtmlContent Render()
-        {
-            using StringWriter writer = new();
-            WriteToCore(writer, HtmlEncoder.Default);
-            return new HtmlString(writer.ToString());
-        }
-        /// <inheritdoc />
-        protected override SeparatorBuilder CreateInstance()
-        {
-            return new SeparatorBuilder(_textWriter, _htmlHelper);
-        }
-        /// <inheritdoc />
-        protected override void InternalClone(SeparatorBuilder source)
-        {
-            base.InternalClone(source);
-            _text = source._text;
-            _icon = source._icon;
-            _pageSpacing = source._pageSpacing;
-        }
+
         /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
@@ -129,5 +146,7 @@ namespace DMBComponentBuilder
             writer.Write("<hr class=\"flex-grow-1\">");
             writer.Write($"</{GetTag()}>");
         }
+
+        #endregion
     }
 }

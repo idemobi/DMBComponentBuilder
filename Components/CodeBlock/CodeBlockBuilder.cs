@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj CodeBlockBuilder.cs create at 2026/05/06
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -20,40 +18,51 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Renders a syntax-highlighted code block with optional title, line numbers, and copy action.
+    ///     Renders a syntax-highlighted code block with optional title, line numbers, and copy action.
     /// </summary>
     /// <remarks>
-    /// The component renders accessible server-side HTML and registers local code block assets through
-    /// <see cref="PageInformation"/> when syntax highlighting is enabled.
+    ///     The component renders accessible server-side HTML and registers local code block assets through
+    ///     <see cref="PageInformation" /> when syntax highlighting is enabled.
     /// </remarks>
     public sealed class CodeBlockBuilder :
         HtmlBuilderBase<CodeBlockBuilder>,
         ICanUseCustomClasses,
         IDisposable
     {
+        #region Constants
+
         private const string CodeBlockCssPath = "/css/components/CodeBlock.css";
         private const string CodeBlockJsPath = "/js/components/CodeBlock.js";
 
-        private string _code = string.Empty;
+        #endregion
+
+        #region Instance fields and properties
+
         private StringWriter? _captureWriter;
+
+        private string _code = string.Empty;
+        private bool _compact;
+        private bool _disposed;
         private string? _downloadFileName;
-        private string? _title;
         private string? _emptyMessage = "No code to display.";
         private string? _errorMessage;
-        private TextWriter? _originalWriter;
+        private bool _highlight = true;
         private CodeLanguage _language = CodeLanguage.PlainText;
-        private CodeBlockTheme _theme = CodeBlockTheme.Default;
-        private bool _disposed;
+        private TextWriter? _originalWriter;
         private bool _renderCapturedRawHtml;
-        private bool _showLineNumbers;
         private bool _showCopyButton;
         private bool _showLanguageName;
-        private bool _highlight = true;
-        private bool _compact;
+        private bool _showLineNumbers;
         private bool _started;
+        private CodeBlockTheme _theme = CodeBlockTheme.Default;
+        private string? _title;
+
+        #endregion
+
+        #region Instance constructors and destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeBlockBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="CodeBlockBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer used by the current rendering context.</param>
         /// <param name="html">The HTML helper associated with the current Razor view.</param>
@@ -66,144 +75,12 @@ namespace DMBComponentBuilder
             SetCssComposer(new CodeBlockComposer());
         }
 
-        /// <summary>
-        /// Sets the code displayed by the component.
-        /// </summary>
-        /// <param name="code">The code to render.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetCode(string? code)
-        {
-            _code = code ?? string.Empty;
-            return this;
-        }
+        #endregion
+
+        #region Instance methods
 
         /// <summary>
-        /// Sets the syntax language used for highlighting.
-        /// </summary>
-        /// <param name="language">The language to apply.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetLanguage(CodeLanguage language)
-        {
-            _language = language;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the title displayed in the code block header.
-        /// </summary>
-        /// <param name="title">The optional title to display.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetTitle(string? title)
-        {
-            _title = title;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the theme used by the code block surface.
-        /// </summary>
-        /// <param name="theme">The theme to apply.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetTheme(CodeBlockTheme theme)
-        {
-            _theme = theme;
-            CodeBlockComposer composer = GetOrCreateCssComposer(() => new CodeBlockComposer());
-            composer.SetTheme(theme);
-            return this;
-        }
-
-        /// <summary>
-        /// Shows or hides line numbers.
-        /// </summary>
-        /// <param name="value">A value indicating whether line numbers should be displayed.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetShowLineNumbers(bool value = true)
-        {
-            _showLineNumbers = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Shows or hides the copy action.
-        /// </summary>
-        /// <param name="value">A value indicating whether the copy action should be displayed.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetCopyButton(bool value = true)
-        {
-            _showCopyButton = value;
-            return this;
-        }
-        /// <summary>
-        /// Configures the download file name for the code block component.
-        /// </summary>
-        /// <param name="fileName">The file name value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public CodeBlockBuilder SetDownloadFileName(string? fileName)
-        {
-            _downloadFileName = fileName;
-            return this;
-        }
-
-        /// <summary>
-        /// Shows or hides the language name next to the language icon.
-        /// </summary>
-        /// <param name="value">A value indicating whether the language name should be displayed.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetShowLanguageName(bool value = true)
-        {
-            _showLanguageName = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Enables or disables client-side syntax highlighting.
-        /// </summary>
-        /// <param name="value">A value indicating whether syntax highlighting should be enabled.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetHighlight(bool value = true)
-        {
-            _highlight = value;
-            CodeBlockComposer composer = GetOrCreateCssComposer(() => new CodeBlockComposer());
-            composer.SetHighlightDisabled(!value);
-            return this;
-        }
-
-        /// <summary>
-        /// Enables or disables the compact layout.
-        /// </summary>
-        /// <param name="value">A value indicating whether compact spacing should be used.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetCompact(bool value = true)
-        {
-            _compact = value;
-            CodeBlockComposer composer = GetOrCreateCssComposer(() => new CodeBlockComposer());
-            composer.SetCompact(value);
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the message displayed when the code is empty.
-        /// </summary>
-        /// <param name="message">The empty-state message to display.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetEmptyMessage(string? message)
-        {
-            _emptyMessage = message;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets an error message displayed instead of the code content.
-        /// </summary>
-        /// <param name="message">The optional error message.</param>
-        /// <returns>The current builder instance.</returns>
-        public CodeBlockBuilder SetErrorMessage(string? message)
-        {
-            _errorMessage = message;
-            return this;
-        }
-        /// <summary>
-        /// Starts the code block rendering or capture scope.
+        ///     Starts the code block rendering or capture scope.
         /// </summary>
         /// <param name="renderCapturedRawHtml">The render captured raw html value.</param>
         /// <returns>The configured builder instance.</returns>
@@ -223,27 +100,20 @@ namespace DMBComponentBuilder
             return this;
         }
 
-        /// <summary>
-        /// Renders the code block to an HTML content instance.
-        /// </summary>
-        /// <returns>The generated HTML content.</returns>
-        public override IHtmlContent Render()
-        {
-            EnsureAssets();
-
-            using StringWriter writer = new();
-            WriteToCore(writer, HtmlEncoder.Default);
-
-            return new HtmlString(writer.ToString());
-        }
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override CodeBlockBuilder CreateInstance()
         {
             return new CodeBlockBuilder(_textWriter, _htmlHelper);
         }
 
-        /// <inheritdoc/>
+        private void EnsureAssets()
+        {
+            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
+            page.SetStylesheet(CodeBlockCssPath, 10);
+            page.SetScriptFile(CodeBlockJsPath, PageScriptLocation.EndOfBody, order: 10);
+        }
+
+        /// <inheritdoc />
         protected override void InternalClone(CodeBlockBuilder source)
         {
             base.InternalClone(source);
@@ -266,85 +136,174 @@ namespace DMBComponentBuilder
             _started = false;
         }
 
-        /// <inheritdoc/>
-        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
+        /// <summary>
+        ///     Renders the code block to an HTML content instance.
+        /// </summary>
+        /// <returns>The generated HTML content.</returns>
+        public override IHtmlContent Render()
         {
             EnsureAssets();
-            string language = _highlight ? _language.GetCodeBlockLanguage() : "none";
-            string languageClass = $"code-language-{language}";
-            string codeId = string.IsNullOrWhiteSpace(GetId())
-                ? _htmlHelper.GenerateUniqueId("dmb_code_block_")
-                : GetId();
 
-            SetId(codeId);
-            SetData("code-block-language", language);
-            SetData("code-block-highlight", _highlight);
-            SetData("code-block-line-numbers", _showLineNumbers);
-            SetData("code-block-theme", _theme.ToString().ToLowerInvariant());
+            using StringWriter writer = new();
+            WriteToCore(writer, HtmlEncoder.Default);
 
-            if (!string.IsNullOrWhiteSpace(_errorMessage))
-            {
-                SetData("code-block-state", "error");
-            }
-            else if (string.IsNullOrWhiteSpace(_code))
-            {
-                SetData("code-block-state", "empty");
-            }
-            else
-            {
-                SetData("code-block-state", "normal");
-            }
-
-            writer.Write($"<{GetTag()}{BuildAttributes()}>");
-            WriteHeader(writer);
-
-            if (!string.IsNullOrWhiteSpace(_errorMessage))
-            {
-                WriteState(writer, "error", _errorMessage);
-            }
-            else if (string.IsNullOrWhiteSpace(_code))
-            {
-                WriteState(writer, "empty", _emptyMessage);
-            }
-            else
-            {
-                WriteCode(writer, encoder, languageClass);
-            }
-
-            writer.Write($"</{GetTag()}>");
+            return new HtmlString(writer.ToString());
         }
+
         /// <summary>
-        /// Completes the active code block rendering or capture scope.
+        ///     Sets the code displayed by the component.
         /// </summary>
-        public void Dispose()
+        /// <param name="code">The code to render.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetCode(string? code)
         {
-            if (_disposed)
-            {
-                return;
-            }
-
-            _disposed = true;
-
-            if (!_started)
-            {
-                return;
-            }
-
-            if (_originalWriter != null)
-            {
-                _htmlHelper.ViewContext.Writer = _originalWriter;
-            }
-
-            _code = _captureWriter?.ToString() ?? string.Empty;
-            WriteTo(_originalWriter ?? _textWriter, HtmlEncoder.Default);
-            _started = false;
+            _code = code ?? string.Empty;
+            return this;
         }
 
-        private void EnsureAssets()
+        /// <summary>
+        ///     Enables or disables the compact layout.
+        /// </summary>
+        /// <param name="value">A value indicating whether compact spacing should be used.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetCompact(bool value = true)
         {
-            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
-            page.SetStylesheet(CodeBlockCssPath, 10);
-            page.SetScriptFile(CodeBlockJsPath, PageScriptLocation.EndOfBody, order: 10);
+            _compact = value;
+            CodeBlockComposer composer = GetOrCreateCssComposer(() => new CodeBlockComposer());
+            composer.SetCompact(value);
+            return this;
+        }
+
+        /// <summary>
+        ///     Shows or hides the copy action.
+        /// </summary>
+        /// <param name="value">A value indicating whether the copy action should be displayed.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetCopyButton(bool value = true)
+        {
+            _showCopyButton = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the download file name for the code block component.
+        /// </summary>
+        /// <param name="fileName">The file name value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public CodeBlockBuilder SetDownloadFileName(string? fileName)
+        {
+            _downloadFileName = fileName;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the message displayed when the code is empty.
+        /// </summary>
+        /// <param name="message">The empty-state message to display.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetEmptyMessage(string? message)
+        {
+            _emptyMessage = message;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets an error message displayed instead of the code content.
+        /// </summary>
+        /// <param name="message">The optional error message.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetErrorMessage(string? message)
+        {
+            _errorMessage = message;
+            return this;
+        }
+
+        /// <summary>
+        ///     Enables or disables client-side syntax highlighting.
+        /// </summary>
+        /// <param name="value">A value indicating whether syntax highlighting should be enabled.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetHighlight(bool value = true)
+        {
+            _highlight = value;
+            CodeBlockComposer composer = GetOrCreateCssComposer(() => new CodeBlockComposer());
+            composer.SetHighlightDisabled(!value);
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the syntax language used for highlighting.
+        /// </summary>
+        /// <param name="language">The language to apply.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetLanguage(CodeLanguage language)
+        {
+            _language = language;
+            return this;
+        }
+
+        /// <summary>
+        ///     Shows or hides the language name next to the language icon.
+        /// </summary>
+        /// <param name="value">A value indicating whether the language name should be displayed.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetShowLanguageName(bool value = true)
+        {
+            _showLanguageName = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Shows or hides line numbers.
+        /// </summary>
+        /// <param name="value">A value indicating whether line numbers should be displayed.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetShowLineNumbers(bool value = true)
+        {
+            _showLineNumbers = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the theme used by the code block surface.
+        /// </summary>
+        /// <param name="theme">The theme to apply.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetTheme(CodeBlockTheme theme)
+        {
+            _theme = theme;
+            CodeBlockComposer composer = GetOrCreateCssComposer(() => new CodeBlockComposer());
+            composer.SetTheme(theme);
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the title displayed in the code block header.
+        /// </summary>
+        /// <param name="title">The optional title to display.</param>
+        /// <returns>The current builder instance.</returns>
+        public CodeBlockBuilder SetTitle(string? title)
+        {
+            _title = title;
+            return this;
+        }
+
+        private void WriteCode(TextWriter writer, HtmlEncoder encoder, string languageClass)
+        {
+            string lineNumbersClass = _showLineNumbers ? " dmb-code-block-with-lines" : string.Empty;
+            string compactClass = _compact ? " dmb-code-block-pre-compact" : string.Empty;
+
+            writer.Write($"<pre class=\"dmb-code-block-pre {languageClass}{lineNumbersClass}{compactClass}\"><code class=\"dmb-code-block-code {languageClass}\">");
+            if (_renderCapturedRawHtml)
+            {
+                writer.Write(_code);
+            }
+            else
+            {
+                encoder.Encode(writer, _code);
+            }
+
+            writer.Write("</code></pre>");
         }
 
         private void WriteHeader(TextWriter writer)
@@ -364,6 +323,7 @@ namespace DMBComponentBuilder
                 writer.Write(WebUtility.HtmlEncode(_language.GetDisplayName()));
                 writer.Write("</span>");
             }
+
             writer.Write("</span>");
 
             if (!string.IsNullOrWhiteSpace(_title))
@@ -413,21 +373,85 @@ namespace DMBComponentBuilder
             writer.Write("</div>");
         }
 
-        private void WriteCode(TextWriter writer, HtmlEncoder encoder, string languageClass)
+        /// <inheritdoc />
+        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
-            string lineNumbersClass = _showLineNumbers ? " dmb-code-block-with-lines" : string.Empty;
-            string compactClass = _compact ? " dmb-code-block-pre-compact" : string.Empty;
+            EnsureAssets();
+            string language = _highlight ? _language.GetCodeBlockLanguage() : "none";
+            string languageClass = $"code-language-{language}";
+            string codeId = string.IsNullOrWhiteSpace(GetId())
+                ? _htmlHelper.GenerateUniqueId("dmb_code_block_")
+                : GetId();
 
-            writer.Write($"<pre class=\"dmb-code-block-pre {languageClass}{lineNumbersClass}{compactClass}\"><code class=\"dmb-code-block-code {languageClass}\">");
-            if (_renderCapturedRawHtml)
+            SetId(codeId);
+            SetData("code-block-language", language);
+            SetData("code-block-highlight", _highlight);
+            SetData("code-block-line-numbers", _showLineNumbers);
+            SetData("code-block-theme", _theme.ToString().ToLowerInvariant());
+
+            if (!string.IsNullOrWhiteSpace(_errorMessage))
             {
-                writer.Write(_code);
+                SetData("code-block-state", "error");
+            }
+            else if (string.IsNullOrWhiteSpace(_code))
+            {
+                SetData("code-block-state", "empty");
             }
             else
             {
-                encoder.Encode(writer, _code);
+                SetData("code-block-state", "normal");
             }
-            writer.Write("</code></pre>");
+
+            writer.Write($"<{GetTag()}{BuildAttributes()}>");
+            WriteHeader(writer);
+
+            if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                WriteState(writer, "error", _errorMessage);
+            }
+            else if (string.IsNullOrWhiteSpace(_code))
+            {
+                WriteState(writer, "empty", _emptyMessage);
+            }
+            else
+            {
+                WriteCode(writer, encoder, languageClass);
+            }
+
+            writer.Write($"</{GetTag()}>");
         }
+
+        #region From interface IDisposable
+
+        /// <summary>
+        ///     Completes the active code block rendering or capture scope.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
+
+            if (!_started)
+            {
+                return;
+            }
+
+            if (_originalWriter != null)
+            {
+                _htmlHelper.ViewContext.Writer = _originalWriter;
+            }
+
+            _code = _captureWriter?.ToString() ?? string.Empty;
+            WriteTo(_originalWriter ?? _textWriter, HtmlEncoder.Default);
+            _started = false;
+        }
+
+        #endregion
+
+        #endregion
     }
 }

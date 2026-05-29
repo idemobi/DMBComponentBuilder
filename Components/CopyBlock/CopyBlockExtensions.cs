@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj CopyBlockExtensions.cs create at 2026/05/12
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -17,12 +15,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper and fluent extension methods for copy block components.
+    ///     Provides Razor helper and fluent extension methods for copy block components.
     /// </summary>
     public static class CopyBlockExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates or renders the copy block component through the copy block helper.
+        ///     Creates or renders the copy block component through the copy block helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <param name="content">The content value.</param>
@@ -38,5 +38,7 @@ namespace DMBComponentBuilder
                 .SetContent(content)
                 .SetStyle(style);
         }
+
+        #endregion
     }
 }

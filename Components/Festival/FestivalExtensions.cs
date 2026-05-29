@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj FestivalExtensions.cs create at 2026/05/11
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -16,12 +14,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper and fluent extension methods for festival components.
+    ///     Provides Razor helper and fluent extension methods for festival components.
     /// </summary>
     public static class FestivalExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates or renders the festival component through the festival helper.
+        ///     Creates or renders the festival component through the festival helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <param name="festival">The festival value.</param>
@@ -30,5 +30,7 @@ namespace DMBComponentBuilder
         {
             return new FestivalBuilder(html, festival);
         }
+
+        #endregion
     }
 }

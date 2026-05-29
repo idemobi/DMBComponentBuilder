@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj FileTreeBuilder.cs create at 2026/05/06
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -20,28 +18,70 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Renders a Bootstrap compatible Finder-style file and folder tree.
+    ///     Renders a Bootstrap compatible Finder-style file and folder tree.
     /// </summary>
     /// <remarks>
-    /// The component accepts a tree of <see cref="FileTreeNode"/> instances and renders folders
-    /// with collapsible child groups, Bootstrap Icons, and lighter visual treatment for dot folders.
+    ///     The component accepts a tree of <see cref="FileTreeNode" /> instances and renders folders
+    ///     with collapsible child groups, Bootstrap Icons, and lighter visual treatment for dot folders.
     /// </remarks>
     public sealed class FileTreeBuilder :
         HtmlBuilderBase<FileTreeBuilder>,
         ICanUseCustomClasses
     {
+        #region Constants
+
         private const string FileTreeCssPath = "/css/components/FileTree.css";
         private const string FileTreeJsPath = "/js/components/FileTree.js";
 
-        private readonly List<FileTreeNode> _nodes = new();
-        private string? _title;
+        #endregion
+
+        #region Static methods
+
+        private static string GetIconClass(FileTreeNode node, bool expanded)
+        {
+            if (!string.IsNullOrWhiteSpace(node.IconCssClass))
+            {
+                return node.IconCssClass;
+            }
+
+            if (node.IsDirectory)
+            {
+                return expanded ? "bi-folder2-open" : "bi-folder2";
+            }
+
+            string extension = Path.GetExtension(node.Name).ToLowerInvariant();
+            return extension switch
+            {
+                ".cs" => "bi-filetype-cs",
+                ".css" => "bi-filetype-css",
+                ".html" or ".cshtml" => "bi-filetype-html",
+                ".js" => "bi-filetype-js",
+                ".json" => "bi-filetype-json",
+                ".md" => "bi-filetype-md",
+                ".png" or ".jpg" or ".jpeg" or ".gif" or ".webp" => "bi-file-image",
+                ".sln" or ".slnx" or ".csproj" => "bi-file-earmark-code",
+                _ => "bi-file-earmark"
+            };
+        }
+
+        #endregion
+
+        #region Instance fields and properties
+
         private string? _emptyMessage = "No files to display.";
         private string? _errorMessage;
         private bool _expandedByDefault = true;
+
+        private readonly List<FileTreeNode> _nodes = new();
         private bool _showHeader = true;
+        private string? _title;
+
+        #endregion
+
+        #region Instance constructors and destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileTreeBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="FileTreeBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer used by the current rendering context.</param>
         /// <param name="html">The HTML helper associated with the current Razor view.</param>
@@ -53,8 +93,96 @@ namespace DMBComponentBuilder
             SetData("file-tree", "true");
         }
 
+        #endregion
+
+        #region Instance methods
+
         /// <summary>
-        /// Replaces the displayed root nodes.
+        ///     Adds one root node to the tree.
+        /// </summary>
+        /// <param name="node">The root node to add.</param>
+        /// <returns>The current builder instance.</returns>
+        public FileTreeBuilder AddNode(FileTreeNode node)
+        {
+            _nodes.Add(node.Clone());
+            return this;
+        }
+
+        /// <inheritdoc />
+        protected override FileTreeBuilder CreateInstance()
+        {
+            return new FileTreeBuilder(_textWriter, _htmlHelper);
+        }
+
+        private void EnsureAssets()
+        {
+            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
+            page.SetStylesheet(FileTreeCssPath, 10);
+            page.SetScriptFile(FileTreeJsPath, PageScriptLocation.EndOfBody, order: 10);
+        }
+
+        /// <inheritdoc />
+        protected override void InternalClone(FileTreeBuilder source)
+        {
+            base.InternalClone(source);
+            _nodes.Clear();
+            _nodes.AddRange(source._nodes.Select(node => node.Clone()));
+            _title = source._title;
+            _emptyMessage = source._emptyMessage;
+            _errorMessage = source._errorMessage;
+            _expandedByDefault = source._expandedByDefault;
+            _showHeader = source._showHeader;
+        }
+
+        /// <summary>
+        ///     Renders the file tree to an HTML content instance.
+        /// </summary>
+        /// <returns>The generated HTML content.</returns>
+        public override IHtmlContent Render()
+        {
+            EnsureAssets();
+
+            using StringWriter writer = new();
+            WriteToCore(writer, HtmlEncoder.Default);
+
+            return new HtmlString(writer.ToString());
+        }
+
+        /// <summary>
+        ///     Sets the message displayed when the tree is empty.
+        /// </summary>
+        /// <param name="message">The empty-state message to display.</param>
+        /// <returns>The current builder instance.</returns>
+        public FileTreeBuilder SetEmptyMessage(string? message)
+        {
+            _emptyMessage = message;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets an error message displayed instead of the tree content.
+        /// </summary>
+        /// <param name="message">The optional error message.</param>
+        /// <returns>The current builder instance.</returns>
+        public FileTreeBuilder SetErrorMessage(string? message)
+        {
+            _errorMessage = message;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets whether folders are expanded during the first render.
+        /// </summary>
+        /// <param name="value">A value indicating whether folders should start expanded.</param>
+        /// <returns>The current builder instance.</returns>
+        public FileTreeBuilder SetExpandedByDefault(bool value = true)
+        {
+            _expandedByDefault = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Replaces the displayed root nodes.
         /// </summary>
         /// <param name="nodes">The root file and folder nodes.</param>
         /// <returns>The current builder instance.</returns>
@@ -71,29 +199,7 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Adds one root node to the tree.
-        /// </summary>
-        /// <param name="node">The root node to add.</param>
-        /// <returns>The current builder instance.</returns>
-        public FileTreeBuilder AddNode(FileTreeNode node)
-        {
-            _nodes.Add(node.Clone());
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the optional header title.
-        /// </summary>
-        /// <param name="title">The title displayed above the tree.</param>
-        /// <returns>The current builder instance.</returns>
-        public FileTreeBuilder SetTitle(string? title)
-        {
-            _title = title;
-            return this;
-        }
-
-        /// <summary>
-        /// Shows or hides the header surface.
+        ///     Shows or hides the header surface.
         /// </summary>
         /// <param name="value">A value indicating whether the header should be displayed.</param>
         /// <returns>The current builder instance.</returns>
@@ -104,124 +210,14 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Sets whether folders are expanded during the first render.
+        ///     Sets the optional header title.
         /// </summary>
-        /// <param name="value">A value indicating whether folders should start expanded.</param>
+        /// <param name="title">The title displayed above the tree.</param>
         /// <returns>The current builder instance.</returns>
-        public FileTreeBuilder SetExpandedByDefault(bool value = true)
+        public FileTreeBuilder SetTitle(string? title)
         {
-            _expandedByDefault = value;
+            _title = title;
             return this;
-        }
-
-        /// <summary>
-        /// Sets the message displayed when the tree is empty.
-        /// </summary>
-        /// <param name="message">The empty-state message to display.</param>
-        /// <returns>The current builder instance.</returns>
-        public FileTreeBuilder SetEmptyMessage(string? message)
-        {
-            _emptyMessage = message;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets an error message displayed instead of the tree content.
-        /// </summary>
-        /// <param name="message">The optional error message.</param>
-        /// <returns>The current builder instance.</returns>
-        public FileTreeBuilder SetErrorMessage(string? message)
-        {
-            _errorMessage = message;
-            return this;
-        }
-
-        /// <summary>
-        /// Renders the file tree to an HTML content instance.
-        /// </summary>
-        /// <returns>The generated HTML content.</returns>
-        public override IHtmlContent Render()
-        {
-            EnsureAssets();
-
-            using StringWriter writer = new();
-            WriteToCore(writer, HtmlEncoder.Default);
-
-            return new HtmlString(writer.ToString());
-        }
-
-        /// <inheritdoc/>
-        protected override FileTreeBuilder CreateInstance()
-        {
-            return new FileTreeBuilder(_textWriter, _htmlHelper);
-        }
-
-        /// <inheritdoc/>
-        protected override void InternalClone(FileTreeBuilder source)
-        {
-            base.InternalClone(source);
-            _nodes.Clear();
-            _nodes.AddRange(source._nodes.Select(node => node.Clone()));
-            _title = source._title;
-            _emptyMessage = source._emptyMessage;
-            _errorMessage = source._errorMessage;
-            _expandedByDefault = source._expandedByDefault;
-            _showHeader = source._showHeader;
-        }
-
-        /// <inheritdoc/>
-        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
-        {
-            EnsureAssets();
-
-            string treeId = string.IsNullOrWhiteSpace(GetId())
-                ? _htmlHelper.GenerateUniqueId("file_tree_")
-                : GetId();
-
-            SetId(treeId);
-
-            if (!string.IsNullOrWhiteSpace(_errorMessage))
-            {
-                SetData("file-tree-state", "error");
-            }
-            else if (_nodes.Count == 0)
-            {
-                SetData("file-tree-state", "empty");
-            }
-            else
-            {
-                SetData("file-tree-state", "normal");
-            }
-
-            writer.Write($"<{GetTag()}{BuildAttributes()}>");
-            WriteHeader(writer);
-
-            if (!string.IsNullOrWhiteSpace(_errorMessage))
-            {
-                WriteState(writer, "error", _errorMessage, "bi-exclamation-triangle");
-            }
-            else if (_nodes.Count == 0)
-            {
-                WriteState(writer, "empty", _emptyMessage, "bi-folder-x");
-            }
-            else
-            {
-                writer.Write("<ul class=\"file-tree-list\" role=\"tree\">");
-                for (int index = 0; index < _nodes.Count; index++)
-                {
-                    WriteNode(writer, encoder, _nodes[index], 0, $"{treeId}_{index}");
-                }
-                writer.Write("</ul>");
-            }
-
-            writer.Write($"</{GetTag()}>");
-        }
-
-        private void EnsureAssets()
-        {
-            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
-            page.SetStylesheet(FileTreeCssPath, 10);
-            page.SetScriptFile(FileTreeJsPath, PageScriptLocation.EndOfBody, order: 10);
         }
 
         private void WriteHeader(TextWriter writer)
@@ -237,16 +233,6 @@ namespace DMBComponentBuilder
             writer.Write("<span class=\"file-tree-header-icon bi bi-window-sidebar\" aria-hidden=\"true\"></span>");
             writer.Write("<span class=\"file-tree-title\">");
             writer.Write(WebUtility.HtmlEncode(title));
-            writer.Write("</span>");
-            writer.Write("</div>");
-        }
-
-        private void WriteState(TextWriter writer, string state, string? message, string iconCssClass)
-        {
-            writer.Write($"<div class=\"file-tree-state file-tree-state-{WebUtility.HtmlEncode(state)}\">");
-            writer.Write($"<span class=\"bi {WebUtility.HtmlEncode(iconCssClass)}\" aria-hidden=\"true\"></span>");
-            writer.Write("<span>");
-            writer.Write(WebUtility.HtmlEncode(message ?? string.Empty));
             writer.Write("</span>");
             writer.Write("</div>");
         }
@@ -302,37 +288,72 @@ namespace DMBComponentBuilder
                 {
                     WriteNode(writer, encoder, node.Children[index], depth + 1, $"{path}_{index}");
                 }
+
                 writer.Write("</ul>");
             }
 
             writer.Write("</li>");
         }
 
-        private static string GetIconClass(FileTreeNode node, bool expanded)
+        private void WriteState(TextWriter writer, string state, string? message, string iconCssClass)
         {
-            if (!string.IsNullOrWhiteSpace(node.IconCssClass))
-            {
-                return node.IconCssClass;
-            }
-
-            if (node.IsDirectory)
-            {
-                return expanded ? "bi-folder2-open" : "bi-folder2";
-            }
-
-            string extension = Path.GetExtension(node.Name).ToLowerInvariant();
-            return extension switch
-            {
-                ".cs" => "bi-filetype-cs",
-                ".css" => "bi-filetype-css",
-                ".html" or ".cshtml" => "bi-filetype-html",
-                ".js" => "bi-filetype-js",
-                ".json" => "bi-filetype-json",
-                ".md" => "bi-filetype-md",
-                ".png" or ".jpg" or ".jpeg" or ".gif" or ".webp" => "bi-file-image",
-                ".sln" or ".slnx" or ".csproj" => "bi-file-earmark-code",
-                _ => "bi-file-earmark"
-            };
+            writer.Write($"<div class=\"file-tree-state file-tree-state-{WebUtility.HtmlEncode(state)}\">");
+            writer.Write($"<span class=\"bi {WebUtility.HtmlEncode(iconCssClass)}\" aria-hidden=\"true\"></span>");
+            writer.Write("<span>");
+            writer.Write(WebUtility.HtmlEncode(message ?? string.Empty));
+            writer.Write("</span>");
+            writer.Write("</div>");
         }
+
+        /// <inheritdoc />
+        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
+        {
+            EnsureAssets();
+
+            string treeId = string.IsNullOrWhiteSpace(GetId())
+                ? _htmlHelper.GenerateUniqueId("file_tree_")
+                : GetId();
+
+            SetId(treeId);
+
+            if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                SetData("file-tree-state", "error");
+            }
+            else if (_nodes.Count == 0)
+            {
+                SetData("file-tree-state", "empty");
+            }
+            else
+            {
+                SetData("file-tree-state", "normal");
+            }
+
+            writer.Write($"<{GetTag()}{BuildAttributes()}>");
+            WriteHeader(writer);
+
+            if (!string.IsNullOrWhiteSpace(_errorMessage))
+            {
+                WriteState(writer, "error", _errorMessage, "bi-exclamation-triangle");
+            }
+            else if (_nodes.Count == 0)
+            {
+                WriteState(writer, "empty", _emptyMessage, "bi-folder-x");
+            }
+            else
+            {
+                writer.Write("<ul class=\"file-tree-list\" role=\"tree\">");
+                for (int index = 0; index < _nodes.Count; index++)
+                {
+                    WriteNode(writer, encoder, _nodes[index], 0, $"{treeId}_{index}");
+                }
+
+                writer.Write("</ul>");
+            }
+
+            writer.Write($"</{GetTag()}>");
+        }
+
+        #endregion
     }
 }

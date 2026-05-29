@@ -1,3 +1,12 @@
+#region Copyright
+
+// ©2002-2026 idéMobi
+// www.idemobi.com
+
+#endregion
+
+#region
+
 using System.Net;
 using System.Text.Encodings.Web;
 using DMBBootstrapBuilder;
@@ -5,10 +14,12 @@ using DMBPageBuilder;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+#endregion
+
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Builds and renders the roadmap visual component for Razor views.
+    ///     Builds and renders the roadmap visual component for Razor views.
     /// </summary>
     public sealed class RoadmapBuilder :
         HtmlBuilderBase<RoadmapBuilder>,
@@ -16,65 +27,15 @@ namespace DMBComponentBuilder
         ICanUseRoadmapEffects,
         IDisposable
     {
+        #region Constants
+
         private const string CurrentContextKey = "__DMB_CURRENT_ROADMAP_BUILDER__";
         private const string RoadmapCssPath = "/css/components/Roadmap.css";
         private const string RoadmapJsPath = "/js/components/Roadmap.js";
 
-        private readonly List<RoadmapDefinition> _items = new();
-        private readonly TextWriter _outputWriter;
+        #endregion
 
-        private RoadmapBuilder? _previousRoadmap;
-
-        private bool _disposed
-        {
-            get => GetInternal("_disposed", false);
-            set => SetInternal("_disposed", value);
-        }
-
-        private bool _started
-        {
-            get => GetInternal("_started", false);
-            set => SetInternal("_started", value);
-        }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RoadmapBuilder"/> class.
-        /// </summary>
-        /// <param name="writer">The writer that receives the rendered HTML output.</param>
-        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
-        public RoadmapBuilder(TextWriter writer, IHtmlHelper html)
-            : base(writer, html)
-        {
-            _tag = "div";
-            _outputWriter = html.ViewContext.Writer;
-
-            this.AddClass("roadmap");
-            SetData("roadmap", "true");
-        }
-        /// <summary>
-        /// Starts the roadmap rendering or capture scope.
-        /// </summary>
-        /// <returns>The configured builder instance.</returns>
-        public RoadmapBuilder Begin()
-        {
-            if (_started)
-            {
-                return this;
-            }
-
-            EnsureAssets();
-
-            _started = true;
-
-            if (string.IsNullOrWhiteSpace(GetId()))
-            {
-                SetEnsureId("roadmap");
-            }
-
-            _previousRoadmap = GetCurrent(_htmlHelper);
-            SetCurrent(_htmlHelper, this);
-
-            return this;
-        }
+        #region Static methods
 
         internal static RoadmapBuilder? GetCurrent(IHtmlHelper html)
         {
@@ -105,6 +66,82 @@ namespace DMBComponentBuilder
             }
         }
 
+        #endregion
+
+        #region Instance fields and properties
+
+        private bool _disposed
+        {
+            get => GetInternal("_disposed", false);
+            set => SetInternal("_disposed", value);
+        }
+
+        private readonly List<RoadmapDefinition> _items = new();
+        private readonly TextWriter _outputWriter;
+
+        private RoadmapBuilder? _previousRoadmap;
+
+        private bool _started
+        {
+            get => GetInternal("_started", false);
+            set => SetInternal("_started", value);
+        }
+
+        #endregion
+
+        #region Instance constructors and destructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="RoadmapBuilder" /> class.
+        /// </summary>
+        /// <param name="writer">The writer that receives the rendered HTML output.</param>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
+        public RoadmapBuilder(TextWriter writer, IHtmlHelper html)
+            : base(writer, html)
+        {
+            _tag = "div";
+            _outputWriter = html.ViewContext.Writer;
+
+            this.AddClass("roadmap");
+            SetData("roadmap", "true");
+        }
+
+        #endregion
+
+        #region Instance methods
+
+        /// <summary>
+        ///     Starts the roadmap rendering or capture scope.
+        /// </summary>
+        /// <returns>The configured builder instance.</returns>
+        public RoadmapBuilder Begin()
+        {
+            if (_started)
+            {
+                return this;
+            }
+
+            EnsureAssets();
+
+            _started = true;
+
+            if (string.IsNullOrWhiteSpace(GetId()))
+            {
+                SetEnsureId("roadmap");
+            }
+
+            _previousRoadmap = GetCurrent(_htmlHelper);
+            SetCurrent(_htmlHelper, this);
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        protected override RoadmapBuilder CreateInstance()
+        {
+            return new RoadmapBuilder(_textWriter, _htmlHelper);
+        }
+
         private void EnsureAssets()
         {
             PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
@@ -112,23 +149,6 @@ namespace DMBComponentBuilder
             page.SetScriptFile(RoadmapJsPath);
         }
 
-        internal void RegisterItem(RoadmapDefinition definition)
-        {
-            ArgumentNullException.ThrowIfNull(definition);
-
-            int index = _items.Count;
-
-            definition.Id = string.IsNullOrWhiteSpace(definition.Id)
-                ? $"{GetId()}_item_{index}"
-                : definition.Id;
-
-            _items.Add(definition);
-        }
-        /// <inheritdoc />
-        protected override RoadmapBuilder CreateInstance()
-        {
-            return new RoadmapBuilder(_textWriter, _htmlHelper);
-        }
         /// <inheritdoc />
         protected override void InternalClone(RoadmapBuilder source)
         {
@@ -152,6 +172,20 @@ namespace DMBComponentBuilder
             _disposed = false;
             _started = false;
         }
+
+        internal void RegisterItem(RoadmapDefinition definition)
+        {
+            ArgumentNullException.ThrowIfNull(definition);
+
+            int index = _items.Count;
+
+            definition.Id = string.IsNullOrWhiteSpace(definition.Id)
+                ? $"{GetId()}_item_{index}"
+                : definition.Id;
+
+            _items.Add(definition);
+        }
+
         /// <inheritdoc />
         public override IHtmlContent Render()
         {
@@ -161,25 +195,6 @@ namespace DMBComponentBuilder
             WriteToCore(writer, HtmlEncoder.Default);
 
             return new HtmlString(writer.ToString());
-        }
-        /// <inheritdoc />
-        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
-        {
-            if (_items.Count == 0)
-            {
-                return;
-            }
-
-            writer.Write($"<{GetTag()}{BuildAttributes()}>");
-            writer.Write("<div class=\"roadmap-track\">");
-
-            foreach (RoadmapDefinition item in _items)
-            {
-                WriteItem(writer, encoder, item);
-            }
-
-            writer.Write("</div>");
-            writer.Write($"</{GetTag()}>");
         }
 
         private void WriteItem(TextWriter writer, HtmlEncoder encoder, RoadmapDefinition item)
@@ -212,13 +227,13 @@ namespace DMBComponentBuilder
             }
 
             writer.Write($"<div class=\"roadmap-marker border-{WebUtility.HtmlEncode(variant)} text-{WebUtility.HtmlEncode(variant)}\">");
-            
+
             if (!item.Icon.IsEmpty)
             {
                 HtmlLayoutExtensions.IconBuilder(_htmlHelper, item.Icon, null, null)
                     .WriteTo(writer, HtmlEncoder.Default);
             }
-            
+
             writer.Write("</div>");
 
             writer.Write($"<div class=\"roadmap-card roadmap-card-{WebUtility.HtmlEncode(variant)}\">");
@@ -243,8 +258,31 @@ namespace DMBComponentBuilder
             writer.Write("</div>");
             writer.Write("</div>");
         }
+
+        /// <inheritdoc />
+        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
+        {
+            if (_items.Count == 0)
+            {
+                return;
+            }
+
+            writer.Write($"<{GetTag()}{BuildAttributes()}>");
+            writer.Write("<div class=\"roadmap-track\">");
+
+            foreach (RoadmapDefinition item in _items)
+            {
+                WriteItem(writer, encoder, item);
+            }
+
+            writer.Write("</div>");
+            writer.Write($"</{GetTag()}>");
+        }
+
+        #region From interface IDisposable
+
         /// <summary>
-        /// Completes the active roadmap rendering or capture scope.
+        ///     Completes the active roadmap rendering or capture scope.
         /// </summary>
         public void Dispose()
         {
@@ -264,5 +302,9 @@ namespace DMBComponentBuilder
 
             WriteTo(_outputWriter, HtmlEncoder.Default);
         }
+
+        #endregion
+
+        #endregion
     }
 }

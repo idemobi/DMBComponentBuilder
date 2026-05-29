@@ -1,3 +1,12 @@
+#region Copyright
+
+// ©2002-2026 idéMobi
+// www.idemobi.com
+
+#endregion
+
+#region
+
 using System.Net;
 using System.Text.Encodings.Web;
 using DMBBootstrapBuilder;
@@ -5,22 +14,36 @@ using DMBPageBuilder;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+#endregion
+
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Builds and renders the checkout progress visual component for Razor views.
+    ///     Builds and renders the checkout progress visual component for Razor views.
     /// </summary>
     public sealed class CheckoutProgressBuilder :
         HtmlBuilderBase<CheckoutProgressBuilder>,
         ICanUseCustomClasses
     {
+        #region Constants
+
         private const string CheckoutProgressCssPath = "/css/components/CheckoutProgress.css";
+
+        #endregion
+
+        #region Instance fields and properties
+
+        private bool _compact;
 
         private readonly List<CheckoutProgressDefinition> _items = new();
         private bool _showSubtitles = true;
-        private bool _compact;
+
+        #endregion
+
+        #region Instance constructors and destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CheckoutProgressBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="CheckoutProgressBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer that receives the rendered HTML output.</param>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
@@ -32,8 +55,13 @@ namespace DMBComponentBuilder
             SetAttribute("aria-label", "Checkout steps");
             SetData("checkout-progress-builder", "true");
         }
+
+        #endregion
+
+        #region Instance methods
+
         /// <summary>
-        /// Adds step to the checkout progress component.
+        ///     Adds step to the checkout progress component.
         /// </summary>
         /// <param name="title">The title value.</param>
         /// <param name="subtitle">The subtitle value.</param>
@@ -50,12 +78,14 @@ namespace DMBComponentBuilder
             IconStruct icon = default,
             VariantStyle variant = VariantStyle.Primary,
             string? id = null,
-            string? cssClass = null)
+            string? cssClass = null
+        )
         {
             return AddStep(title, subtitle, icon, variant, active ? CheckoutProgressState.Active : CheckoutProgressState.Inactive, id, cssClass);
         }
+
         /// <summary>
-        /// Adds step to the checkout progress component.
+        ///     Adds step to the checkout progress component.
         /// </summary>
         /// <param name="title">The title value.</param>
         /// <param name="subtitle">The subtitle value.</param>
@@ -72,7 +102,8 @@ namespace DMBComponentBuilder
             VariantStyle variant,
             CheckoutProgressState state,
             string? id = null,
-            string? cssClass = null)
+            string? cssClass = null
+        )
         {
             _items.Add(new CheckoutProgressDefinition
             {
@@ -87,8 +118,9 @@ namespace DMBComponentBuilder
 
             return this;
         }
+
         /// <summary>
-        /// Adds step to the checkout progress component.
+        ///     Adds step to the checkout progress component.
         /// </summary>
         /// <param name="title">The title value.</param>
         /// <param name="state">The state value.</param>
@@ -105,12 +137,69 @@ namespace DMBComponentBuilder
             VariantStyle variant = VariantStyle.Primary,
             string? subtitle = null,
             string? id = null,
-            string? cssClass = null)
+            string? cssClass = null
+        )
         {
             return AddStep(title, subtitle, icon, variant, state, id, cssClass);
         }
+
         /// <summary>
-        /// Configures the current step for the checkout progress component.
+        ///     Configures compact behavior for the checkout progress component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The configured builder instance.</returns>
+        public CheckoutProgressBuilder Compact(bool value = true)
+        {
+            _compact = value;
+            return this;
+        }
+
+        /// <inheritdoc />
+        protected override CheckoutProgressBuilder CreateInstance()
+        {
+            return new CheckoutProgressBuilder(_textWriter, _htmlHelper);
+        }
+
+        private void EnsureAssets()
+        {
+            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
+            page.SetStylesheet(CheckoutProgressCssPath);
+        }
+
+        private CheckoutProgressDefinition? GetStep(int stepNumber)
+        {
+            if (stepNumber < 1 || stepNumber > _items.Count)
+            {
+                return null;
+            }
+
+            return _items[stepNumber - 1];
+        }
+
+        /// <inheritdoc />
+        protected override void InternalClone(CheckoutProgressBuilder source)
+        {
+            base.InternalClone(source);
+
+            _items.Clear();
+            _items.AddRange(source._items.Select(x => x.Clone()));
+            _showSubtitles = source._showSubtitles;
+            _compact = source._compact;
+        }
+
+        /// <inheritdoc />
+        public override IHtmlContent Render()
+        {
+            EnsureAssets();
+
+            using StringWriter writer = new();
+            WriteToCore(writer, HtmlEncoder.Default);
+
+            return new HtmlString(writer.ToString());
+        }
+
+        /// <summary>
+        ///     Configures the current step for the checkout progress component.
         /// </summary>
         /// <param name="stepNumber">The step number value.</param>
         /// <returns>The configured builder instance.</returns>
@@ -128,8 +217,9 @@ namespace DMBComponentBuilder
 
             return this;
         }
+
         /// <summary>
-        /// Configures the step active for the checkout progress component.
+        ///     Configures the step active for the checkout progress component.
         /// </summary>
         /// <param name="stepNumber">The step number value.</param>
         /// <param name="active">True to mark the item active; false to clear the active state.</param>
@@ -144,8 +234,9 @@ namespace DMBComponentBuilder
 
             return this;
         }
+
         /// <summary>
-        /// Configures the step complete for the checkout progress component.
+        ///     Configures the step complete for the checkout progress component.
         /// </summary>
         /// <param name="stepNumber">The step number value.</param>
         /// <param name="complete">True to mark the step complete; false to clear the complete state.</param>
@@ -160,8 +251,9 @@ namespace DMBComponentBuilder
 
             return this;
         }
+
         /// <summary>
-        /// Configures whether the subtitles section is rendered by the checkout progress component.
+        ///     Configures whether the subtitles section is rendered by the checkout progress component.
         /// </summary>
         /// <param name="value">True to enable the option; false to disable it.</param>
         /// <returns>The configured builder instance.</returns>
@@ -169,88 +261,6 @@ namespace DMBComponentBuilder
         {
             _showSubtitles = value;
             return this;
-        }
-        /// <summary>
-        /// Configures compact behavior for the checkout progress component.
-        /// </summary>
-        /// <param name="value">True to enable the option; false to disable it.</param>
-        /// <returns>The configured builder instance.</returns>
-        public CheckoutProgressBuilder Compact(bool value = true)
-        {
-            _compact = value;
-            return this;
-        }
-
-        private CheckoutProgressDefinition? GetStep(int stepNumber)
-        {
-            if (stepNumber < 1 || stepNumber > _items.Count)
-            {
-                return null;
-            }
-
-            return _items[stepNumber - 1];
-        }
-
-        private void EnsureAssets()
-        {
-            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
-            page.SetStylesheet(CheckoutProgressCssPath);
-        }
-        /// <inheritdoc />
-        protected override CheckoutProgressBuilder CreateInstance()
-        {
-            return new CheckoutProgressBuilder(_textWriter, _htmlHelper);
-        }
-        /// <inheritdoc />
-        protected override void InternalClone(CheckoutProgressBuilder source)
-        {
-            base.InternalClone(source);
-
-            _items.Clear();
-            _items.AddRange(source._items.Select(x => x.Clone()));
-            _showSubtitles = source._showSubtitles;
-            _compact = source._compact;
-        }
-        /// <inheritdoc />
-        public override IHtmlContent Render()
-        {
-            EnsureAssets();
-
-            using StringWriter writer = new();
-            WriteToCore(writer, HtmlEncoder.Default);
-
-            return new HtmlString(writer.ToString());
-        }
-        /// <inheritdoc />
-        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
-        {
-            EnsureAssets();
-
-            if (_items.Count == 0)
-            {
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(GetId()))
-            {
-                SetEnsureId("checkout-progress-builder");
-            }
-
-            if (_compact)
-            {
-                this.AddClass("checkout-progress-builder-compact");
-            }
-
-            writer.Write($"<{GetTag()}{BuildAttributes()}>");
-            writer.Write("<ol class=\"checkout-progress-list\">");
-
-            for (int i = 0; i < _items.Count; i++)
-            {
-                WriteItem(writer, encoder, _items[i], i);
-            }
-
-            writer.Write("</ol>");
-            writer.Write($"</{GetTag()}>");
         }
 
         private void WriteItem(TextWriter writer, HtmlEncoder encoder, CheckoutProgressDefinition item, int index)
@@ -305,5 +315,39 @@ namespace DMBComponentBuilder
             writer.Write("</span>");
             writer.Write("</li>");
         }
+
+        /// <inheritdoc />
+        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
+        {
+            EnsureAssets();
+
+            if (_items.Count == 0)
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(GetId()))
+            {
+                SetEnsureId("checkout-progress-builder");
+            }
+
+            if (_compact)
+            {
+                this.AddClass("checkout-progress-builder-compact");
+            }
+
+            writer.Write($"<{GetTag()}{BuildAttributes()}>");
+            writer.Write("<ol class=\"checkout-progress-list\">");
+
+            for (int i = 0; i < _items.Count; i++)
+            {
+                WriteItem(writer, encoder, _items[i], i);
+            }
+
+            writer.Write("</ol>");
+            writer.Write($"</{GetTag()}>");
+        }
+
+        #endregion
     }
 }

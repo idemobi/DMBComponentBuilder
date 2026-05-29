@@ -1,15 +1,28 @@
+#region Copyright
+
+// ©2002-2026 idéMobi
+// www.idemobi.com
+
+#endregion
+
+#region
+
 using DMBPageBuilder;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+#endregion
 
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper and fluent extension methods for roadmap components.
+    ///     Provides Razor helper and fluent extension methods for roadmap components.
     /// </summary>
     public static class RoadmapExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates or renders the roadmap component through the roadmap helper.
+        ///     Creates or renders the roadmap component through the roadmap helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <returns>The configured builder instance.</returns>
@@ -17,8 +30,9 @@ namespace DMBComponentBuilder
         {
             return new RoadmapBuilder(html.ViewContext.Writer, html);
         }
+
         /// <summary>
-        /// Creates or renders the roadmap component through the roadmap block helper.
+        ///     Creates or renders the roadmap component through the roadmap block helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <returns>The configured builder instance.</returns>
@@ -26,8 +40,9 @@ namespace DMBComponentBuilder
         {
             return new RoadmapBlockBuilder(html.ViewContext.Writer, html);
         }
+
         /// <summary>
-        /// Creates or renders the roadmap component through the roadmap item helper.
+        ///     Creates or renders the roadmap component through the roadmap item helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <param name="title">The title value.</param>
@@ -46,7 +61,8 @@ namespace DMBComponentBuilder
             VariantStyle variant = VariantStyle.Primary,
             RoadmapState state = RoadmapState.Future,
             string? dateTitle = null,
-            string? dateSubtitle = null)
+            string? dateSubtitle = null
+        )
         {
             return new RoadmapBlockBuilder(html.ViewContext.Writer, html)
                 .WithTitle(title)
@@ -56,5 +72,7 @@ namespace DMBComponentBuilder
                 .SetState(state)
                 .WithDate(dateTitle, dateSubtitle);
         }
+
+        #endregion
     }
 }

@@ -1,16 +1,14 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj SubtitleSize.cs create at 2026/05/19
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Controls the visual size of a subtitle line inside a <see cref="BlockTitleBuilder"/>.
+    ///     Controls the visual size of a subtitle line inside a <see cref="BlockTitleBuilder" />.
     /// </summary>
     public enum SubtitleSize
     {

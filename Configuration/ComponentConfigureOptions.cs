@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj ComponentBuilderConfigureOptions.cs create at 2026/04/07 21:04:27
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -20,7 +18,7 @@ using Microsoft.Extensions.Options;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Configures component builder configuration services and embedded assets for consuming applications.
+    ///     Configures component builder configuration services and embedded assets for consuming applications.
     /// </summary>
     public class ComponentBuilderConfigureOptions : IPostConfigureOptions<StaticFileOptions>
     {
@@ -37,8 +35,9 @@ namespace DMBComponentBuilder
         #endregion
 
         #region Instance constructors and destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ComponentBuilderConfigureOptions"/> class.
+        ///     Initializes a new instance of the <see cref="ComponentBuilderConfigureOptions" /> class.
         /// </summary>
         /// <param name="environment">The environment value.</param>
         public ComponentBuilderConfigureOptions(IWebHostEnvironment environment)
@@ -51,8 +50,9 @@ namespace DMBComponentBuilder
         #region Instance methods
 
         #region From interface IPostConfigureOptions<StaticFileOptions>
+
         /// <summary>
-        /// Creates or renders the component builder configuration component through the post configure helper.
+        ///     Creates or renders the component builder configuration component through the post configure helper.
         /// </summary>
         /// <param name="name">The name value.</param>
         /// <param name="options">The options value.</param>

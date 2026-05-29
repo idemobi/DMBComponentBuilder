@@ -1,60 +1,38 @@
+#region Copyright
+
+// ©2002-2026 idéMobi
+// www.idemobi.com
+
+#endregion
+
+#region
+
 using DMBPageBuilder;
+
+#endregion
 
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Represents roadmap effect composer data used by roadmap components.
+    ///     Represents roadmap effect composer data used by roadmap components.
     /// </summary>
     public sealed class RoadmapEffectComposer : IIsCssClassComposer
     {
-        private bool _opacity;
-        private bool _scale;
-        private bool _plot;
-        private bool _hoverScale;
+        #region Instance fields and properties
+
         private bool _hoverLift;
+        private bool _hoverScale;
+        private bool _opacity;
+        private bool _plot;
+        private bool _scale;
         private RoadmapSlideEffect _slide = RoadmapSlideEffect.None;
+
+        #endregion
+
+        #region Instance methods
+
         /// <summary>
-        /// Configures the opacity for the roadmap component.
-        /// </summary>
-        /// <param name="value">True to enable the option; false to disable it.</param>
-        /// <returns>The generated roadmap value.</returns>
-        public RoadmapEffectComposer SetOpacity(bool value = true)
-        {
-            _opacity = value;
-            return this;
-        }
-        /// <summary>
-        /// Configures the scale for the roadmap component.
-        /// </summary>
-        /// <param name="value">True to enable the option; false to disable it.</param>
-        /// <returns>The generated roadmap value.</returns>
-        public RoadmapEffectComposer SetScale(bool value = true)
-        {
-            _scale = value;
-            return this;
-        }
-        /// <summary>
-        /// Configures the plot for the roadmap component.
-        /// </summary>
-        /// <param name="value">True to enable the option; false to disable it.</param>
-        /// <returns>The generated roadmap value.</returns>
-        public RoadmapEffectComposer SetPlot(bool value = true)
-        {
-            _plot = value;
-            return this;
-        }
-        /// <summary>
-        /// Configures the hover scale for the roadmap component.
-        /// </summary>
-        /// <param name="value">True to enable the option; false to disable it.</param>
-        /// <returns>The generated roadmap value.</returns>
-        public RoadmapEffectComposer SetHoverScale(bool value = true)
-        {
-            _hoverScale = value;
-            return this;
-        }
-        /// <summary>
-        /// Configures the hover lift for the roadmap component.
+        ///     Configures the hover lift for the roadmap component.
         /// </summary>
         /// <param name="value">True to enable the option; false to disable it.</param>
         /// <returns>The generated roadmap value.</returns>
@@ -63,8 +41,53 @@ namespace DMBComponentBuilder
             _hoverLift = value;
             return this;
         }
+
         /// <summary>
-        /// Configures the slide for the roadmap component.
+        ///     Configures the hover scale for the roadmap component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated roadmap value.</returns>
+        public RoadmapEffectComposer SetHoverScale(bool value = true)
+        {
+            _hoverScale = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the opacity for the roadmap component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated roadmap value.</returns>
+        public RoadmapEffectComposer SetOpacity(bool value = true)
+        {
+            _opacity = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the plot for the roadmap component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated roadmap value.</returns>
+        public RoadmapEffectComposer SetPlot(bool value = true)
+        {
+            _plot = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the scale for the roadmap component.
+        /// </summary>
+        /// <param name="value">True to enable the option; false to disable it.</param>
+        /// <returns>The generated roadmap value.</returns>
+        public RoadmapEffectComposer SetScale(bool value = true)
+        {
+            _scale = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the slide for the roadmap component.
         /// </summary>
         /// <param name="effect">The effect value.</param>
         /// <returns>The generated roadmap value.</returns>
@@ -73,8 +96,11 @@ namespace DMBComponentBuilder
             _slide = effect;
             return this;
         }
+
+        #region From interface IIsCssClassComposer
+
         /// <summary>
-        /// Builds the CSS classes configured for roadmap rendering.
+        ///     Builds the CSS classes configured for roadmap rendering.
         /// </summary>
         /// <returns>The generated roadmap value.</returns>
         public IReadOnlyList<string> BuildClasses()
@@ -123,8 +149,9 @@ namespace DMBComponentBuilder
 
             return classes;
         }
+
         /// <summary>
-        /// Creates a copy of the current roadmap definition.
+        ///     Creates a copy of the current roadmap definition.
         /// </summary>
         /// <returns>The generated roadmap value.</returns>
         public IIsCssClassComposer Clone()
@@ -137,5 +164,9 @@ namespace DMBComponentBuilder
                 .SetHoverLift(_hoverLift)
                 .SetSlide(_slide);
         }
+
+        #endregion
+
+        #endregion
     }
 }

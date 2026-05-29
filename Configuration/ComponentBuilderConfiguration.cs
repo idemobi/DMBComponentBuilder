@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj ComponentBuilderConfiguration.cs create at 2026/04/07 21:04:27
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -19,7 +17,7 @@ using Microsoft.Extensions.Hosting;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Configures component builder configuration services and embedded assets for consuming applications.
+    ///     Configures component builder configuration services and embedded assets for consuming applications.
     /// </summary>
     [Serializable]
     public class ComponentBuilderConfiguration : WebGenericConfiguration<ComponentBuilderConfiguration>, IServerWebConfig
@@ -35,25 +33,30 @@ namespace DMBComponentBuilder
         #region Instance methods
 
         #region From interface IServerWebConfig
+
         /// <inheritdoc />
         public override void AfterConfiguration(IHostApplicationBuilder appBuilder, IConfigurationBuilder configBuilder, IConfigurationRoot configRoot)
         {
             appBuilder.Services.ConfigureOptions<ComponentBuilderConfigureOptions>();
         }
+
         /// <inheritdoc />
         public override bool ApiDescription()
         {
             return false;
         }
+
         /// <inheritdoc />
         public override void BeforeConfiguration(IHostApplicationBuilder appBuilder, IConfigurationBuilder configBuilder, IConfigurationRoot configRoot)
         {
         }
+
         /// <inheritdoc />
         public override bool NeedsConfigFileOrAppSettings()
         {
             return false;
         }
+
         /// <inheritdoc />
         public override void RandomFake()
         {

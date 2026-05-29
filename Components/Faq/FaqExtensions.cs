@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj FaqExtensions.cs create at 2026/05/12
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -16,12 +14,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper methods for <see cref="FaqBuilder"/>.
+    ///     Provides Razor helper methods for <see cref="FaqBuilder" />.
     /// </summary>
     public static class FaqExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates or renders the faq component through the faq builder helper.
+        ///     Creates or renders the faq component through the faq builder helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <returns>The configured builder instance.</returns>
@@ -29,5 +29,7 @@ namespace DMBComponentBuilder
         {
             return new FaqBuilder(html.ViewContext.Writer, html);
         }
+
+        #endregion
     }
 }

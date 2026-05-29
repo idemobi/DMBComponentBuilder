@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj RatingBadgeBuilder.cs create at 2026/05/05
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -22,11 +20,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Renders a Bootstrap Icons based rating badge with full, half, and empty stars.
+    ///     Renders a Bootstrap Icons based rating badge with full, half, and empty stars.
     /// </summary>
     /// <remarks>
-    /// The component supports configurable maximum star counts, Bootstrap variants,
-    /// cartouche presentation, optional rating value display, and CSS-based effects.
+    ///     The component supports configurable maximum star counts, Bootstrap variants,
+    ///     cartouche presentation, optional rating value display, and CSS-based effects.
     /// </remarks>
     public sealed class RatingBadgeBuilder :
         HtmlBuilderBase<RatingBadgeBuilder>,
@@ -36,21 +34,26 @@ namespace DMBComponentBuilder
         ICanUseRatingBadgeStyle,
         ICanUseRatingBadgeEffects
     {
+        #region Constants
+
         private const string RatingCssPath = "/css/components/RatingBadge.css";
 
-        private double _value;
+        #endregion
+
+        #region Instance fields and properties
+
+        private string? _label;
         private int _maxStars = 5;
         private bool _showValue;
-        private string? _label;
 
-        private void EnsureAssets()
-        {
-            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
-            page.SetStylesheet(RatingCssPath);
-        }
+        private double _value;
+
+        #endregion
+
+        #region Instance constructors and destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RatingBadgeBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="RatingBadgeBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer used by the current rendering context.</param>
         /// <param name="html">The HTML helper associated with the current Razor view.</param>
@@ -64,54 +67,28 @@ namespace DMBComponentBuilder
             SetCssComposer(new RatingBadgeComposer());
         }
 
-        /// <summary>
-        /// Sets the rating value to render.
-        /// </summary>
-        /// <param name="value">The rating value before clamping and half-star rounding.</param>
-        /// <returns>The current builder instance.</returns>
-        public RatingBadgeBuilder SetRating(double value)
-        {
-            _value = value;
-            return this;
-        }
+        #endregion
 
-        /// <summary>
-        /// Sets the maximum number of stars displayed by the badge.
-        /// </summary>
-        /// <param name="maxStars">The maximum number of stars. Values lower than one are normalized to one.</param>
-        /// <returns>The current builder instance.</returns>
-        public RatingBadgeBuilder SetMaxStars(int maxStars)
-        {
-            _maxStars = Math.Max(1, maxStars);
-            return this;
-        }
+        #region Instance methods
 
-        /// <summary>
-        /// Shows or hides the textual rating value next to the stars.
-        /// </summary>
-        /// <param name="value">A value indicating whether the numeric value should be shown.</param>
-        /// <returns>The current builder instance.</returns>
-        public RatingBadgeBuilder SetShowValue(bool value = true)
-        {
-            _showValue = value;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the accessible label announced for the rating badge.
-        /// </summary>
-        /// <param name="label">The label to use. When omitted, a label is generated from the rating and maximum star count.</param>
-        /// <returns>The current builder instance.</returns>
-        public RatingBadgeBuilder SetLabel(string? label)
-        {
-            _label = label;
-            return this;
-        }
         /// <inheritdoc />
         protected override RatingBadgeBuilder CreateInstance()
         {
             return new RatingBadgeBuilder(_textWriter, _htmlHelper);
         }
+
+        private void EnsureAssets()
+        {
+            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
+            page.SetStylesheet(RatingCssPath);
+        }
+
+        private double GetRoundedValue()
+        {
+            double clampedValue = Math.Clamp(_value, 0d, _maxStars);
+            return Math.Round(clampedValue * 2d, MidpointRounding.AwayFromZero) / 2d;
+        }
+
         /// <inheritdoc />
         protected override void InternalClone(RatingBadgeBuilder source)
         {
@@ -123,7 +100,7 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Renders the rating badge to an HTML content instance.
+        ///     Renders the rating badge to an HTML content instance.
         /// </summary>
         /// <returns>The generated HTML content.</returns>
         public override IHtmlContent Render()
@@ -135,6 +112,51 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
+
+        /// <summary>
+        ///     Sets the accessible label announced for the rating badge.
+        /// </summary>
+        /// <param name="label">The label to use. When omitted, a label is generated from the rating and maximum star count.</param>
+        /// <returns>The current builder instance.</returns>
+        public RatingBadgeBuilder SetLabel(string? label)
+        {
+            _label = label;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the maximum number of stars displayed by the badge.
+        /// </summary>
+        /// <param name="maxStars">The maximum number of stars. Values lower than one are normalized to one.</param>
+        /// <returns>The current builder instance.</returns>
+        public RatingBadgeBuilder SetMaxStars(int maxStars)
+        {
+            _maxStars = Math.Max(1, maxStars);
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the rating value to render.
+        /// </summary>
+        /// <param name="value">The rating value before clamping and half-star rounding.</param>
+        /// <returns>The current builder instance.</returns>
+        public RatingBadgeBuilder SetRating(double value)
+        {
+            _value = value;
+            return this;
+        }
+
+        /// <summary>
+        ///     Shows or hides the textual rating value next to the stars.
+        /// </summary>
+        /// <param name="value">A value indicating whether the numeric value should be shown.</param>
+        /// <returns>The current builder instance.</returns>
+        public RatingBadgeBuilder SetShowValue(bool value = true)
+        {
+            _showValue = value;
+            return this;
+        }
+
         /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
@@ -178,10 +200,6 @@ namespace DMBComponentBuilder
             writer.Write($"</{GetTag()}>");
         }
 
-        private double GetRoundedValue()
-        {
-            double clampedValue = Math.Clamp(_value, 0d, _maxStars);
-            return Math.Round(clampedValue * 2d, MidpointRounding.AwayFromZero) / 2d;
-        }
+        #endregion
     }
 }

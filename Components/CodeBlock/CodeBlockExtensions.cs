@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj CodeBlockExtensions.cs create at 2026/05/06
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -16,12 +14,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper methods for rendering <see cref="CodeBlockBuilder"/> components.
+    ///     Provides Razor helper methods for rendering <see cref="CodeBlockBuilder" /> components.
     /// </summary>
     public static class CodeBlockExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates a new <see cref="CodeBlockBuilder"/> for rendering syntax-highlighted code.
+        ///     Creates a new <see cref="CodeBlockBuilder" /> for rendering syntax-highlighted code.
         /// </summary>
         /// <param name="html">The current HTML helper.</param>
         /// <param name="code">The code to render.</param>
@@ -30,11 +30,14 @@ namespace DMBComponentBuilder
         public static CodeBlockBuilder CodeBlock(
             this IHtmlHelper html,
             string? code = null,
-            CodeLanguage language = CodeLanguage.PlainText)
+            CodeLanguage language = CodeLanguage.PlainText
+        )
         {
             return new CodeBlockBuilder(html.ViewContext.Writer, html)
                 .SetCode(code)
                 .SetLanguage(language);
         }
+
+        #endregion
     }
 }

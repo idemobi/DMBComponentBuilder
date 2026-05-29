@@ -1,45 +1,28 @@
-using DMBBootstrapBuilder;
+#region Copyright
+
+// ©2002-2026 idéMobi
+// www.idemobi.com
+
+#endregion
+
+#region
+
 using DMBPageBuilder;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+#endregion
 
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper and fluent extension methods for step components.
+    ///     Provides Razor helper and fluent extension methods for step components.
     /// </summary>
     public static class StepExtensions
     {
-        /// <summary>
-        /// Creates or renders the step component through the step area helper.
-        /// </summary>
-        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
-        /// <returns>The configured builder instance.</returns>
-        public static StepAreaBuilder StepArea(this IHtmlHelper html)
-        {
-            return new StepAreaBuilder(html.ViewContext.Writer, html);
-        }
+        #region Static methods
 
         /// <summary>
-        /// Creates a typed step area builder that can resolve field ids from model expressions.
-        /// </summary>
-        /// <typeparam name="TModel">The Razor page model type.</typeparam>
-        /// <param name="html">The typed Razor HTML helper used to create the component builder.</param>
-        /// <returns>The configured builder instance.</returns>
-        public static StepAreaBuilder<TModel> StepAreaFor<TModel>(this IHtmlHelper<TModel> html)
-        {
-            return new StepAreaBuilder<TModel>(html);
-        }
-        /// <summary>
-        /// Creates or renders the step component through the step block helper.
-        /// </summary>
-        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
-        /// <returns>The configured builder instance.</returns>
-        public static StepBlockBuilder StepBlock(this IHtmlHelper html)
-        {
-            return new StepBlockBuilder(html.ViewContext.Writer, html);
-        }
-        /// <summary>
-        /// Creates or renders the step component through the step helper.
+        ///     Creates or renders the step component through the step helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <param name="title">The title value.</param>
@@ -56,7 +39,8 @@ namespace DMBComponentBuilder
             int? step = null,
             IconStruct icon = default,
             VariantStyle variant = VariantStyle.Primary,
-            StepBlockState state = StepBlockState.Future)
+            StepBlockState state = StepBlockState.Future
+        )
         {
             StepBlockBuilder builder = new StepBlockBuilder(html.ViewContext.Writer, html)
                 .WithTitle(title)
@@ -72,5 +56,38 @@ namespace DMBComponentBuilder
 
             return builder;
         }
+
+        /// <summary>
+        ///     Creates or renders the step component through the step area helper.
+        /// </summary>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
+        /// <returns>The configured builder instance.</returns>
+        public static StepAreaBuilder StepArea(this IHtmlHelper html)
+        {
+            return new StepAreaBuilder(html.ViewContext.Writer, html);
+        }
+
+        /// <summary>
+        ///     Creates a typed step area builder that can resolve field ids from model expressions.
+        /// </summary>
+        /// <typeparam name="TModel">The Razor page model type.</typeparam>
+        /// <param name="html">The typed Razor HTML helper used to create the component builder.</param>
+        /// <returns>The configured builder instance.</returns>
+        public static StepAreaBuilder<TModel> StepAreaFor<TModel>(this IHtmlHelper<TModel> html)
+        {
+            return new StepAreaBuilder<TModel>(html);
+        }
+
+        /// <summary>
+        ///     Creates or renders the step component through the step block helper.
+        /// </summary>
+        /// <param name="html">The Razor HTML helper used to create the component builder.</param>
+        /// <returns>The configured builder instance.</returns>
+        public static StepBlockBuilder StepBlock(this IHtmlHelper html)
+        {
+            return new StepBlockBuilder(html.ViewContext.Writer, html);
+        }
+
+        #endregion
     }
 }

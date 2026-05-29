@@ -1,17 +1,15 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj FaqBuilder.cs create at 2026/05/12
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
 #region
 
 using System.Text.Encodings.Web;
-using DMBPageBuilder;
 using DMBBootstrapBuilder;
+using DMBPageBuilder;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -20,24 +18,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Renders a Bootstrap based frequently asked questions area.
+    ///     Renders a Bootstrap based frequently asked questions area.
     /// </summary>
     public sealed class FaqBuilder :
         HtmlBuilderBase<FaqBuilder>,
         ICanUseCustomClasses,
         ICanUseMargin
     {
-        private readonly List<FaqItem> _items = new();
+        #region Instance fields and properties
 
-        private string _title = "Frequently asked questions";
-        private IconStruct _icon = IconStruct.Bootstrap("bi-question-square");
-        private string _emptyMessage = string.Empty;
         private string _contactSeparatorText = string.Empty;
         private string _contactText = string.Empty;
         private string _contactUrl = string.Empty;
+        private string _emptyMessage = string.Empty;
+        private IconStruct _icon = IconStruct.Bootstrap("bi-question-square");
+        private readonly List<FaqItem> _items = new();
         private bool _showIfEmpty = true;
+
+        private string _title = "Frequently asked questions";
+
+        #endregion
+
+        #region Instance constructors and destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="FaqBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="FaqBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer that receives the rendered HTML output.</param>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
@@ -48,54 +53,13 @@ namespace DMBComponentBuilder
             InternalAddClasses("faq-builder", "card", "mt-3");
             SetData("faq", "true");
         }
+
+        #endregion
+
+        #region Instance methods
+
         /// <summary>
-        /// Configures the title for the faq component.
-        /// </summary>
-        /// <param name="title">The title value.</param>
-        /// <param name="icon">The icon value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public FaqBuilder SetTitle(string? title, IconStruct icon = default)
-        {
-            _title = title ?? string.Empty;
-            _icon = icon.IsEmpty ? _icon : icon;
-            return this;
-        }
-        /// <summary>
-        /// Configures the empty message for the faq component.
-        /// </summary>
-        /// <param name="message">The message value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public FaqBuilder SetEmptyMessage(string? message)
-        {
-            _emptyMessage = message ?? string.Empty;
-            return this;
-        }
-        /// <summary>
-        /// Configures the show if empty for the faq component.
-        /// </summary>
-        /// <param name="showIfEmpty">The show if empty value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public FaqBuilder SetShowIfEmpty(bool showIfEmpty)
-        {
-            _showIfEmpty = showIfEmpty;
-            return this;
-        }
-        /// <summary>
-        /// Configures the contact action for the faq component.
-        /// </summary>
-        /// <param name="separatorText">The separator text value.</param>
-        /// <param name="text">The text value.</param>
-        /// <param name="url">The url value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public FaqBuilder SetContactAction(string? separatorText, string? text, string? url)
-        {
-            _contactSeparatorText = separatorText ?? string.Empty;
-            _contactText = text ?? string.Empty;
-            _contactUrl = url ?? string.Empty;
-            return this;
-        }
-        /// <summary>
-        /// Adds item to the faq component.
+        ///     Adds item to the faq component.
         /// </summary>
         /// <param name="item">The item value.</param>
         /// <returns>The configured builder instance.</returns>
@@ -108,8 +72,9 @@ namespace DMBComponentBuilder
 
             return this;
         }
+
         /// <summary>
-        /// Adds item to the faq component.
+        ///     Adds item to the faq component.
         /// </summary>
         /// <param name="question">The question value.</param>
         /// <param name="answer">The answer value.</param>
@@ -122,8 +87,9 @@ namespace DMBComponentBuilder
                 Answer = answer ?? string.Empty
             });
         }
+
         /// <summary>
-        /// Adds items to the faq component.
+        ///     Adds items to the faq component.
         /// </summary>
         /// <param name="items">The items value.</param>
         /// <returns>The configured builder instance.</returns>
@@ -141,18 +107,13 @@ namespace DMBComponentBuilder
 
             return this;
         }
-        /// <inheritdoc />
-        public override IHtmlContent Render()
-        {
-            using StringWriter writer = new();
-            WriteToCore(writer, HtmlEncoder.Default);
-            return new HtmlString(writer.ToString());
-        }
+
         /// <inheritdoc />
         protected override FaqBuilder CreateInstance()
         {
             return new FaqBuilder(_textWriter, _htmlHelper);
         }
+
         /// <inheritdoc />
         protected override void InternalClone(FaqBuilder source)
         {
@@ -167,42 +128,82 @@ namespace DMBComponentBuilder
             _contactUrl = source._contactUrl;
             _showIfEmpty = source._showIfEmpty;
         }
-        /// <inheritdoc />
-        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
-        {
-            List<FaqItem> visibleItems = _items
-                .Where(item => item.IsVisible || item.ActionContent != null || item.HiddenNotice != null)
-                .ToList();
 
-            if (!_showIfEmpty && visibleItems.Count == 0)
+        /// <inheritdoc />
+        public override IHtmlContent Render()
+        {
+            using StringWriter writer = new();
+            WriteToCore(writer, HtmlEncoder.Default);
+            return new HtmlString(writer.ToString());
+        }
+
+        /// <summary>
+        ///     Configures the contact action for the faq component.
+        /// </summary>
+        /// <param name="separatorText">The separator text value.</param>
+        /// <param name="text">The text value.</param>
+        /// <param name="url">The url value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public FaqBuilder SetContactAction(string? separatorText, string? text, string? url)
+        {
+            _contactSeparatorText = separatorText ?? string.Empty;
+            _contactText = text ?? string.Empty;
+            _contactUrl = url ?? string.Empty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the empty message for the faq component.
+        /// </summary>
+        /// <param name="message">The message value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public FaqBuilder SetEmptyMessage(string? message)
+        {
+            _emptyMessage = message ?? string.Empty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the show if empty for the faq component.
+        /// </summary>
+        /// <param name="showIfEmpty">The show if empty value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public FaqBuilder SetShowIfEmpty(bool showIfEmpty)
+        {
+            _showIfEmpty = showIfEmpty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the title for the faq component.
+        /// </summary>
+        /// <param name="title">The title value.</param>
+        /// <param name="icon">The icon value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public FaqBuilder SetTitle(string? title, IconStruct icon = default)
+        {
+            _title = title ?? string.Empty;
+            _icon = icon.IsEmpty ? _icon : icon;
+            return this;
+        }
+
+        private void WriteContactAction(TextWriter writer, HtmlEncoder encoder, bool hasItems)
+        {
+            if (string.IsNullOrWhiteSpace(_contactText) || string.IsNullOrWhiteSpace(_contactUrl))
             {
-                writer.Write("<!-- FAQ empty -->");
                 return;
             }
 
-            writer.Write($"<{GetTag()}{BuildAttributes()}>");
-            WriteHeader(writer, encoder);
-            writer.Write("<div class=\"card-body\">");
+            string separatorText = string.IsNullOrWhiteSpace(_contactSeparatorText)
+                ? hasItems ? "More questions?" : "Any questions?"
+                : _contactSeparatorText;
 
-            if (visibleItems.Count > 0)
-            {
-                writer.Write("<div class=\"row g-3\">");
-                foreach (FaqItem item in visibleItems)
-                {
-                    WriteItem(writer, encoder, item);
-                }
-                writer.Write("</div>");
-            }
-            else if (!string.IsNullOrWhiteSpace(_emptyMessage))
-            {
-                writer.Write("<div class=\"row\"><div class=\"col-12\">");
-                encoder.Encode(writer, _emptyMessage);
-                writer.Write("</div></div>");
-            }
-
-            WriteContactAction(writer, encoder, visibleItems.Count > 0);
-            writer.Write("</div>");
-            writer.Write($"</{GetTag()}>");
+            _htmlHelper.SeparatorText(separatorText).WriteTo(writer, encoder);
+            writer.Write("<div class=\"text-center p-4\"><a class=\"btn btn-primary btn-sm\" href=\"");
+            encoder.Encode(writer, _contactUrl);
+            writer.Write("\">");
+            encoder.Encode(writer, _contactText);
+            writer.Write("</a></div>");
         }
 
         private void WriteHeader(TextWriter writer, HtmlEncoder encoder)
@@ -212,6 +213,28 @@ namespace DMBComponentBuilder
             writer.Write("<h5 class=\"mb-0\">");
             encoder.Encode(writer, _title);
             writer.Write("</h5></div>");
+        }
+
+        private void WriteIconLine(TextWriter writer, HtmlEncoder encoder, FaqItem item, string visibilityClass)
+        {
+            if (item.StartIcons.Count == 0 && item.EndIcons.Count == 0)
+            {
+                return;
+            }
+
+            writer.Write($"<div class=\"d-flex justify-content-between text-muted mb-2{visibilityClass}\"><div class=\"d-flex gap-2\">");
+            foreach (IconStruct icon in item.StartIcons)
+            {
+                _htmlHelper.IconBuilder(icon).WriteTo(writer, encoder);
+            }
+
+            writer.Write("</div><div class=\"d-flex gap-2\">");
+            foreach (IconStruct icon in item.EndIcons)
+            {
+                _htmlHelper.IconBuilder(icon).WriteTo(writer, encoder);
+            }
+
+            writer.Write("</div></div>");
         }
 
         private void WriteItem(TextWriter writer, HtmlEncoder encoder, FaqItem item)
@@ -238,45 +261,45 @@ namespace DMBComponentBuilder
             writer.Write("</div>");
         }
 
-        private void WriteIconLine(TextWriter writer, HtmlEncoder encoder, FaqItem item, string visibilityClass)
+        /// <inheritdoc />
+        protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
-            if (item.StartIcons.Count == 0 && item.EndIcons.Count == 0)
+            List<FaqItem> visibleItems = _items
+                .Where(item => item.IsVisible || item.ActionContent != null || item.HiddenNotice != null)
+                .ToList();
+
+            if (!_showIfEmpty && visibleItems.Count == 0)
             {
+                writer.Write("<!-- FAQ empty -->");
                 return;
             }
 
-            writer.Write($"<div class=\"d-flex justify-content-between text-muted mb-2{visibilityClass}\"><div class=\"d-flex gap-2\">");
-            foreach (IconStruct icon in item.StartIcons)
+            writer.Write($"<{GetTag()}{BuildAttributes()}>");
+            WriteHeader(writer, encoder);
+            writer.Write("<div class=\"card-body\">");
+
+            if (visibleItems.Count > 0)
             {
-                _htmlHelper.IconBuilder(icon).WriteTo(writer, encoder);
+                writer.Write("<div class=\"row g-3\">");
+                foreach (FaqItem item in visibleItems)
+                {
+                    WriteItem(writer, encoder, item);
+                }
+
+                writer.Write("</div>");
+            }
+            else if (!string.IsNullOrWhiteSpace(_emptyMessage))
+            {
+                writer.Write("<div class=\"row\"><div class=\"col-12\">");
+                encoder.Encode(writer, _emptyMessage);
+                writer.Write("</div></div>");
             }
 
-            writer.Write("</div><div class=\"d-flex gap-2\">");
-            foreach (IconStruct icon in item.EndIcons)
-            {
-                _htmlHelper.IconBuilder(icon).WriteTo(writer, encoder);
-            }
-
-            writer.Write("</div></div>");
+            WriteContactAction(writer, encoder, visibleItems.Count > 0);
+            writer.Write("</div>");
+            writer.Write($"</{GetTag()}>");
         }
 
-        private void WriteContactAction(TextWriter writer, HtmlEncoder encoder, bool hasItems)
-        {
-            if (string.IsNullOrWhiteSpace(_contactText) || string.IsNullOrWhiteSpace(_contactUrl))
-            {
-                return;
-            }
-
-            string separatorText = string.IsNullOrWhiteSpace(_contactSeparatorText)
-                ? hasItems ? "More questions?" : "Any questions?"
-                : _contactSeparatorText;
-
-            _htmlHelper.SeparatorText(separatorText).WriteTo(writer, encoder);
-            writer.Write("<div class=\"text-center p-4\"><a class=\"btn btn-primary btn-sm\" href=\"");
-            encoder.Encode(writer, _contactUrl);
-            writer.Write("\">");
-            encoder.Encode(writer, _contactText);
-            writer.Write("</a></div>");
-        }
+        #endregion
     }
 }

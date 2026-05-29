@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj ShieldBuilder.cs create at 2026/05/12
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -20,22 +18,46 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Renders a compact two-part status shield.
+    ///     Renders a compact two-part status shield.
     /// </summary>
     public sealed class ShieldBuilder :
         HtmlBuilderBase<ShieldBuilder>,
         ICanUseMargin,
         ICanUseCustomClasses
     {
+        #region Constants
+
         private const string ShieldCssPath = "/css/components/Shield.css";
 
+        #endregion
+
+        #region Static methods
+
+        private static string NormalizeColor(string? color, string fallback)
+        {
+            if (string.IsNullOrWhiteSpace(color))
+            {
+                return fallback;
+            }
+
+            return color.Trim();
+        }
+
+        #endregion
+
+        #region Instance fields and properties
+
         private string _label = string.Empty;
-        private string _value = string.Empty;
         private string _labelColor = "dimgrey";
+        private string _value = string.Empty;
         private string _valueColor = "darkgrey";
 
+        #endregion
+
+        #region Instance constructors and destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShieldBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="ShieldBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer used by the current rendering context.</param>
         /// <param name="html">The HTML helper associated with the current Razor view.</param>
@@ -47,65 +69,22 @@ namespace DMBComponentBuilder
             SetData("shield", "true");
         }
 
-        /// <summary>
-        /// Sets the label rendered on the left side of the shield.
-        /// </summary>
-        /// <param name="label">The label text.</param>
-        /// <returns>The current builder instance.</returns>
-        public ShieldBuilder SetLabel(string? label)
-        {
-            _label = label ?? string.Empty;
-            return this;
-        }
+        #endregion
 
-        /// <summary>
-        /// Sets the value rendered on the right side of the shield.
-        /// </summary>
-        /// <param name="value">The value text.</param>
-        /// <returns>The current builder instance.</returns>
-        public ShieldBuilder SetValue(string? value)
-        {
-            _value = value ?? string.Empty;
-            return this;
-        }
+        #region Instance methods
 
-        /// <summary>
-        /// Sets the label background color.
-        /// </summary>
-        /// <param name="color">The CSS color value.</param>
-        /// <returns>The current builder instance.</returns>
-        public ShieldBuilder SetLabelColor(string? color)
-        {
-            _labelColor = NormalizeColor(color, "dimgrey");
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the value background color.
-        /// </summary>
-        /// <param name="color">The CSS color value.</param>
-        /// <returns>The current builder instance.</returns>
-        public ShieldBuilder SetValueColor(string? color)
-        {
-            _valueColor = NormalizeColor(color, "darkgrey");
-            return this;
-        }
-
-        /// <summary>
-        /// Sets both shield background colors.
-        /// </summary>
-        /// <param name="labelColor">The label CSS color value.</param>
-        /// <param name="valueColor">The value CSS color value.</param>
-        /// <returns>The current builder instance.</returns>
-        public ShieldBuilder SetColors(string? labelColor, string? valueColor)
-        {
-            return SetLabelColor(labelColor).SetValueColor(valueColor);
-        }
         /// <inheritdoc />
         protected override ShieldBuilder CreateInstance()
         {
             return new ShieldBuilder(_textWriter, _htmlHelper);
         }
+
+        private void EnsureAssets()
+        {
+            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
+            page.SetStylesheet(ShieldCssPath);
+        }
+
         /// <inheritdoc />
         protected override void InternalClone(ShieldBuilder source)
         {
@@ -117,7 +96,7 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Renders the shield to an HTML content instance.
+        ///     Renders the shield to an HTML content instance.
         /// </summary>
         /// <returns>The generated HTML content.</returns>
         public override IHtmlContent Render()
@@ -129,6 +108,62 @@ namespace DMBComponentBuilder
 
             return new HtmlString(writer.ToString());
         }
+
+        /// <summary>
+        ///     Sets both shield background colors.
+        /// </summary>
+        /// <param name="labelColor">The label CSS color value.</param>
+        /// <param name="valueColor">The value CSS color value.</param>
+        /// <returns>The current builder instance.</returns>
+        public ShieldBuilder SetColors(string? labelColor, string? valueColor)
+        {
+            return SetLabelColor(labelColor).SetValueColor(valueColor);
+        }
+
+        /// <summary>
+        ///     Sets the label rendered on the left side of the shield.
+        /// </summary>
+        /// <param name="label">The label text.</param>
+        /// <returns>The current builder instance.</returns>
+        public ShieldBuilder SetLabel(string? label)
+        {
+            _label = label ?? string.Empty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the label background color.
+        /// </summary>
+        /// <param name="color">The CSS color value.</param>
+        /// <returns>The current builder instance.</returns>
+        public ShieldBuilder SetLabelColor(string? color)
+        {
+            _labelColor = NormalizeColor(color, "dimgrey");
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the value rendered on the right side of the shield.
+        /// </summary>
+        /// <param name="value">The value text.</param>
+        /// <returns>The current builder instance.</returns>
+        public ShieldBuilder SetValue(string? value)
+        {
+            _value = value ?? string.Empty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Sets the value background color.
+        /// </summary>
+        /// <param name="color">The CSS color value.</param>
+        /// <returns>The current builder instance.</returns>
+        public ShieldBuilder SetValueColor(string? color)
+        {
+            _valueColor = NormalizeColor(color, "darkgrey");
+            return this;
+        }
+
         /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
@@ -146,20 +181,6 @@ namespace DMBComponentBuilder
             writer.Write($"</span></{GetTag()}>");
         }
 
-        private void EnsureAssets()
-        {
-            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
-            page.SetStylesheet(ShieldCssPath);
-        }
-
-        private static string NormalizeColor(string? color, string fallback)
-        {
-            if (string.IsNullOrWhiteSpace(color))
-            {
-                return fallback;
-            }
-
-            return color.Trim();
-        }
+        #endregion
     }
 }

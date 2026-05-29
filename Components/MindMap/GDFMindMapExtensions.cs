@@ -1,9 +1,7 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj GDFMindMapExtensions.cs create at 2026/05/21
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
@@ -16,12 +14,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper methods for rendering <see cref="GDFMindMapBuilder"/> components.
+    ///     Provides Razor helper methods for rendering <see cref="GDFMindMapBuilder" /> components.
     /// </summary>
     public static class GDFMindMapExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates a new empty <see cref="GDFMindMapBuilder"/>.
+        ///     Creates a new empty <see cref="GDFMindMapBuilder" />.
         /// </summary>
         /// <param name="html">The current HTML helper.</param>
         /// <returns>A configured mind map builder.</returns>
@@ -31,7 +31,7 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Creates a new <see cref="GDFMindMapBuilder"/> from the provided root topic.
+        ///     Creates a new <see cref="GDFMindMapBuilder" /> from the provided root topic.
         /// </summary>
         /// <param name="html">The current HTML helper.</param>
         /// <param name="root">The root topic and its child branches.</param>
@@ -43,7 +43,7 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Creates a new <see cref="GDFMindMapBuilder"/> from the provided root topic.
+        ///     Creates a new <see cref="GDFMindMapBuilder" /> from the provided root topic.
         /// </summary>
         /// <param name="html">The current HTML helper.</param>
         /// <param name="root">The root topic and its child branches.</param>
@@ -54,7 +54,7 @@ namespace DMBComponentBuilder
         }
 
         /// <summary>
-        /// Creates a new empty <see cref="GDFMindMapBuilder"/>.
+        ///     Creates a new empty <see cref="GDFMindMapBuilder" />.
         /// </summary>
         /// <param name="html">The current HTML helper.</param>
         /// <returns>A configured mind map builder.</returns>
@@ -62,5 +62,7 @@ namespace DMBComponentBuilder
         {
             return html.GDFMindMap();
         }
+
+        #endregion
     }
 }

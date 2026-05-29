@@ -1,17 +1,15 @@
 #region Copyright
 
-// Game-Data-Forge Solution
-// Written by CONTART Jean-François & BOULOGNE Quentin
-// DMBComponentBuilder.csproj CopyBlockBuilder.cs create at 2026/05/12
-// ©2024-2026 idéMobi SARL FRANCE
+// ©2002-2026 idéMobi
+// www.idemobi.com
 
 #endregion
 
 #region
 
 using System.Text.Encodings.Web;
-using DMBPageBuilder;
 using DMBBootstrapBuilder;
+using DMBPageBuilder;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -20,24 +18,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Builds and renders the copy block visual component for Razor views.
+    ///     Builds and renders the copy block visual component for Razor views.
     /// </summary>
     public sealed class CopyBlockBuilder :
         HtmlBuilderBase<CopyBlockBuilder>,
         ICanUseCustomClasses,
         IDisposable
     {
+        #region Constants
+
         private const string CopyBlockJsPath = "/js/components/CopyBlock.js";
 
+        #endregion
+
+        #region Instance fields and properties
+
         private StringWriter? _captureWriter;
-        private TextWriter? _originalWriter;
 
         private string _content = string.Empty;
-        private BootstrapFullKindOfStyle _style = BootstrapFullKindOfStyle.OutlinePrimary;
-        private bool _started;
         private bool _disposed;
+        private TextWriter? _originalWriter;
+        private bool _started;
+        private BootstrapFullKindOfStyle _style = BootstrapFullKindOfStyle.OutlinePrimary;
+
+        #endregion
+
+        #region Instance constructors and destructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CopyBlockBuilder"/> class.
+        ///     Initializes a new instance of the <see cref="CopyBlockBuilder" /> class.
         /// </summary>
         /// <param name="writer">The writer that receives the rendered HTML output.</param>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
@@ -50,28 +59,13 @@ namespace DMBComponentBuilder
             this.AddClass("align-items-start");
             SetData("copy-block", "true");
         }
+
+        #endregion
+
+        #region Instance methods
+
         /// <summary>
-        /// Configures the content for the copy block component.
-        /// </summary>
-        /// <param name="content">The content value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public CopyBlockBuilder SetContent(string? content)
-        {
-            _content = content ?? string.Empty;
-            return this;
-        }
-        /// <summary>
-        /// Configures the style for the copy block component.
-        /// </summary>
-        /// <param name="style">The style value.</param>
-        /// <returns>The configured builder instance.</returns>
-        public CopyBlockBuilder SetStyle(BootstrapFullKindOfStyle style)
-        {
-            _style = style;
-            return this;
-        }
-        /// <summary>
-        /// Starts the copy block rendering or capture scope.
+        ///     Starts the copy block rendering or capture scope.
         /// </summary>
         /// <returns>The configured builder instance.</returns>
         public CopyBlockBuilder Begin()
@@ -88,18 +82,24 @@ namespace DMBComponentBuilder
 
             return this;
         }
-        /// <inheritdoc />
-        public override IHtmlContent Render()
-        {
-            using StringWriter writer = new();
-            WriteToCore(writer, HtmlEncoder.Default);
-            return new HtmlString(writer.ToString());
-        }
+
         /// <inheritdoc />
         protected override CopyBlockBuilder CreateInstance()
         {
             return new CopyBlockBuilder(_textWriter, _htmlHelper);
         }
+
+        private void EnsureAssets()
+        {
+            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
+            page.SetScriptFile(CopyBlockJsPath, PageScriptLocation.EndOfBody, order: 10);
+        }
+
+        private string GetStyleCssClass()
+        {
+            return _style.ToString().Replace("Outline", "outline-").ToLowerInvariant();
+        }
+
         /// <inheritdoc />
         protected override void InternalClone(CopyBlockBuilder source)
         {
@@ -112,6 +112,37 @@ namespace DMBComponentBuilder
             _started = false;
             _disposed = false;
         }
+
+        /// <inheritdoc />
+        public override IHtmlContent Render()
+        {
+            using StringWriter writer = new();
+            WriteToCore(writer, HtmlEncoder.Default);
+            return new HtmlString(writer.ToString());
+        }
+
+        /// <summary>
+        ///     Configures the content for the copy block component.
+        /// </summary>
+        /// <param name="content">The content value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public CopyBlockBuilder SetContent(string? content)
+        {
+            _content = content ?? string.Empty;
+            return this;
+        }
+
+        /// <summary>
+        ///     Configures the style for the copy block component.
+        /// </summary>
+        /// <param name="style">The style value.</param>
+        /// <returns>The configured builder instance.</returns>
+        public CopyBlockBuilder SetStyle(BootstrapFullKindOfStyle style)
+        {
+            _style = style;
+            return this;
+        }
+
         /// <inheritdoc />
         protected override void WriteToCore(TextWriter writer, HtmlEncoder encoder)
         {
@@ -143,18 +174,10 @@ namespace DMBComponentBuilder
             writer.Write($"</{GetTag()}>");
         }
 
-        private void EnsureAssets()
-        {
-            PageInformation page = PageRegistry.GetOrCreatePageInformation(_htmlHelper.ViewContext.HttpContext);
-            page.SetScriptFile(CopyBlockJsPath, PageScriptLocation.EndOfBody, order: 10);
-        }
+        #region From interface IDisposable
 
-        private string GetStyleCssClass()
-        {
-            return _style.ToString().Replace("Outline", "outline-").ToLowerInvariant();
-        }
         /// <summary>
-        /// Completes the active copy block rendering or capture scope.
+        ///     Completes the active copy block rendering or capture scope.
         /// </summary>
         public void Dispose()
         {
@@ -179,5 +202,9 @@ namespace DMBComponentBuilder
             WriteTo(_originalWriter ?? _textWriter, HtmlEncoder.Default);
             _started = false;
         }
+
+        #endregion
+
+        #endregion
     }
 }

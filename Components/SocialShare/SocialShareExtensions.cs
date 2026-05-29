@@ -1,14 +1,27 @@
+#region Copyright
+
+// ©2002-2026 idéMobi
+// www.idemobi.com
+
+#endregion
+
+#region
+
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+#endregion
 
 namespace DMBComponentBuilder
 {
     /// <summary>
-    /// Provides Razor helper and fluent extension methods for social share components.
+    ///     Provides Razor helper and fluent extension methods for social share components.
     /// </summary>
     public static class SocialShareExtensions
     {
+        #region Static methods
+
         /// <summary>
-        /// Creates or renders the social share component through the social share helper.
+        ///     Creates or renders the social share component through the social share helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <param name="definition">The definition value.</param>
@@ -17,8 +30,9 @@ namespace DMBComponentBuilder
         {
             return new SocialShareBuilder(html, definition);
         }
+
         /// <summary>
-        /// Creates or renders the social share component through the social share helper.
+        ///     Creates or renders the social share component through the social share helper.
         /// </summary>
         /// <param name="html">The Razor HTML helper used to create the component builder.</param>
         /// <param name="title">The title value.</param>
@@ -31,9 +45,12 @@ namespace DMBComponentBuilder
             string title,
             string url,
             SocialShareKind kind = SocialShareKind.Html,
-            SocialShareStyle style = SocialShareStyle.Toolbar)
+            SocialShareStyle style = SocialShareStyle.Toolbar
+        )
         {
             return html.SocialShare(new SocialShareDefinition(title, url, kind, style));
         }
+
+        #endregion
     }
 }
