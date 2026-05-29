@@ -89,4 +89,7 @@
         <Content Include="wwwroot\**\*"/>
         <EmbeddedResource Include="wwwroot\**\*"/>
     </ItemGroup>
+    <ItemGroup Label="Project file exclusions">
+        <None Remove=".gitignore" />
+    </ItemGroup>
 </Project>
