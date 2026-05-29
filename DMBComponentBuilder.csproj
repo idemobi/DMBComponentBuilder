@@ -2,7 +2,7 @@
     <PropertyGroup>
         <RootNamespace>DMBComponentBuilder</RootNamespace>
         <Title>DMBComponentBuilder</Title>
-        <PackageTags>idemobi Component Builder</PackageTags>
+        <PackageTags>idemobi DMB PageBuilder Bootstrap Components Timeline Roadmap CodeBlock FileTree</PackageTags>
         <Description>Reusable visual component builders for timelines, code blocks, roadmaps, file trees, sharing, and editorial blocks.</Description>
         <PackageReleaseNotes>note</PackageReleaseNotes>
         <PackageIcon>DMBComponentBuilder.png</PackageIcon>
