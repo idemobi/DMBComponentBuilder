@@ -1,11 +1,25 @@
 (function () {
     "use strict";
 
+    function getDirectChildByClass(element, className) {
+        if (!element) {
+            return null;
+        }
+
+        for (var index = 0; index < element.children.length; index++) {
+            if (element.children[index].classList.contains(className)) {
+                return element.children[index];
+            }
+        }
+
+        return null;
+    }
+
     function setFolderState(button, expanded) {
-        var childrenId = button.getAttribute("aria-controls");
-        var children = childrenId ? document.getElementById(childrenId) : null;
         var item = button.closest(".file-tree-item");
-        var icon = item ? item.querySelector(":scope > .file-tree-row .file-tree-icon") : null;
+        var row = getDirectChildByClass(item, "file-tree-row");
+        var children = getDirectChildByClass(item, "file-tree-children");
+        var icon = row ? row.querySelector(".file-tree-icon") : null;
 
         button.setAttribute("aria-expanded", expanded ? "true" : "false");
 
