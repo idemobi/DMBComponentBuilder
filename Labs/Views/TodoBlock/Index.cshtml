@@ -1,0 +1,87 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@Html.TitleBuilder().SetTitle("TodoBlock – Live Examples", TitleLevel.Two).SetIconBootstrap("bi-check2-square").AsSectionHeading().Render()
+
+@using (Html.RowBuilder().AsBottomPadded().Begin())
+{
+    @* Basic list *@
+    @using (Html.ColBuilder(12, 12, 6, 6, 6, 6).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Basic list", TitleLevel.Three).SetIconBootstrap("bi-list-check").Begin())
+        {
+            @(Html.TodoBlockBuilder()
+                .AddItem(IconStruct.Bootstrap("bi-braces"),           "Declarative",  "Fluent C# API",              VariantStyle.Primary)
+                .AddItem(IconStruct.Bootstrap("bi-layers"),           "Composable",   "Sections, cards, actions",   VariantStyle.Success)
+                .AddItem(IconStruct.Bootstrap("bi-magic"),            "Alive",        "Built-in visual effects",    VariantStyle.Info)
+                .AddItem(IconStruct.Bootstrap("bi-journal-richtext"), "Documented",   "Package references",         VariantStyle.Warning)
+                .Render())
+        }
+    }
+
+    @* With header *@
+    @using (Html.ColBuilder(12, 12, 6, 6, 6, 6).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("With header", TitleLevel.Three).SetIconBootstrap("bi-card-heading").Begin())
+        {
+            @(Html.TodoBlockBuilder()
+                .SetHeader("/logo/logo.png", "PageBuilder ecosystem", "Razor, Bootstrap, effects, docs")
+                .AddItem(IconStruct.Bootstrap("bi-braces"),           "Declarative",  "Fluent C# API",              VariantStyle.Warning)
+                .AddItem(IconStruct.Bootstrap("bi-layers"),           "Composable",   "Sections, cards, actions",   VariantStyle.Warning)
+                .AddItem(IconStruct.Bootstrap("bi-magic"),            "Alive",        "Built-in visual effects",    VariantStyle.Warning)
+                .AddItem(IconStruct.Bootstrap("bi-journal-richtext"), "Documented",   "Package references",         VariantStyle.Warning)
+                .Render())
+        }
+    }
+
+    @* Checkable mode *@
+    @using (Html.ColBuilder(12, 12, 6, 6, 6, 6).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Checkable mode", TitleLevel.Three).SetIconBootstrap("bi-check2-square").Begin())
+        {
+            @(Html.TodoBlockBuilder()
+                .SetCheckable(true)
+                .AddItem(IconStruct.Bootstrap("bi-check-circle"), "Setup project",    "Create solution and add packages", VariantStyle.Success, @checked: true)
+                .AddItem(IconStruct.Bootstrap("bi-check-circle"), "Configure layout", "Add NavBar and FooterBar",         VariantStyle.Success, @checked: true)
+                .AddItem(IconStruct.Bootstrap("bi-circle"),       "Add pages",        "Home, About, Contact",             VariantStyle.Info,    @checked: false)
+                .AddItem(IconStruct.Bootstrap("bi-circle"),       "Deploy",           "Publish to production server",     VariantStyle.Danger,  @checked: false)
+                .Render())
+        }
+    }
+
+    @* Dark variant *@
+    @using (Html.ColBuilder(12, 12, 6, 6, 6, 6).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Dark variant", TitleLevel.Three).SetIconBootstrap("bi-moon-stars").Begin())
+        {
+            @(Html.TodoBlockBuilder()
+                .SetVariant(VariantStyle.Dark)
+                .AddItem(IconStruct.Bootstrap("bi-cpu"),          "Performance", "Optimised server-side rendering", VariantStyle.Warning)
+                .AddItem(IconStruct.Bootstrap("bi-shield-check"), "Security",    "CSRF, encoding, safe defaults",   VariantStyle.Success)
+                .AddItem(IconStruct.Bootstrap("bi-globe"),        "Accessible",  "Semantic HTML, ARIA roles",       VariantStyle.Info)
+                .Render())
+        }
+    }
+
+    @* Icon variant palette *@
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Icon variant palette", TitleLevel.Three).SetIconBootstrap("bi-palette").Begin())
+        {
+            @(Html.TodoBlockBuilder()
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Primary",   "VariantStyle.Primary",   VariantStyle.Primary)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Secondary", "VariantStyle.Secondary", VariantStyle.Secondary)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Success",   "VariantStyle.Success",   VariantStyle.Success)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Danger",    "VariantStyle.Danger",    VariantStyle.Danger)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Warning",   "VariantStyle.Warning",   VariantStyle.Warning)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Info",      "VariantStyle.Info",      VariantStyle.Info)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Light",     "VariantStyle.Light",     VariantStyle.Light)
+                .AddItem(IconStruct.Bootstrap("bi-circle-fill"), "Dark",      "VariantStyle.Dark",      VariantStyle.Dark)
+                .Render())
+        }
+    }
+}

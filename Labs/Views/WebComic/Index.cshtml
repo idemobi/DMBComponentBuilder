@@ -1,0 +1,19 @@
+@using DMBBootstrapBuilder
+@using DMBPageBuilder
+@using DMBComponentBuilder
+@{
+    Layout = "_Layout";
+    const string comicFolderUrl = "/Comics/Le_Boulet_V2025-1";
+}
+
+@Html.TitleBuilder().SetTitle("WebComicViewer - Social integration preview", TitleLevel.Two).Render()
+
+@(Html.WebComicFolder(
+        comicFolderUrl,
+        "Le Boulet V2025-1",
+        "Comic publication preview with full-width reading and major social network simulation.")
+    .SetAuthor("Le Boulet", "@MadBoat")
+    .SetAlt("Le Boulet V2025-1")
+    .SetSocialPlatforms(WebComicSocialPlatform.All)
+    .SetExpectedMinimumSize(1080, 1080)
+    .Render())

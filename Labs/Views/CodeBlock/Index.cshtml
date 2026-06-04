@@ -1,0 +1,107 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@{
+    Layout = "_Layout";
+
+    string csharpCode = """
+public sealed class PlayerData
+{
+    public Guid Id { get; init; }
+    public string DisplayName { get; init; } = string.Empty;
+    public int Level { get; init; }
+    public IReadOnlyList<string> Roles { get; init; } = Array.Empty<string>();
+}
+""";
+
+    string jsonCode = """
+{
+  "organization": "Northwind Studio",
+  "project": "Arena Forge",
+  "players": [
+    { "displayName": "Ada", "level": 42, "roles": [ "Designer", "Admin" ] },
+    { "displayName": "Lin", "level": 18, "roles": [ "Tester" ] }
+  ]
+}
+""";
+
+    string htmlCode = """
+<section class="project-card">
+    <h2>Arena Forge</h2>
+    <p>Shared data for the active studio project.</p>
+</section>
+""";
+}
+
+@Html.TitleBuilder().SetTitle("CodeBlock - Live Examples", TitleLevel.Two).Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Normal state", TitleLevel.Two).SetIconBootstrap("bi-code-square").Begin())
+        {
+            @(Html.CodeBlock(csharpCode, CodeLanguage.CSharp)
+                .SetTitle("PlayerData.cs")
+                .SetShowLineNumbers()
+                .SetCopyButton()
+                .SetTheme(CodeBlockTheme.Default))
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Realistic data example", TitleLevel.Two).SetIconBootstrap("bi-braces").Begin())
+        {
+            @(Html.CodeBlock(jsonCode, CodeLanguage.Json)
+                .SetTitle("project-data.json")
+                .SetShowLineNumbers()
+                .SetCopyButton()
+                .SetTheme(CodeBlockTheme.Light))
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Dark theme", TitleLevel.Two).SetIconBootstrap("bi-moon-stars").Begin())
+        {
+            @(Html.CodeBlock(htmlCode, CodeLanguage.Html)
+                .SetTitle("ProjectCard.cshtml")
+                .SetCopyButton()
+                .SetTheme(CodeBlockTheme.Dark))
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Empty state", TitleLevel.Two).SetIconBootstrap("bi-inbox").Begin())
+        {
+            @(Html.CodeBlock("", CodeLanguage.CSharp)
+                .SetTitle("Empty source")
+                .SetEmptyMessage("No source code was provided for this example.")
+                .SetTheme(CodeBlockTheme.Light))
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Error state", TitleLevel.Two).SetIconBootstrap("bi-exclamation-triangle").Begin())
+        {
+            @(Html.CodeBlock("public class BrokenExample {", CodeLanguage.CSharp)
+                .SetTitle("BrokenExample.cs")
+                .SetErrorMessage("The snippet could not be rendered because the source metadata is invalid.")
+                .SetTheme(CodeBlockTheme.Default))
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Highlight disabled", TitleLevel.Two).SetIconBootstrap("bi-eye-slash").Begin())
+        {
+            @(Html.CodeBlock("dotnet run --project labs_idemobi_com", CodeLanguage.Bash)
+                .SetTitle("terminal")
+                .SetCopyButton()
+                .SetCompact()
+                .SetHighlight(false))
+        }
+    }
+}

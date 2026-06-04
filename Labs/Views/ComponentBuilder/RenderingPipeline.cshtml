@@ -1,0 +1,145 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBEffectBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@* ── Hero ── *@
+@using (Html.SectionBuilder().SetHeight(125, UnitSize.px).BootstrapBackgroundEffect(VariantStyle.Normal).Begin())
+{
+    @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentCenter().Begin())
+    {
+        @using (Html.BlockBuilder().AsTextCenter().Begin())
+        {
+            @Html.TitleBuilder().SetTitle("Rendering Pipeline — ComponentBuilder", TitleLevel.One).Render()
+            @using (Html.PB_P().AsLead().Begin())
+            {
+                @:From product data definitions to composed BootstrapBuilder experiences.
+            }
+        }
+    }
+}
+
+@using (Html.ContainerBuilder().SetPadding(SpacingSide.Y, SpacingSize.Five).Begin())
+{
+    @using (Html.RowBuilder().Begin())
+    {
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+        {
+            @* ── Step 1 ── *@
+            @using (Html.BlockBuilder().AsTimelineStep().Begin())
+            {
+                @using (Html.BlockBuilder().AsTimelineStepBadge().Begin())
+                {
+                    @:1
+                }
+                @Html.TitleBuilder().SetTitle("Prepare Data", TitleLevel.Three).AsH4().Render()
+                @using (Html.PB_P().Begin())
+                {
+                    @:The page or controller prepares component definitions from realistic application data. Component definitions carry business-facing state such as title, status, date, rating or media source.
+                }
+                @(Html.CodeBlock(@"var items = new List<TimelineItem>
+{
+    new() { Title = ""Design"", Status = TimelineStatus.Done, Date = ""Jan 2025"" },
+    new() { Title = ""Build"", Status = TimelineStatus.Active, Date = ""Mar 2025"" },
+    new() { Title = ""Launch"", Status = TimelineStatus.Pending, Date = ""Jun 2025"" },
+};", CodeLanguage.CSharp))
+            }
+
+            @* ── Step 2 ── *@
+            @using (Html.BlockBuilder().AsTimelineStep().Begin())
+            {
+                @using (Html.BlockBuilder().AsTimelineStepBadge().Begin())
+                {
+                    @:2
+                }
+                @Html.TitleBuilder().SetTitle("Create Component Builder", TitleLevel.Three).AsH4().Render()
+                @using (Html.PB_P().Begin())
+                {
+                    @:The view passes definitions to a ComponentBuilder builder. The builder receives domain-shaped data and selects the appropriate rendering structure and BootstrapBuilder primitives.
+                }
+                @(Html.CodeBlock(@"@Html.TimelineBuilder()
+    .AddItems(items)
+    .Render()", CodeLanguage.CSharp))
+            }
+
+            @* ── Step 3 ── *@
+            @using (Html.BlockBuilder().AsTimelineStep().Begin())
+            {
+                @using (Html.BlockBuilder().AsTimelineStepBadge().Begin())
+                {
+                    @:3
+                }
+                @Html.TitleBuilder().SetTitle("Compose UI", TitleLevel.Three).AsH4().Render()
+                @using (Html.PB_P().Begin())
+                {
+                    @:The component maps data to BootstrapBuilder rows, cards, badges, lists, sections or actions. Builders translate status into visual structure and Bootstrap options. Rendering remains deterministic.
+                }
+                @(Html.CodeBlock(@"// Inside the component builder — translates state to markup
+foreach (var item in items)
+{
+    var badge = item.Status switch
+    {
+        TimelineStatus.Done   => VariantStyle.Success,
+        TimelineStatus.Active => VariantStyle.Primary,
+        _                     => VariantStyle.Secondary
+    };
+    // ... render with BootstrapBuilder
+}", CodeLanguage.CSharp))
+            }
+
+            @* ── Step 4 (final) ── *@
+            @using (Html.BlockBuilder().AsTimelineStep().Begin())
+            {
+                @using (Html.BlockBuilder().AsTimelineStepBadge("bg-success").Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-check").Begin()) { }
+                }
+                @Html.TitleBuilder().SetTitle("PageBuilder Completes the Document", TitleLevel.Three).AsH4().Render()
+                @using (Html.PB_P().Begin())
+                {
+                    @:BootstrapBuilder primitives emit final HTML into the PageBuilder body capture. PageBuilder renders the final document with any registered resources after body capture completes.
+                }
+                @(Html.CodeBlock(@"// Component rendering feeds into the PageBuilder body-first pipeline
+// Assets registered during component render appear in the final <head>
+page.SetStylesheet(""/css/timeline.css"");", CodeLanguage.CSharp))
+            }
+
+            @* ── Performance highlight ── *@
+            @using (Html.BlockBuilder().AsInfoCallout().Begin())
+            {
+                @using (Html.FlexBlockBuilder().Begin())
+                {
+                    @using (Html.BlockBuilder().AsCalloutIcon().Begin())
+                    {
+                        @using (Html.PB_Span().AddClass("bi bi-lightning-charge-fill fs-2 text-warning").Begin()) { }
+                    }
+                    @using (Html.BlockBuilder().Begin())
+                    {
+                        @Html.TitleBuilder().SetTitle("Data-Driven Components", TitleLevel.Five).AsAlertHeading().Render()
+                        @using (Html.PB_P().AsNoMargin().Begin())
+                        {
+                            @:Component definitions keep business state separate from Bootstrap markup — swap the builder without touching the domain model.
+                        }
+                    }
+                }
+            }
+
+            @* ── Next Step ── *@
+            @using (Html.BlockBuilder().AsSidebarNote().Begin())
+            {
+                @using (Html.BlockBuilder().AsTextCenter().Begin())
+                {
+                    @Html.TitleBuilder().SetTitle("See It in Action", TitleLevel.Four).Render()
+                    @using (Html.PB_P().AsSmallMuted().Begin())
+                    {
+                        @:Explore the Timeline component with realistic data and all status states.
+                    }
+                    @Html.Button(ActionItemFactory.AspRoute("Timeline", "Index").SetTitle("Timeline").SetIcon(IconStruct.Bootstrap("bi-collection")).SetVariant(VariantStyle.Primary)).Render()
+                }
+            }
+        }
+    }
+}

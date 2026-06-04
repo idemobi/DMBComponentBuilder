@@ -1,0 +1,32 @@
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.Roadmap().Begin())
+{
+    @using (Html.RoadmapItem().WithTitle("Start").SetState(RoadmapState.Past).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Project started
+        }
+    }
+
+    @using (Html.RoadmapItem().WithTitle("Beta").SetState(RoadmapState.Current).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Testing phase
+        }
+    }
+
+    @using (Html.RoadmapItem().WithTitle("Release").SetState(RoadmapState.Future).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Coming soon
+        }
+    }
+}

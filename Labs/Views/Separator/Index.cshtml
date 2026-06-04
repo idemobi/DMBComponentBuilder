@@ -1,0 +1,48 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Text separator", TitleLevel.Two).SetIconBootstrap("bi-text-center").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @Html.SeparatorText("or")
+                @Html.SeparatorText("Continue with another provider")
+                @Html.PageSeparatorText("Page section")
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Icon separator", TitleLevel.Two).SetIconBootstrap("bi-stars").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @Html.SeparatorIcon("bi-stars")
+                @Html.SeparatorBuilder().SetIcon(IconStruct.Bootstrap("bi-shield-check")).UsePageSpacing()
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Fluent API", TitleLevel.Two).SetIconBootstrap("bi-braces").Begin())
+        {
+            @(Html.CodeBlock(@"@@Html.SeparatorText(""or"")
+
+@@Html.SeparatorIcon(""bi-stars"")
+
+@@Html.SeparatorBuilder()
+    .SetText(""Page section"")
+    .UsePageSpacing()", CodeLanguage.CSharp))
+        }
+    }
+}

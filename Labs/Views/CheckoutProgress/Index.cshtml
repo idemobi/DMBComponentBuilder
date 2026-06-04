@@ -1,0 +1,97 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Account / cart / payment / confirmation flow", TitleLevel.Two).SetIconBootstrap("bi-cart-check").Begin())
+        {
+            CheckoutProgressBuilder checkoutProgress = Html.CheckoutProgress();
+            checkoutProgress.AddStep("Account", "Sign in", IconStruct.Bootstrap("bi-person-badge"), VariantStyle.Success, CheckoutProgressState.Complete);
+            checkoutProgress.AddStep("Cart", "Review", IconStruct.Bootstrap("bi-basket"), VariantStyle.Warning, CheckoutProgressState.Active);
+            checkoutProgress.AddStep("Payment", "Card details", IconStruct.Bootstrap("bi-credit-card"), VariantStyle.Info, CheckoutProgressState.Inactive);
+            checkoutProgress.AddStep("Confirmation", "Receipt", IconStruct.Bootstrap("bi-check2-circle"), VariantStyle.Success, CheckoutProgressState.Inactive);
+
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap4).Begin())
+            {
+                @checkoutProgress
+
+                @using (Html.BlockBuilder().AddClass("border rounded").SetPadding(SpacingSide.All, SpacingSize.Three).Begin())
+                {
+                    @Html.TitleBuilder().SetTitle("Cart", TitleLevel.Five).Render()
+                    @using (Html.FlexBlockBuilder().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).SetMargin(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                    {
+                        @using (Html.PB_Span().Begin())
+                        {
+                            @:Digital dictionary
+                        }
+                        @using (Html.PB_Span().AsBold().Begin())
+                        {
+                            @:24,90 EUR
+                        }
+                    }
+                    @using (Html.FlexBlockBuilder().SetJustifyContentBetween().SetMargin(SpacingSide.Bottom, SpacingSize.Three).Begin())
+                    {
+                        @using (Html.PB_Span().Begin())
+                        {
+                            @:Total
+                        }
+                        @using (Html.PB_Span().AsBold().Begin())
+                        {
+                            @:24,90 EUR
+                        }
+                    }
+                    @Html.Button(ActionItemFactory.Url("Continue to payment", "#", IconStruct.Bootstrap("bi-arrow-right-circle")).SetVariant(VariantStyle.Warning)).Render()
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Computed current step", TitleLevel.Two).SetIconBootstrap("bi-signpost-split").Begin())
+        {
+            CheckoutProgressBuilder currentStepDemo = Html.CheckoutProgress();
+            currentStepDemo.AddStep("Account", "Form submitted", icon: IconStruct.Bootstrap("bi-person-check"), variant: VariantStyle.Success);
+            currentStepDemo.AddStep("Cart", "Order summary", icon: IconStruct.Bootstrap("bi-cart3"), variant: VariantStyle.Success);
+            currentStepDemo.AddStep("Payment", "Active form", icon: IconStruct.Bootstrap("bi-credit-card-2-front"), variant: VariantStyle.Warning);
+            currentStepDemo.AddStep("Confirmation", "Waiting", icon: IconStruct.Bootstrap("bi-check-lg"), variant: VariantStyle.Success);
+            currentStepDemo.SetCurrentStep(3);
+
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap4).Begin())
+            {
+                @currentStepDemo
+
+                @Html.AlertBuilder().SetTitle("Info").SetMessage("The progress indicator is only visual: each step can map to a separate route or server-side form.").SetVariant(VariantStyle.Info).SetIcon(IconStruct.Bootstrap("bi-info-circle")).Render()
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Without Bootstrap icons", TitleLevel.Two).SetIconBootstrap("bi-123").Begin())
+        {
+            CheckoutProgressBuilder numberedSteps = Html.CheckoutProgress();
+            numberedSteps.AddStep("Account", CheckoutProgressState.Complete, variant: VariantStyle.Success);
+            numberedSteps.AddStep("Cart", CheckoutProgressState.Complete, variant: VariantStyle.Success);
+            numberedSteps.AddStep("Payment", CheckoutProgressState.Active, variant: VariantStyle.Warning);
+            numberedSteps.AddStep("Confirmation", CheckoutProgressState.Inactive, variant: VariantStyle.Secondary);
+            numberedSteps.Compact();
+
+            CheckoutProgressBuilder simpleSteps = Html.CheckoutProgressSteps("Account", "Cart", "Payment", "Confirmation");
+            simpleSteps.SetStepActive(1);
+            simpleSteps.ShowSubtitles(false);
+
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap4).Begin())
+            {
+                @numberedSteps
+                @simpleSteps
+            }
+        }
+    }
+}

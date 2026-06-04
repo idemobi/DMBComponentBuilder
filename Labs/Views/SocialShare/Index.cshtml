@@ -1,0 +1,92 @@
+@using DMBBootstrapBuilder
+@using DMBPageBuilder
+@using DMBComponentBuilder
+@{
+    Layout = "_Layout";
+
+    string demoUrl = "https://labs.idemobi.com/ComponentBuilder/SocialShare";
+}
+
+@Html.TitleBuilder().SetTitle("SocialShare - Live Examples", TitleLevel.Two).Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Layout variants", TitleLevel.Two).SetIconBootstrap("bi-share").Begin())
+        {
+            @using (Html.PB_P().Begin())
+            {
+                @using (Html.PB_Span().AsMonospace().Begin())
+                {
+                    @:SocialShareDefinition
+                }
+                @: owns the content, the kind of shared media, the layout and the enabled platforms.
+            }
+
+            @using (Html.FlexBlockBuilder().SetFlexColumn().Begin())
+            {
+                @foreach (SocialShareStyle style in Enum.GetValues<SocialShareStyle>())
+                {
+                    @Html.SocialShare(new SocialShareDefinition("Share the SocialShare component", demoUrl, SocialShareKind.Html, style))
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Media-aware platforms", TitleLevel.Two).SetIconBootstrap("bi-images").Begin())
+        {
+            @using (Html.PB_P().Begin())
+            {
+                @:Image-only and video-only targets are filtered by
+                @using (Html.PB_Span().AsMonospace().Begin())
+                {
+                    @:SocialShareKind
+                }
+                @:.
+            }
+
+            @using (Html.FlexBlockBuilder().SetFlexColumn().Begin())
+            {
+                @Html.SocialShare(new SocialShareDefinition("Share this image", demoUrl + "/image", SocialShareKind.Image, SocialShareStyle.Toolbar).UseAllPlatforms())
+                @Html.SocialShare(new SocialShareDefinition("Share this video", demoUrl + "/video", SocialShareKind.Video, SocialShareStyle.Toolbar).UseAllPlatforms())
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Custom platform set", TitleLevel.Two).SetIconBootstrap("bi-ui-checks").Begin())
+        {
+            SocialShareDefinition compactShare = new SocialShareDefinition("Share with a compact set", demoUrl, SocialShareKind.Html, SocialShareStyle.Inline)
+                .SetPlatforms(SocialSharePlatform.Email, SocialSharePlatform.LinkedIn, SocialSharePlatform.Reddit)
+                .SetLabel(SocialSharePlatform.Email, "Send by email");
+
+            @Html.SocialShare(compactShare)
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Razor usage", TitleLevel.Two).SetIconBootstrap("bi-code-square").Begin())
+        {
+            @(Html.CodeBlock(@"@@using DMBComponentBuilder
+
+@@Html.SocialShare(new SocialShareDefinition(
+    ""Share this page"",
+    ""https://example.com"",
+    SocialShareKind.Html,
+    SocialShareStyle.Toolbar))
+
+@@Html.SocialShare(new SocialShareDefinition(
+    ""Share this image"",
+    ""https://example.com/image.png"",
+    SocialShareKind.Image,
+    SocialShareStyle.Toolbar).UseAllPlatforms())", CodeLanguage.CSharp)
+                .SetTheme(CodeBlockTheme.Dark)
+                .SetCompact())
+        }
+    }
+}

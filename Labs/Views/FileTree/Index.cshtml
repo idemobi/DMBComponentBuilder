@@ -1,0 +1,130 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@{
+    Layout = "_Layout";
+
+    IReadOnlyList<FileTreeNode> projectTree = new[]
+    {
+        FileTreeNode.Folder("Game-Data-Forge", new[]
+        {
+            FileTreeNode.Folder(".github", new[]
+            {
+                FileTreeNode.File("dependabot.yml"),
+                FileTreeNode.File("release.yml")
+            }).SetDescription("special folder"),
+            FileTreeNode.Folder("Source", new[]
+            {
+                FileTreeNode.Folder("Private", new[]
+                {
+                    FileTreeNode.Folder("Public", new[]
+                    {
+                        FileTreeNode.Folder("NuGet", new[]
+                        {
+                            FileTreeNode.Folder("PageBuilder", new[]
+                            {
+                                FileTreeNode.File("PageBuilder.slnx"),
+                                FileTreeNode.File("README.md"),
+                                FileTreeNode.File("DMBComponentBuilder.csproj")
+                            }).SetDescription("current workspace")
+                        })
+                    })
+                })
+            }),
+            FileTreeNode.Folder("docs", new[]
+            {
+                FileTreeNode.File("MARKDOWN_GUIDELINES.md"),
+                FileTreeNode.File("COMPONENTS.md")
+            })
+        })
+    };
+
+    IReadOnlyList<FileTreeNode> realisticTree = new[]
+    {
+        FileTreeNode.Folder("ArenaForge", new[]
+        {
+            FileTreeNode.Folder("Assets", new[]
+            {
+                FileTreeNode.Folder("Images", new[]
+                {
+                    FileTreeNode.File("hero.webp"),
+                    FileTreeNode.File("studio-logo.png")
+                }),
+                FileTreeNode.Folder(".cache", new[]
+                {
+                    FileTreeNode.File("sprites.hash")
+                }).SetDescription("special folder")
+            }),
+            FileTreeNode.Folder("Data", new[]
+            {
+                FileTreeNode.File("players.json"),
+                FileTreeNode.File("projects.json"),
+                FileTreeNode.File("roles.json")
+            }),
+            FileTreeNode.Folder("Components", new[]
+            {
+                FileTreeNode.File("PlayerCard.cshtml"),
+                FileTreeNode.File("StudioOverview.cshtml"),
+                FileTreeNode.File("ProjectTimeline.cs")
+            })
+        }).SetDescription("realistic project data")
+    };
+}
+
+@Html.TitleBuilder().SetTitle("FileTree - Live Examples", TitleLevel.Two).Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Normal state", TitleLevel.Two).SetIconBootstrap("bi-folder2-open").Begin())
+        {
+            @(Html.FileTree(projectTree)
+                .SetTitle("Workspace")
+                .SetExpandedByDefault()
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Collapsed by default", TitleLevel.Two).SetIconBootstrap("bi-chevron-right").Begin())
+        {
+            @(Html.FileTree(realisticTree)
+                .SetTitle("ArenaForge")
+                .SetExpandedByDefault(false)
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Realistic data example", TitleLevel.Two).SetIconBootstrap("bi-diagram-3").Begin())
+        {
+            @(Html.FileTree(realisticTree)
+                .SetTitle("Game project folders")
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Empty state", TitleLevel.Two).SetIconBootstrap("bi-inbox").Begin())
+        {
+            @(Html.FileTree()
+                .SetTitle("Empty folder")
+                .SetEmptyMessage("This folder does not contain visible files yet.")
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Error state", TitleLevel.Two).SetIconBootstrap("bi-exclamation-triangle").Begin())
+        {
+            @(Html.FileTree(projectTree)
+                .SetTitle("Unavailable source")
+                .SetErrorMessage("The file tree could not be loaded because the source model is unavailable.")
+                .Render())
+        }
+    }
+}

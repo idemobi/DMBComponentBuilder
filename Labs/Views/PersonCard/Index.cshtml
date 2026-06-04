@@ -1,0 +1,156 @@
+@using DMBBootstrapBuilder
+@using DMBPageBuilder
+@using DMBComponentBuilder
+@{
+    Layout = "_Layout";
+}
+
+@(Html.BlockTitleBuilder()
+    .SetTitle("PersonCard – Live Examples", TitleLevel.Two)
+    .SetIconBootstrap("bi-person-circle")
+    .AsSectionHeading()
+    .Render())
+
+@using (Html.RowBuilder().AsBottomPadded().Begin())
+{
+    @* Normal state — icon mode *@
+    @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Icon mode", TitleLevel.Three).SetIconBootstrap("bi-person-circle").Begin())
+        {
+            @(Html.PersonCardBuilder()
+                .SetName("Jean-François CONTART")
+                .SetRole("Lead Developer")
+                .SetDescription("Founder and architect of the DMB stack.")
+                .SetIconBootstrap("bi-person-circle")
+                .SetVariant(VariantStyle.Primary)
+                .Render())
+        }
+    }
+
+    @* Normal state — image mode *@
+    @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Image mode", TitleLevel.Three).SetIconBootstrap("bi-image").Begin())
+        {
+            @(Html.PersonCardBuilder()
+                .SetName("Camille GOLLIOT")
+                .SetRole("Software Engineering Intern")
+                .SetDescription("Working on component examples and view standardisation.")
+                .SetImage("/images/team/cg.jpg")
+                .Render())
+        }
+    }
+
+    @* Empty state *@
+    @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Empty state", TitleLevel.Three).SetIconBootstrap("bi-dash-circle").Begin())
+        {
+            @(Html.PersonCardBuilder().Render())
+        }
+    }
+
+    @* All variants *@
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("All variants", TitleLevel.Three).SetIconBootstrap("bi-palette").Begin())
+        {
+            @using (Html.RowBuilder().SetGap(Gap.G3).Begin())
+            {
+                @foreach (VariantStyle variant in new[] { VariantStyle.Primary, VariantStyle.Secondary, VariantStyle.Success, VariantStyle.Danger, VariantStyle.Warning, VariantStyle.Info })
+                {
+                    @using (Html.ColBuilder(12, 12, 6, 4, 2, 2).Begin())
+                    {
+                        @(Html.PersonCardBuilder()
+                            .SetName($"{variant}")
+                            .SetRole("Role")
+                            .SetVariant(variant)
+                            .Render())
+                    }
+                }
+            }
+        }
+    }
+
+    @* Custom icon *@
+    @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Custom icon", TitleLevel.Three).SetIconBootstrap("bi-person-badge").Begin())
+        {
+            @(Html.PersonCardBuilder()
+                .SetName("Quentin BOULOGNE")
+                .SetRole("Developer")
+                .SetIconBootstrap("bi-person-badge")
+                .SetVariant(VariantStyle.Success)
+                .Render())
+        }
+    }
+
+    @* No description *@
+    @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("No description", TitleLevel.Three).SetIconBootstrap("bi-person").Begin())
+        {
+            @(Html.PersonCardBuilder()
+                .SetName("John Doe")
+                .SetRole("Contributor")
+                .SetVariant(VariantStyle.Secondary)
+                .Render())
+        }
+    }
+
+    @* Broken image (error state) *@
+    @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Image not found (error state)", TitleLevel.Three).SetIconBootstrap("bi-exclamation-triangle").Begin())
+        {
+            @(Html.PersonCardBuilder()
+                .SetName("Unknown Member")
+                .SetRole("Unknown role")
+                .SetImage("/images/team/not-found.jpg")
+                .Render())
+        }
+    }
+
+    @* Realistic example — team grid *@
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Realistic example — team grid", TitleLevel.Three).SetIconBootstrap("bi-people").Begin())
+        {
+            @using (Html.RowBuilder().SetGap(Gap.G4).Begin())
+            {
+                @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+                {
+                    @(Html.PersonCardBuilder()
+                        .SetName("Jean-François CONTART")
+                        .SetRole("Lead Developer")
+                        .SetDescription("Founder and architect of the DMB stack. Designs the rendering pipeline and the overall API conventions.")
+                        .SetIconBootstrap("bi-person-circle")
+                        .SetVariant(VariantStyle.Primary)
+                        .Render())
+                }
+                @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+                {
+                    @(Html.PersonCardBuilder()
+                        .SetName("Quentin BOULOGNE")
+                        .SetRole("Developer")
+                        .SetDescription("Core contributor to the DMB ecosystem. Works on component design and Bootstrap integration.")
+                        .SetIconBootstrap("bi-person-circle")
+                        .SetVariant(VariantStyle.Success)
+                        .Render())
+                }
+                @using (Html.ColBuilder(12, 12, 6, 4, 4, 4).Begin())
+                {
+                    @(Html.PersonCardBuilder()
+                        .SetName("Camille GOLLIOT")
+                        .SetRole("Software Engineering Intern")
+                        .SetDescription("Working on component examples, view standardisation and documentation generation.")
+                        .SetIconBootstrap("bi-person-circle")
+                        .SetVariant(VariantStyle.Warning)
+                        .Render())
+                }
+            }
+        }
+    }
+}

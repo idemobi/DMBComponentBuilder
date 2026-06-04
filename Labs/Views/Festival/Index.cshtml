@@ -1,0 +1,72 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@model List<GDFFestival>
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Render festivals from view data", TitleLevel.Two).SetIconBootstrap("bi-calendar-event").Begin())
+        {
+            @using (Html.PB_P().AsMuted().Begin())
+            {
+                @:Each
+                @using (Html.PB_Span().AsMonospace().Begin())
+                {
+                    @:GDFFestival
+                }
+                @: points to a Razor partial through
+                @using (Html.PB_Span().AsMonospace().Begin())
+                {
+                    @:ViewName
+                }
+                @:. The component keeps the view call stable with
+                @using (Html.PB_Span().AsMonospace().Begin())
+                {
+                    @:Html.Festival(festival)
+                }
+                @:.
+            }
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @foreach (GDFFestival festival in Model)
+                {
+                    @Html.Festival(festival)
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Single festival", TitleLevel.Two).SetIconBootstrap("bi-stars").Begin())
+        {
+            GDFFestival releaseDay = new GDFFestival
+            {
+                Name = "Standalone component",
+                ViewName = "ComponentRelease",
+                StartDate = DateTime.UtcNow.Date,
+                EndDate = DateTime.UtcNow.Date
+            };
+
+            @Html.Festival(releaseDay)
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Razor usage", TitleLevel.Two).SetIconBootstrap("bi-code-square").Begin())
+        {
+            @(Html.CodeBlock(@"@@using DMBComponentBuilder
+
+@@foreach (GDFFestival festival in Model.FestivalList)
+{
+    @@Html.Festival(festival)
+}", CodeLanguage.CSharp))
+        }
+    }
+}

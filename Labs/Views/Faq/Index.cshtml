@@ -1,0 +1,48 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+
+    FaqItem compatibility = new()
+    {
+        Question = "Which browsers are supported?",
+        Answer = "The component can display optional browser and platform icons for each question."
+    };
+    compatibility.StartIcons.Add(IconStruct.Bootstrap("bi-browser-chrome"));
+    compatibility.StartIcons.Add(IconStruct.Bootstrap("bi-browser-safari"));
+    compatibility.EndIcons.Add(IconStruct.Bootstrap("bi-apple"));
+    compatibility.EndIcons.Add(IconStruct.Bootstrap("bi-windows"));
+}
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @(Html.FaqBuilder()
+            .SetTitle("Frequently asked questions", IconStruct.Bootstrap("bi-question-square"))
+            .AddItem("Can I render a compact FAQ?", "Yes. FaqBuilder renders a Bootstrap card with responsive two-column question blocks.")
+            .AddItem("Can I keep the data source outside ComponentBuilder?", "Yes. The component consumes FaqItem objects and does not depend on application runtime models.")
+            .AddItem(compatibility)
+            .SetContactAction("More questions?", "Contact support", "#"))
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @(Html.FaqBuilder()
+            .SetTitle("Empty state", IconStruct.Bootstrap("bi-inbox"))
+            .SetEmptyMessage("No question is available yet.")
+            .SetContactAction("Any questions?", "Ask us anything", "#"))
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Fluent API", TitleLevel.Two).SetIconBootstrap("bi-braces").Begin())
+        {
+            @(Html.CodeBlock(@"@@Html.FaqBuilder()
+    .SetTitle(""Frequently asked questions"", IconStruct.Bootstrap(""bi-question-square""))
+    .AddItem(""Can I render a compact FAQ?"", ""Yes."")
+    .SetContactAction(""More questions?"", ""Contact support"", ""#"")", CodeLanguage.CSharp))
+        }
+    }
+}

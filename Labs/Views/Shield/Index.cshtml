@@ -1,0 +1,65 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@{
+    Layout = "_Layout";
+}
+
+@Html.TitleBuilder().SetTitle("ShieldBuilder - Live Examples", TitleLevel.Two).Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Classic shields", TitleLevel.Two).SetIconBootstrap("bi-shield-check").Begin())
+        {
+            @using (Html.FlexBlockBuilder().WithWrap().SetAlignItemsCenter().Begin())
+            {
+                @Html.Shield("Microsoft", "Azure", "dimgrey", "darkgrey")
+                @Html.Shield("Amazon", "AWS", "dimgrey", "darkgrey")
+                @Html.Shield("OS", "Debian", "dimgrey", "darkgrey")
+                @Html.Shield("Server", "Nginx", "dimgrey", "darkgrey")
+                @Html.Shield("SSL", "Certbot", "dimgrey", "darkgrey")
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Semantic examples", TitleLevel.Two).SetIconBootstrap("bi-palette").Begin())
+        {
+            @using (Html.FlexBlockBuilder().WithWrap().SetAlignItemsCenter().Begin())
+            {
+                @Html.Shield("Build", "Passing", "#198754", "#14532d")
+                @Html.Shield("Coverage", "92%", "#0d6efd", "#6610f2")
+                @Html.Shield("License", "MIT", "#6c757d", "#212529")
+                @Html.Shield("Runtime", ".NET 10", "#512bd4", "#2d1b69")
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Fluent API", TitleLevel.Two).SetIconBootstrap("bi-braces").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().Begin())
+            {
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @(Html.ShieldBuilder()
+                        .SetLabel("Component")
+                        .SetValue("ShieldBuilder")
+                        .SetColors("#0f766e", "#134e4a"))
+                }
+
+                @(Html.CodeBlock(@"@@Html.Shield(""Build"", ""Passing"", ""#198754"", ""#14532d"")
+
+@@Html.ShieldBuilder()
+    .SetLabel(""Component"")
+    .SetValue(""ShieldBuilder"")
+    .SetColors(""#0f766e"", ""#134e4a"")", CodeLanguage.CSharp)
+                    .SetCompact()
+                    .SetHighlight(false))
+            }
+        }
+    }
+}

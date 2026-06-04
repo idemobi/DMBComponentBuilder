@@ -1,0 +1,241 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Basic ratings", TitleLevel.Two).SetIconBootstrap("bi-star-half").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Standard score
+                    }
+                    @Html.RatingBadge(4.5).SetShowValue()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Half-star rounding
+                    }
+                    @Html.RatingBadge(3.7).SetShowValue().SetLabel("Rating rounded to 3.5 out of 5")
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Low rating
+                    }
+                    @Html.RatingBadge(1.5).SetVariant(VariantStyle.Danger).SetShowValue()
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Color variants", TitleLevel.Two).SetIconBootstrap("bi-palette").Begin())
+        {
+            @using (Html.FlexBlockBuilder().WithWrap().WithGap(Old_Gap.Gap3).SetAlignItemsCenter().Begin())
+            {
+                @foreach (VariantStyle variant in new[] { VariantStyle.Primary, VariantStyle.Secondary, VariantStyle.Info, VariantStyle.Success, VariantStyle.Warning, VariantStyle.Danger, VariantStyle.Dark })
+                {
+                    @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap2).SetAlignItemsStart().Begin())
+                    {
+                        @using (Html.PB_Span().AddClass("small text-muted").Begin())
+                        {
+                            @variant
+                        }
+                        @Html.RatingBadge(4, variant: variant).SetCartouche()
+                    }
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Sizes and cartridges", TitleLevel.Two).SetIconBootstrap("bi-aspect-ratio").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @Html.RatingBadge(3.5).SetSize(RatingBadgeSize.Small).SetShowValue()
+                }
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @Html.RatingBadge(4.5).SetCartouche().SetShowValue()
+                }
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @Html.RatingBadge(5).SetSize(RatingBadgeSize.Large).SetCartouche().SetVariant(VariantStyle.Success)
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Configurable star count", TitleLevel.Two).SetIconBootstrap("bi-sliders").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:On 3 stars
+                    }
+                    @Html.RatingBadge(2.5, 3, VariantStyle.Info).SetCartouche().SetShowValue()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:On 10 stars
+                    }
+                    @Html.RatingBadge(8.5, 10, VariantStyle.Warning).SetShowValue()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Out-of-range value clamped
+                    }
+                    @Html.RatingBadge(12, 10, VariantStyle.Success).SetCartouche().SetShowValue().SetLabel("Rating clamped to 10 out of 10")
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Animation effects", TitleLevel.Two).SetIconBootstrap("bi-stars").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Pop
+                    }
+                    @Html.RatingBadge(4.5).SetCartouche().WithPopEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Sparkle with cartridge
+                    }
+                    @Html.RatingBadge(5).SetCartouche().SetVariant(VariantStyle.Warning).WithSparkleEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Pulse
+                    }
+                    @Html.RatingBadge(3.5).SetVariant(VariantStyle.Info).WithPulseEffect().SetShowValue()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Hover lift
+                    }
+                    @Html.RatingBadge(4).SetCartouche().SetVariant(VariantStyle.Primary).WithHoverLiftEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Hover glow with cartridge
+                    }
+                    @Html.RatingBadge(4.5).SetCartouche().SetVariant(VariantStyle.Success).WithHoverGlowEffect()
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Cartridge / no cartridge verification", TitleLevel.Two).SetIconBootstrap("bi-ui-checks").Begin())
+        {
+            @using (Html.FlexBlockBuilder().SetFlexColumn().WithGap(Old_Gap.Gap3).Begin())
+            {
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Sparkle without cartridge
+                    }
+                    @Html.RatingBadge(4.5).SetVariant(VariantStyle.Warning).WithSparkleEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Sparkle with cartridge
+                    }
+                    @Html.RatingBadge(4.5).SetCartouche().SetVariant(VariantStyle.Warning).WithSparkleEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Glow without cartridge
+                    }
+                    @Html.RatingBadge(4).SetVariant(VariantStyle.Info).WithHoverGlowEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Glow with cartridge
+                    }
+                    @Html.RatingBadge(4).SetCartouche().SetVariant(VariantStyle.Info).WithHoverGlowEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().WithFlexAdditionalClasses("border-bottom").SetPadding(SpacingSide.Bottom, SpacingSize.Two).Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Sparkle + glow without cartridge
+                    }
+                    @Html.RatingBadge(5).SetVariant(VariantStyle.Success).WithSparkleEffect().WithHoverGlowEffect()
+                }
+                @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentBetween().Begin())
+                {
+                    @using (Html.PB_Span().Begin())
+                    {
+                        @:Sparkle + glow with cartridge
+                    }
+                    @Html.RatingBadge(5).SetCartouche().SetVariant(VariantStyle.Success).WithSparkleEffect().WithHoverGlowEffect()
+                }
+            }
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Combined effects", TitleLevel.Two).SetIconBootstrap("bi-magic").Begin())
+        {
+            @using (Html.FlexBlockBuilder().WithWrap().WithGap(Old_Gap.Gap3).SetAlignItemsCenter().Begin())
+            {
+                @Html.RatingBadge(4.5).SetCartouche().SetSize(RatingBadgeSize.Large).WithPopEffect().WithSparkleEffect().WithHoverLiftEffect().WithHoverGlowEffect()
+                @Html.RatingBadge(3.5).SetVariant(VariantStyle.Info).SetShowValue().WithPulseEffect().WithHoverGlowEffect()
+                @Html.RatingBadge(9.5, 10, VariantStyle.Success).SetCartouche().SetShowValue().WithPopEffect().WithHoverLiftEffect()
+            }
+        }
+    }
+}

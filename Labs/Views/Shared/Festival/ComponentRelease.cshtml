@@ -1,0 +1,22 @@
+﻿@model DMBComponentBuilder.GDFFestival
+@using DMBBootstrapBuilder
+@using DMBPageBuilder
+@using (Html.BlockBuilder().AddClass("border rounded-3 p-4 bg-body-tertiary").Begin())
+{
+    @using (Html.BlockBuilder().AddClass("d-flex align-items-start justify-content-between gap-3 flex-wrap").Begin())
+    {
+        @using (Html.BlockBuilder().Begin())
+        {
+            @Html.TitleBuilder().SetTitle(Model.Name, TitleLevel.Three).Render()
+            @using (Html.BlockBuilder().AddClass("text-body-secondary").Begin())
+            {
+                @(Model.StartDate.ToString("d"))
+            }
+        }
+        @Html.BadgeBuilder("Live").SetBadgeVariant(VariantStyle.Success)
+    }
+    @using (Html.BlockBuilder().AddClass("mt-3").Begin())
+    {
+        @:A compact festival partial rendered through ComponentBuilder.
+    }
+}

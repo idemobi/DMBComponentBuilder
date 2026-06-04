@@ -15,8 +15,6 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 
 ## Root files
 
-- `DMBComponentBuilder.csproj`: project file and package metadata.
-- `README.md`: package overview and documentation entry point.
 - `AGENTS.md`: local AI instructions.
 - `AI_CONTEXT.md`: project context for AI assistants.
 - `DOCUMENTATION_RULES.md`: XML and reference documentation rules.
@@ -29,21 +27,34 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `TROUBLESHOOTING.md`: common issue guide.
 - `GLOSSARY.md`: common term definitions.
 
-## Components/BlockTitle
+## Source
+
+- `Source/DMBComponentBuilder.csproj`: project file and package metadata.
+- `Source/README.md`: package overview and documentation entry point.
+- `Source/LICENSE.md`: package license file.
+- `Source/DMBComponentBuilder.png`: package icon.
+- `Source/DMBComponentBuilder.snk`: strong-name key file.
+- `Source/Configuration`: package configuration classes.
+- `Source/Components`: reusable visual component builders and models.
+- `Source/wwwroot`: static web assets embedded by the package.
+- `Labs/DMBComponentBuilderLabs.csproj`: Razor labs project for host-displayed documentation and examples.
+- `UnitTests/DMBComponentBuilderUnitTest.csproj`: module unit test project.
+
+## Source/Components/BlockTitle
 
 - `BlockTitleBuilder.cs`: block title visual builder.
 - `BlockTitleExtensions.cs`: helper entry points.
 - `BlockTitleSubtitle.cs`: subtitle data model.
 - `SubtitleSize.cs`: subtitle sizing enum.
 
-## Components/CheckoutProgress
+## Source/Components/CheckoutProgress
 
 - `CheckoutProgressBuilder.cs`: checkout progress visual builder.
 - `CheckoutProgressDefinition.cs`: progress item data model.
 - `CheckoutProgressExtensions.cs`: helper entry points.
 - `CheckoutProgressState.cs`: progress state enum.
 
-## Components/CodeBlock
+## Source/Components/CodeBlock
 
 - `CodeBlockBuilder.cs`: code block visual builder.
 - `CodeBlockComposer.cs`: code block composition helper.
@@ -52,24 +63,24 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `CodeLanguage.cs`: supported code language enum.
 - `CodeLanguageExtensions.cs`: language helper methods.
 
-## Components/CopyBlock
+## Source/Components/CopyBlock
 
 - `CopyBlockBuilder.cs`: copyable content builder.
 - `CopyBlockExtensions.cs`: helper entry points.
 
-## Components/Faq
+## Source/Components/Faq
 
 - `FaqBuilder.cs`: FAQ component builder.
 - `FaqExtensions.cs`: helper entry points.
 - `FaqItem.cs`: FAQ item data model.
 
-## Components/FileTree
+## Source/Components/FileTree
 
 - `FileTreeBuilder.cs`: file tree component builder.
 - `FileTreeExtensions.cs`: helper entry points.
 - `FileTreeNode.cs`: file tree node data model.
 
-## Components/MindMap
+## Source/Components/MindMap
 
 - `GDFMindMapBuilder.cs`: mind map component builder.
 - `GDFMindMapExtensions.cs`: helper entry points.
@@ -77,7 +88,7 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `GDFMindMapBranchSide.cs`: branch side enum.
 - `GDFMindMapLineMode.cs`: line rendering enum.
 
-## Components/RatingBadge
+## Source/Components/RatingBadge
 
 - `RatingBadgeBuilder.cs`: rating badge component builder.
 - `RatingBadgeComposer.cs`: rating badge composition helper.
@@ -87,7 +98,7 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `ICanUseRatingBadgeEffects.cs`: fluent effect capability interface.
 - `ICanUseRatingBadgeStyle.cs`: fluent style capability interface.
 
-## Components/Roadmap
+## Source/Components/Roadmap
 
 - `RoadmapBuilder.cs`: roadmap container builder.
 - `RoadmapBlockBuilder.cs`: roadmap block builder.
@@ -98,7 +109,7 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `RoadmapSlideEffect.cs`: roadmap slide effect enum.
 - `RoadmapState.cs`: roadmap state enum.
 
-## Components/SocialShare
+## Source/Components/SocialShare
 
 - `SocialShareBuilder.cs`: social share component builder.
 - `SocialShareDefinition.cs`: share item data model.
@@ -107,7 +118,7 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `SocialSharePlatform.cs`: supported platform enum.
 - `SocialShareStyle.cs`: share style enum.
 
-## Components/Step
+## Source/Components/Step
 
 - `StepAreaBuilder.cs`: step area builder.
 - `StepAreaBuilder.Generic.cs`: generic step area builder.
@@ -117,7 +128,7 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `StepExtensions.cs`: helper entry points.
 - `StepRuleDefinition.cs`: step rule data model.
 
-## Components/Timeline
+## Source/Components/Timeline
 
 - `TimelineBuilder.cs`: timeline container builder.
 - `TimelineBlockBuilder.cs`: timeline block builder.
@@ -129,11 +140,11 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 
 ## Other component folders
 
-- `Components/Festival`: festival component builders and helpers.
-- `Components/Separator`: separator component builders and helpers.
-- `Components/Shield`: shield component builders and helpers.
-- `Components/TodoBlock`: todo block builders, helpers, and item model.
-- `Components/WebComic`: web-comic viewer builder, helpers, display modes, and social platform model.
+- `Source/Components/Festival`: festival component builders and helpers.
+- `Source/Components/Separator`: separator component builders and helpers.
+- `Source/Components/Shield`: shield component builders and helpers.
+- `Source/Components/TodoBlock`: todo block builders, helpers, and item model.
+- `Source/Components/WebComic`: web-comic viewer builder, helpers, display modes, and social platform model.
 
 ## Configuration
 

@@ -1,0 +1,153 @@
+﻿@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBBootstrapBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@Html.TitleBuilder().SetTitle("Step by Step - Live Examples", TitleLevel.Two).Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col7, ResponsiveBreakpoint.Lg).Begin())
+    {
+        @Html.TitleBuilder().SetTitle("Registration Flow", TitleLevel.Three).Render()
+
+        <form>
+            @using (Html.StepArea()
+                .UseFieldsets()
+                .EnableStepWhenValue("registration-terms-step", "step-country")
+                .EnableStepWhenChecked("registration-account-step", "step-terms")
+                .Begin())
+            {
+                @using (Html.StepBlock()
+                    .Id("registration-country-step")
+                    .WithTitle("Data legislation")
+                    .WithSubtitle("Choose the legal country of registration.")
+                    .SetState(StepBlockState.Current)
+                    .SetVariant(VariantStyle.Warning)
+                    .Begin())
+                {
+                    @using (Html.PB_P().Begin())
+                    {
+                        @:In accordance with national laws and regulations, your data is stored
+                        @:on servers that comply with local legal requirements.
+                    }
+
+                    <label class="form-label fw-semibold" for="step-country">Country <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-globe2"></i></span>
+                        <select id="step-country" class="form-select">
+                            <option value="">Your country</option>
+                            <option value="FR">France</option>
+                            <option value="BE">Belgium</option>
+                            <option value="CH">Switzerland</option>
+                        </select>
+                        <button type="button" class="btn btn-outline-warning">
+                            <i class="bi bi-geo-alt"></i>
+                        </button>
+                    </div>
+                }
+
+                @using (Html.StepBlock()
+                    .Id("registration-terms-step")
+                    .WithTitle("Terms of Service")
+                    .WithSubtitle("Read and accept the terms before signing up.")
+                    .SetState(StepBlockState.Disabled)
+                    .SetVariant(VariantStyle.Warning)
+                    .Begin())
+                {
+                    @using (Html.PB_P().Begin())
+                    {
+                        @:You must read and accept the terms of use and the commercial conditions.
+                    }
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="step-terms">
+                        <label class="form-check-label" for="step-terms">I accept the terms of use.</label>
+                    </div>
+                }
+
+                @using (Html.StepBlock()
+                    .Id("registration-account-step")
+                    .WithTitle("Sign up")
+                    .WithSubtitle("Create your user account.")
+                    .SetState(StepBlockState.Disabled)
+                    .SetVariant(VariantStyle.Warning)
+                    .Begin())
+                {
+                    <label class="form-label fw-semibold" for="step-email">Email <span class="text-danger">*</span></label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input id="step-email" class="form-control" type="email" placeholder="john.doe@example.com">
+                    </div>
+
+                    <button type="button" class="btn btn-warning w-100">
+                        <i class="bi bi-person-plus"></i>
+                        Sign up
+                    </button>
+                }
+            }
+        </form>
+
+        @using (Html.BlockBuilder().SetMargin(SpacingSide.Top, SpacingSize.Four).SetPadding(SpacingSide.Top, SpacingSize.Three).AsBorderTopSection().Begin())
+        {
+            @Html.TitleBuilder().SetTitle("Step Switch Test", TitleLevel.Six).Render()
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switch-registration-country-step" data-step-switch="registrationcountrystep" checked>
+                <label class="form-check-label" for="switch-registration-country-step">Enable Step 1</label>
+            </div>
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switch-registration-terms-step" data-step-switch="registrationtermsstep">
+                <label class="form-check-label" for="switch-registration-terms-step">Enable Step 2</label>
+            </div>
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="switch-registration-account-step" data-step-switch="registrationaccountstep">
+                <label class="form-check-label" for="switch-registration-account-step">Enable Step 3</label>
+            </div>
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col5, ResponsiveBreakpoint.Lg).Begin())
+    {
+        @Html.TitleBuilder().SetTitle("States And Variants", TitleLevel.Three).Render()
+
+        @using (Html.StepArea().Begin())
+        {
+            @using (Html.Step("Done", "The step is complete.", icon: IconStruct.Bootstrap("bi-check-lg"), variant: VariantStyle.Success, state: StepBlockState.Done).Begin())
+            {
+                @using (Html.PB_P().Begin())
+                {
+                    @:Done steps can use an icon instead of a number.
+                }
+            }
+
+            @using (Html.Step("Current", "The user is working here.", step: 2, variant: VariantStyle.Primary, state: StepBlockState.Current).Begin())
+            {
+                @using (Html.PB_P().Begin())
+                {
+                    @:Current steps keep strong contrast on title, marker, and content.
+                }
+            }
+
+            @using (Html.Step("Future", "The next action is visible but quieter.", step: 3, variant: VariantStyle.Info, state: StepBlockState.Future).Begin())
+            {
+                @using (Html.PB_P().Begin())
+                {
+                    @:Future steps are intentionally dimmed.
+                }
+            }
+
+            @using (Html.Step("Disabled", "Unavailable until previous choices are valid.", step: 4, variant: VariantStyle.Secondary, state: StepBlockState.Disabled).Begin())
+            {
+                @using (Html.PB_P().Begin())
+                {
+                    @:Disabled steps ignore pointer events.
+                }
+            }
+        }
+    }
+}

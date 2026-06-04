@@ -1,0 +1,22 @@
+﻿@model DMBComponentBuilder.GDFFestival
+@using DMBBootstrapBuilder
+@using DMBPageBuilder
+@using (Html.BlockBuilder().AddClass("border rounded-3 p-4 text-bg-dark").Begin())
+{
+    @using (Html.BlockBuilder().AddClass("d-flex align-items-start gap-3").Begin())
+    {
+        @using (Html.PB_Span().AddClass("bi bi-moon-stars fs-3 text-warning").Begin()) { }
+        @using (Html.BlockBuilder().Begin())
+        {
+            @Html.TitleBuilder().SetTitle(Model.Name, TitleLevel.Three).Render()
+            @using (Html.BlockBuilder().AddClass("text-light-emphasis").Begin())
+            {
+                @:@Model.StartDate.ToString("d") - @Model.EndDate.ToString("d")
+            }
+            @using (Html.BlockBuilder().AddClass("mt-3").Begin())
+            {
+                @:Seasonal content can stay isolated in a conventional festival partial.
+            }
+        }
+    }
+}

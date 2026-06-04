@@ -1,0 +1,108 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@using (Html.Timeline().WithSlideEffect(TimelineSlideEffect.Alternate).WithOpacityEffect().WithPlotEffect().WithHoverLiftEffect().WithHoverScaleEffect().Begin())
+{
+    @using (Html.TimelineCard("2023", "Q1", "Project Kickoff", TitleLevel.Four, "Initialisation", IconStruct.Bootstrap("bi-rocket-takeoff"), VariantStyle.Primary).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Project officially started with initial architecture.
+        }
+    }
+
+    @using (Html.TimelineCard("2023", "Q2", "Core Development", TitleLevel.Four, "Backend", IconStruct.Bootstrap("bi-cpu"), VariantStyle.Info).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:· API structure
+        }
+        @using (Html.PB_P().AsNoMargin().Begin())
+        {
+            @:· Authentication
+        }
+        @using (Html.PB_P().AsNoMargin().Begin())
+        {
+            @:· Database
+        }
+    }
+
+    @using (Html.TimelineCard("2023", "Q3", "UI Integration", TitleLevel.Four, "Frontend", IconStruct.Bootstrap("bi-window"), VariantStyle.Success).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:BootstrapBuilder integration and UI components.
+        }
+    }
+
+    @using (Html.TimelineCard("2024", "Q1", "Beta Release", TitleLevel.Four, "Testing phase", IconStruct.Bootstrap("bi-bug"), VariantStyle.Warning, true).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Public beta with selected users.
+        }
+    }
+
+    @using (Html.TimelineCard("2024", "Q2", "Production", TitleLevel.Four, "Release", IconStruct.Bootstrap("bi-check-circle"), VariantStyle.Success).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Official release.
+        }
+    }
+}
+
+@Html.SeparatorBuilder().UsePageSpacing()
+
+@Html.TitleBuilder().SetTitle("Timeline — Content Stress Test", TitleLevel.Two).AsSectionHeading().Render()
+
+@using (Html.Timeline().WithHoverLiftEffect().Begin())
+{
+    @using (Html.TimelineCard("2025", "Q1", "Complex Content", TitleLevel.Four, "Mixed UI", IconStruct.Bootstrap("bi-grid"), VariantStyle.Secondary).Begin())
+    {
+        @using (Html.FlexBlockBuilder().WithGap(Old_Gap.Gap2).Begin())
+        {
+            @Html.BadgeBuilder("Tag 1").SetBadgeVariant(VariantStyle.Primary).Render()
+            @Html.BadgeBuilder("Tag 2").SetBadgeVariant(VariantStyle.Secondary).Render()
+        }
+
+        @using (Html.PB_P().Begin())
+        {
+            @:This block contains mixed content: badges, text, and layout.
+        }
+
+        @Html.AlertBuilder().SetTitle("Embedded Alert").SetMessage("Alert inside timeline works.").Render()
+    }
+
+    @using (Html.TimelineCard("2025", "Q2", "Long Content", TitleLevel.Four, "Overflow test", IconStruct.Bootstrap("bi-text-paragraph"), VariantStyle.Danger).Begin())
+    {
+        @using (Html.PB_P().Begin())
+        {
+            @:Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            @:Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            @:Ut enim ad minim veniam.
+        }
+    }
+}
+
+@Html.SeparatorBuilder().UsePageSpacing()
+
+@Html.TitleBuilder().SetTitle("Timeline — Debug Matrix", TitleLevel.Two).AsSectionHeading().Render()
+
+@using (Html.Timeline().WithPlotEffect().Begin())
+{
+    @foreach (VariantStyle variant in Enum.GetValues(typeof(VariantStyle)))
+    {
+        @using (Html.TimelineCard("Variant", variant.ToString(), variant.ToString(), TitleLevel.Four, "Test", IconStruct.Bootstrap("bi-circle"), variant).Begin())
+        {
+            @using (Html.PB_P().Begin())
+            {
+                @:Variant test: @variant
+            }
+        }
+    }
+}

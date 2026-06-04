@@ -1,0 +1,147 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBEffectBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@* ── Hero ── *@
+@using (Html.SectionBuilder().SetHeight(125, UnitSize.px).BootstrapBackgroundEffect(VariantStyle.Normal).Begin())
+{
+    @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentCenter().Begin())
+    {
+        @using (Html.BlockBuilder().AsTextCenter().Begin())
+        {
+            @Html.TitleBuilder().SetTitle("Architecture — ComponentBuilder", TitleLevel.One).Render()
+            @using (Html.PB_P().AsLead().Begin())
+            {
+                @:A product-component layer for reusable workflow experiences.
+            }
+        }
+    }
+}
+
+@using (Html.ContainerBuilder().SetPadding(SpacingSide.Y, SpacingSize.Five).Begin())
+{
+    @using (Html.RowBuilder().Begin())
+    {
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+        {
+            @* ── 1. Component Separation ── *@
+            @Html.TitleBuilder().SetTitle("1. Component Separation", TitleLevel.Two).AsSectionHeading().Render()
+            @using (Html.PB_P().Begin())
+            {
+                @using (Html.PB_Span().AsBold().Begin())
+                {
+                    @:DMBComponentBuilder
+                }
+                @: sits above BootstrapBuilder and packages repeated product patterns into reusable components. It is used when the application needs more than a Bootstrap primitive: timelines, roadmaps, guided steps, checkout progress, ratings or media-specific viewers. ComponentBuilder owns composed UI experiences — BootstrapBuilder provides the visual structure, PageBuilder owns the rendering lifecycle.
+            }
+            @(Html.CodeBlock(@"Components/
+  Timeline/        → TimelineBuilder, TimelineItem
+  Roadmap/         → RoadmapBuilder, RoadmapMilestone
+  Step/            → StepByStepBuilder, StepItem
+  CheckoutProgress → CheckoutProgressBuilder
+  Shared/          → CodeBlock, RatingBadge …", CodeLanguage.Bash)
+                .SetTitle("ComponentBuilder structure")
+                .SetCopyButton())
+
+            @* ── 2. Data-Driven Rendering ── *@
+            @Html.TitleBuilder().SetTitle("2. Data-Driven Rendering", TitleLevel.Two).AsSubSectionHeading().Render()
+            @using (Html.PB_P().Begin())
+            {
+                @:Each component starts from a structured definition — timeline entries, roadmap milestones, steps, ratings or media panels. Builders translate those definitions into BootstrapBuilder rows, cards, badges, lists and actions. This keeps product workflows separate from Bootstrap-level markup.
+            }
+            @(Html.CodeBlock(@"// The view prepares domain-shaped data
+var items = new List<TimelineItem>
+{
+    new() { Title = ""Released"", Status = TimelineStatus.Done },
+    new() { Title = ""In Progress"", Status = TimelineStatus.Active },
+};
+
+// The builder maps data to markup
+@Html.TimelineBuilder().AddItems(items).Render()", CodeLanguage.CSharp)
+                .SetTitle("Data-to-markup flow")
+                .SetCopyButton())
+
+            @* ── 3. Extension Points ── *@
+            @Html.TitleBuilder().SetTitle("3. Extension Points", TitleLevel.Two).AsSubSectionHeading().Render()
+            @using (Html.PB_P().Begin())
+            {
+                @:Add a focused component definition for stable repeated workflow data. Create builders that map definitions to BootstrapBuilder primitives. Provide demo pages that cover realistic examples and important states. Keep simple Bootstrap-only UI in BootstrapBuilder instead of promoting it too early.
+            }
+            @(Html.CodeBlock(@"// Keep component definitions close to the domain
+public class TimelineItem
+{
+    public string Title { get; set; }
+    public TimelineStatus Status { get; set; }
+    public string? Description { get; set; }
+}", CodeLanguage.CSharp)
+                .SetTitle("Component definition pattern")
+                .SetCopyButton())
+
+            @* ── Tech Stack ── *@
+            @using (Html.BlockBuilder().AsInfoCallout().Begin())
+            {
+                @using (Html.FlexBlockBuilder().Begin())
+                {
+                    @using (Html.BlockBuilder().AsCalloutIcon().Begin())
+                    {
+                        @using (Html.PB_Span().AddClass("bi bi-gear-fill fs-2 text-info").Begin()) { }
+                    }
+                    @using (Html.BlockBuilder().Begin())
+                    {
+                        @Html.TitleBuilder().SetTitle("Tech Stack", TitleLevel.Five).AsAlertHeading().Render()
+                        @using (Html.BlockBuilder().AsSidebarRow().Begin())
+                        {
+                            @using (Html.PB_Span().AsBold().Begin())
+                            {
+                                @:Backend:
+                            }
+                            @: .NET 10 / ASP.NET Core
+                        }
+                        @using (Html.BlockBuilder().AsSidebarRow().Begin())
+                        {
+                            @using (Html.PB_Span().AsBold().Begin())
+                            {
+                                @:UI:
+                            }
+                            @: BootstrapBuilder components
+                        }
+                        @using (Html.BlockBuilder().AsSidebarRow().Begin())
+                        {
+                            @using (Html.PB_Span().AsBold().Begin())
+                            {
+                                @:Architecture:
+                            }
+                            @: Composed component pattern
+                        }
+                        @using (Html.BlockBuilder().AsSidebarRow().Begin())
+                        {
+                            @using (Html.PB_Span().AsBold().Begin())
+                            {
+                                @:Integration:
+                            }
+                            @: PageBuilder + BootstrapBuilder
+                        }
+                    }
+                }
+            }
+
+            @* ── Next Step ── *@
+            @using (Html.BlockBuilder().AsSidebarNote().Begin())
+            {
+                @using (Html.BlockBuilder().AsTextCenter().Begin())
+                {
+                    @Html.TitleBuilder().SetTitle("See it in action", TitleLevel.Four).Render()
+                    @using (Html.PB_P().AsSmallMuted().Begin())
+                    {
+                        @:Learn how product data flows from definitions to rendered BootstrapBuilder markup.
+                    }
+                    @Html.Button(ActionItemFactory.AspRoute("ComponentBuilder", "RenderingPipeline").SetTitle("Rendering Pipeline").SetIcon(IconStruct.Bootstrap("bi-bezier2")).SetVariant(VariantStyle.Primary)).Render()
+                }
+            }
+        }
+    }
+}

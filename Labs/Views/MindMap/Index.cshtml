@@ -1,0 +1,109 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+
+    GDFMindMapNode playerDataMap = GDFMindMapNode.Topic("PlayerData", new[]
+    {
+        GDFMindMapNode.Topic("Identity", new[]
+        {
+            GDFMindMapNode.Topic("Profile").SetDetail("Name, avatar, display handle").SetVariant(VariantStyle.Primary),
+            GDFMindMapNode.Topic("Access").SetDetail("Organization, role, permissions").SetVariant(VariantStyle.Info)
+        }).SetIcon(IconStruct.Bootstrap("bi-person-badge")).SetVariant(VariantStyle.Primary).SetSide(GDFMindMapBranchSide.Left),
+        GDFMindMapNode.Topic("Progression", new[]
+        {
+            GDFMindMapNode.Topic("Level").SetDetail("Current rank and milestones").SetVariant(VariantStyle.Success),
+            GDFMindMapNode.Topic("Inventory").SetDetail("Unlocked items and currencies").SetVariant(VariantStyle.Warning),
+            GDFMindMapNode.Topic("Achievements").SetDetail("Badges and long-term goals").SetVariant(VariantStyle.Success)
+        }).SetIcon(IconStruct.Bootstrap("bi-stars")).SetVariant(VariantStyle.Success).SetSide(GDFMindMapBranchSide.Right),
+        GDFMindMapNode.Topic("Activity", new[]
+        {
+            GDFMindMapNode.Topic("Sessions").SetDetail("Last connection and duration").SetVariant(VariantStyle.Secondary),
+            GDFMindMapNode.Topic("Events").SetDetail("Telemetry entry points").SetVariant(VariantStyle.Danger)
+        }).SetIcon(IconStruct.Bootstrap("bi-activity")).SetVariant(VariantStyle.Danger).SetSide(GDFMindMapBranchSide.Left),
+        GDFMindMapNode.Topic("StudioData", new[]
+        {
+            GDFMindMapNode.Topic("Project").SetDetail("Current production scope").SetVariant(VariantStyle.Info),
+            GDFMindMapNode.Topic("Team").SetDetail("Owners and reviewers").SetVariant(VariantStyle.Primary)
+        }).SetIcon(IconStruct.Bootstrap("bi-building")).SetVariant(VariantStyle.Info).SetSide(GDFMindMapBranchSide.Right)
+    }).SetIcon(IconStruct.Bootstrap("bi-controller")).SetVariant(VariantStyle.Primary).SetDetail("Reusable player domain model");
+
+    GDFMindMapNode releasePlanMap = GDFMindMapNode.Topic("Component Release", new[]
+    {
+        GDFMindMapNode.Topic("API", new[]
+        {
+            GDFMindMapNode.Topic("Builder").SetDetail("Fluent rendering surface").SetVariant(VariantStyle.Primary),
+            GDFMindMapNode.Topic("Node model").SetDetail("Recursive topic data").SetVariant(VariantStyle.Info)
+        }).SetIcon(IconStruct.Bootstrap("bi-braces")).SetVariant(VariantStyle.Primary),
+        GDFMindMapNode.Topic("Visual QA", new[]
+        {
+            GDFMindMapNode.Topic("Normal").SetDetail("Balanced branches").SetVariant(VariantStyle.Success),
+            GDFMindMapNode.Topic("Mobile").SetDetail("Stacked readable layout").SetVariant(VariantStyle.Warning)
+        }).SetIcon(IconStruct.Bootstrap("bi-window")).SetVariant(VariantStyle.Warning).SetCollapsed(),
+        GDFMindMapNode.Topic("Documentation", new[]
+        {
+            GDFMindMapNode.Topic("Live page").SetDetail("labs_idemobi_com example").SetVariant(VariantStyle.Success),
+            GDFMindMapNode.Topic("API reference").SetDetail("XML HeaderDoc ready").SetVariant(VariantStyle.Secondary)
+        }).SetIcon(IconStruct.Bootstrap("bi-journal-code")).SetVariant(VariantStyle.Success)
+    }).SetIcon(IconStruct.Bootstrap("bi-diagram-3")).SetVariant(VariantStyle.Info).SetDetail("Reusable ComponentBuilder delivery flow");
+}
+
+@Html.TitleBuilder().SetTitle("MindMap - Live Examples", TitleLevel.Two).Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Normal state", TitleLevel.Two).SetIconBootstrap("bi-diagram-3").Begin())
+        {
+            @(Html.GDFMindMap(playerDataMap)
+                .SetTitle("PlayerData carte heuristique")
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Compact state", TitleLevel.Two).SetIconBootstrap("bi-arrows-collapse").Begin())
+        {
+            @(Html.GDFMindMap(releasePlanMap)
+                .SetTitle("Release planning")
+                .SetCompact()
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Realistic data example", TitleLevel.Two).SetIconBootstrap("bi-controller").Begin())
+        {
+            @(Html.MindMap(playerDataMap)
+                .SetTitle("Game data overview")
+                .SetShowHeader()
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Empty state", TitleLevel.Two).SetIconBootstrap("bi-inbox").Begin())
+        {
+            @(Html.GDFMindMap()
+                .SetTitle("Empty map")
+                .SetEmptyMessage("No topic has been added to this mind map yet.")
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Error state", TitleLevel.Two).SetIconBootstrap("bi-exclamation-triangle").Begin())
+        {
+            @(Html.GDFMindMap(playerDataMap)
+                .SetTitle("Unavailable source")
+                .SetErrorMessage("The mind map could not be loaded because the source model is unavailable.")
+                .Render())
+        }
+    }
+}

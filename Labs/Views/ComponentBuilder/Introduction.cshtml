@@ -1,0 +1,291 @@
+@using DMBBootstrapBuilder
+@using DMBComponentBuilder
+@using DMBEffectBuilder
+@using DMBPageBuilder
+@{
+    Layout = "_Layout";
+}
+
+@* ── Hero ── *@
+@using (Html.SectionBuilder().SetHeight(125, UnitSize.px).BootstrapBackgroundEffect(VariantStyle.Normal).Begin())
+{
+    @using (Html.FlexBlockBuilder().SetAlignItemsCenter().SetJustifyContentCenter().Begin())
+    {
+        @using (Html.BlockBuilder().AsTextCenter().Begin())
+        {
+            @Html.TitleBuilder().SetTitle("Introduction — ComponentBuilder", TitleLevel.One).Render()
+            @using (Html.PB_P().AsLead().Begin())
+            {
+                @:Higher-level business components built on BootstrapBuilder.
+            }
+            @using (Html.FlexBlockBuilder().SetJustifyContentCenter().WithGap(Old_Gap.Gap2).Begin())
+            {
+                @Html.Button(ActionItemFactory.AspRoute("ComponentBuilder", "GettingStarted").SetTitle("Get Started").SetIcon(IconStruct.Bootstrap("bi-play-fill")).SetVariant(VariantStyle.Primary)).Render()
+                @Html.Button(ActionItemFactory.AspRoute("Timeline", "Index").SetTitle("Browse Components").SetIcon(IconStruct.Bootstrap("bi-grid")).SetVariant(VariantStyle.Secondary).SetOutlined()).Render()
+            }
+        }
+    }
+}
+
+@* ── 3 highlight cards ── *@
+@using (Html.BlockBuilder().AsSectionContentTop().Begin())
+{
+    @using (Html.RowBuilder().AsPillarGrid().Begin())
+    {
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col4, ResponsiveBreakpoint.Md).Begin())
+        {
+            @using (Html.BlockBuilder().AsSidebarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsPaddedBlock().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-diagram-2 fs-2 text-primary d-block mb-2").Begin()) { }
+                    @using (Html.PB_Span().AsSemiBold().Begin())
+                    {
+                        @:Workflow UI
+                    }
+                    @using (Html.PB_P().AsSmallMuted().AsNoMargin().Begin())
+                    {
+                        @:Timeline, roadmap, steps and checkout progress for process-oriented screens.
+                    }
+                }
+            }
+        }
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col4, ResponsiveBreakpoint.Md).Begin())
+        {
+            @using (Html.BlockBuilder().AsSidebarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsPaddedBlock().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-stack fs-2 text-success d-block mb-2").Begin()) { }
+                    @using (Html.PB_Span().AsSemiBold().Begin())
+                    {
+                        @:Composed Components
+                    }
+                    @using (Html.PB_P().AsSmallMuted().AsNoMargin().Begin())
+                    {
+                        @:Built on BootstrapBuilder so complex components stay compatible with layout and theme rules.
+                    }
+                }
+            }
+        }
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col4, ResponsiveBreakpoint.Md).Begin())
+        {
+            @using (Html.BlockBuilder().AsSidebarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsPaddedBlock().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-boxes fs-2 text-warning d-block mb-2").Begin()) { }
+                    @using (Html.PB_Span().AsSemiBold().Begin())
+                    {
+                        @:Product Patterns
+                    }
+                    @using (Html.PB_P().AsSmallMuted().AsNoMargin().Begin())
+                    {
+                        @:Reusable experiences — rating badges, festival layouts and media viewers.
+                    }
+                }
+            }
+        }
+    }
+}
+
+@* ── What is ComponentBuilder? + preview ── *@
+@using (Html.BlockBuilder().AsSectionContent().Begin())
+{
+    @using (Html.RowBuilder().SetGapY(Gap.G5).SetAlignItems(AlignItems.Center).Begin())
+    {
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col7, ResponsiveBreakpoint.Lg).Begin())
+        {
+            @Html.TitleBuilder().SetTitle("What is ComponentBuilder?", TitleLevel.Two).AsSectionHeading().Render()
+            @using (Html.PB_P().Begin())
+            {
+                @using (Html.PB_Span().AsBold().Begin())
+                {
+                    @:DMBComponentBuilder
+                }
+                @: contains richer UI components that combine several BootstrapBuilder primitives into ready-to-use workflows. It is intended for repeated product patterns where a single Bootstrap element is not enough.
+            }
+            @using (Html.PB_P().Begin())
+            {
+                @:The package focuses on workflow and presentation components such as timelines, roadmaps, step-by-step flows, checkout progress, rating badges, festival partials and web comic viewers. These components keep the same fluent rendering style as the rest of the stack.
+            }
+            @using (Html.BlockBuilder().AsBenefitRow().Begin())
+            {
+                @using (Html.PB_Span().AddClass("bi bi-check-circle-fill text-success me-3 mt-1").Begin()) { }
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @using (Html.PB_Span().AsBold().Begin())
+                    {
+                        @:Pre-Built Workflows:
+                    }
+                    @: Common product UI patterns are available as one-liner builder calls, reducing view boilerplate significantly.
+                }
+            }
+            @using (Html.BlockBuilder().AsBenefitRow().Begin())
+            {
+                @using (Html.PB_Span().AddClass("bi bi-check-circle-fill text-success me-3 mt-1").Begin()) { }
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @using (Html.PB_Span().AsBold().Begin())
+                    {
+                        @:Bootstrap-Compatible:
+                    }
+                    @: All components are built on BootstrapBuilder, so they inherit the same theme, layout and variant rules.
+                }
+            }
+            @using (Html.BlockBuilder().AsBenefitRow().Begin())
+            {
+                @using (Html.PB_Span().AddClass("bi bi-check-circle-fill text-success me-3 mt-1").Begin()) { }
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @using (Html.PB_Span().AsBold().Begin())
+                    {
+                        @:Fluent API:
+                    }
+                    @: Every component follows the same chain-and-render pattern as the rest of the stack — no special templates or partial conventions required.
+                }
+            }
+        }
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col5, ResponsiveBreakpoint.Lg).Begin())
+        {
+            @using (Html.BlockBuilder().AsSidebarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsPreviewWrapper().Begin())
+                {
+                    @(Html.CodeBlock(@"Html.TimelineBuilder()
+    .AddItem(""Discovery"", ""Goals and constraints defined."")
+    .AddItem(""Design"",    ""Wireframes approved."")
+    .AddItem(""Build"",     ""First sprint delivered."")
+    .Render()", CodeLanguage.CSharp))
+                }
+                @using (Html.BlockBuilder().AsPaddedBlock().Begin())
+                {
+                    @(Html.CodeBlock(@"@@Html.TimelineBuilder().AddItem(...).Render()", CodeLanguage.CSharp))
+                    @using (Html.PB_P().AsSmallMuted().AsNoMargin().Begin())
+                    {
+                        @:A typical workflow component expressed in a single fluent chain.
+                    }
+                }
+            }
+        }
+    }
+}
+
+@* ── Three Pillars ── *@
+@using (Html.BlockBuilder().AsSectionContent().Begin())
+{
+    @using (Html.BlockBuilder().AsTextCenter().Begin())
+    {
+        @Html.TitleBuilder().SetTitle("Three Pillars of ComponentBuilder", TitleLevel.Two).AsSectionHeading().Render()
+        @using (Html.PB_P().AsMuted().Begin())
+        {
+            @:ComponentBuilder is organised around three main areas, each targeting a distinct product pattern.
+        }
+    }
+    @using (Html.RowBuilder().AsPillarGrid().Begin())
+    {
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col4, ResponsiveBreakpoint.Md).Begin())
+        {
+            @using (Html.BlockBuilder().AsPillarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsTopMargin().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-diagram-2 text-primary me-1").Begin()) { }
+                    @Html.TitleBuilder().SetTitle("Workflow UI", TitleLevel.Five).AsCompact().Render()
+                }
+                @using (Html.PB_P().AsSmallMuted().Begin())
+                {
+                    @:Timeline, roadmap, steps and checkout progress components for process-oriented screens.
+                }
+                @using (Html.PB_Span().AsMonospaceSmall().Begin())
+                {
+                    @:.TimelineBuilder()
+                }
+            }
+        }
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col4, ResponsiveBreakpoint.Md).Begin())
+        {
+            @using (Html.BlockBuilder().AsPillarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsTopMargin().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-stack text-success me-1").Begin()) { }
+                    @Html.TitleBuilder().SetTitle("Composed Components", TitleLevel.Five).AsCompact().Render()
+                }
+                @using (Html.PB_P().AsSmallMuted().Begin())
+                {
+                    @:Uses BootstrapBuilder underneath, so complex components remain compatible with the same layout and theme rules.
+                }
+                @using (Html.PB_Span().AsMonospaceSmall().Begin())
+                {
+                    @:.RoadmapBuilder()
+                }
+            }
+        }
+        @using (Html.ColBuilder().SetCol(ColSize.Col12).SetCol(ColSize.Col4, ResponsiveBreakpoint.Md).Begin())
+        {
+            @using (Html.BlockBuilder().AsPillarCard().Begin())
+            {
+                @using (Html.BlockBuilder().AsTopMargin().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-boxes text-warning me-1").Begin()) { }
+                    @Html.TitleBuilder().SetTitle("Product Patterns", TitleLevel.Five).AsCompact().Render()
+                }
+                @using (Html.PB_P().AsSmallMuted().Begin())
+                {
+                    @:Targets reusable application experiences — rating badges, festival layouts and media viewers.
+                }
+                @using (Html.PB_Span().AsMonospaceSmall().Begin())
+                {
+                    @:.StepBuilder()
+                }
+            }
+        }
+    }
+}
+
+@* ── Philosophy + Next Step ── *@
+@using (Html.BlockBuilder().AsSectionContent().Begin())
+{
+    @using (Html.FlexBlockBuilder().WithGap(Old_Gap.Gap3).SetAlignItemsStretch().Begin())
+    {
+        @using (Html.BlockBuilder().AsInfoCallout().SetStyle("margin", "0").SetStyle("flex", "2").Begin())
+        {
+            @using (Html.FlexBlockBuilder().Begin())
+            {
+                @using (Html.BlockBuilder().AsCalloutIcon().Begin())
+                {
+                    @using (Html.PB_Span().AddClass("bi bi-lightbulb-fill fs-2 text-info").Begin()) { }
+                }
+                @using (Html.BlockBuilder().Begin())
+                {
+                    @Html.TitleBuilder().SetTitle("Core Philosophy", TitleLevel.Four).AsAlertHeading().Render()
+                    @using (Html.PB_P().AsNoMargin().Begin())
+                    {
+                        @:We believe complex UI patterns should be expressed as components, not as repeated Razor markup. When you write
+                        @using (Html.PB_Span().AsMonospace().Begin())
+                        {
+                            @:.TimelineBuilder().AddItem(...)
+                        }
+                        @:, you express the intent — the component handles the HTML structure, Bootstrap classes, and visual hierarchy behind it.
+                    }
+                }
+            }
+        }
+        @using (Html.BlockBuilder().AsSidebarCard().SetStyle("flex", "1").Begin())
+        {
+            @using (Html.BlockBuilder().AsPaddedBlock().SetStyle("height", "100%").Begin())
+            {
+                @using (Html.FlexBlockBuilder().SetFlexColumn().SetAlignItemsStart().SetJustifyContentCenter().SetStyle("height", "100%").Begin())
+                {
+                    @Html.TitleBuilder().SetTitle("Next Step", TitleLevel.Five).Render()
+                    @using (Html.PB_P().AsSmallMuted().Begin())
+                    {
+                        @:Browse the workflow components and pick the one that fits your screen.
+                    }
+                    @Html.Button(ActionItemFactory.AspRoute("Timeline", "Index").SetTitle("See Timeline").SetIcon(IconStruct.Bootstrap("bi-play-fill")).SetVariant(VariantStyle.Primary)).Render()
+                }
+            }
+        }
+    }
+}
