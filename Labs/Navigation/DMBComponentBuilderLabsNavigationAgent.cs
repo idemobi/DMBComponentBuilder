@@ -151,7 +151,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
     /// <returns>The configured <see cref="SideBarSectionComponent" />.</returns>
     public static SideBarSectionComponent CreateSidebarSection(string? currentController, string? currentAction)
     {
-        return new SideBarSectionComponent("ComponentBuilder")
+        return new SideBarSectionComponent("DMBComponentBuilder")
             .Add(
                 ActionItemFactory.Group("General", IconStruct.Bootstrap("bi-info-circle"))
                     .AddItems(
@@ -305,7 +305,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
     /// <returns>The module display title.</returns>
     public static string ResolveModuleTitle(string? currentController)
     {
-        return "ComponentBuilder";
+        return "DMBComponentBuilder";
     }
 
     #endregion
