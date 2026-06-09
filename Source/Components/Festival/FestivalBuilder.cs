@@ -7,8 +7,6 @@
 
 #region
 
-using System;
-using System.IO;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

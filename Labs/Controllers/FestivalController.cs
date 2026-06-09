@@ -7,8 +7,6 @@
 
 #region
 
-using System;
-using System.Collections.Generic;
 using DMBBootstrapBuilder;
 using DMBComponentBuilder;
 using Microsoft.AspNetCore.Mvc;

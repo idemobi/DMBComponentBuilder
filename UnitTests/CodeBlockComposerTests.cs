@@ -7,7 +7,6 @@
 
 #region
 
-using System.Collections.Generic;
 using DMBComponentBuilder;
 using DMBPageBuilder;
 using NUnit.Framework;

@@ -7,7 +7,6 @@
 
 #region
 
-using System;
 using DMBComponentBuilder;
 using NUnit.Framework;
 
