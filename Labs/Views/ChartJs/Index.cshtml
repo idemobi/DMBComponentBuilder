@@ -1,0 +1,214 @@
+@using ChartJSCore.Helpers
+@using ChartJSCore.Models
+@using ChartJSCore.Models.ChartJSCore.Models
+@{
+    Layout = "_Layout";
+
+    Chart syncChart = CreateLineChart(
+        "Sync requests",
+        new[] { "00H", "04H", "08H", "12H", "16H", "20H" },
+        new[] { 120d, 180d, 380d, 520d, 440d, 310d },
+        ChartColor.FromRgb(54, 162, 235));
+
+    Chart payloadChart = CreateBarChart(
+        "Payload volume",
+        new[] { "Development", "Playtest", "Preproduction", "Production" },
+        new[] { 42d, 68d, 96d, 155d },
+        ChartColor.FromRgb(255, 159, 64));
+
+    Chart organizationChart = CreateDoughnutChart(
+        "Organization usage",
+        new[] { "Arena Forge", "Puzzle Port", "Studio Tools" },
+        new[] { 58d, 27d, 15d });
+
+    Chart emptyChart = CreateLineChart(
+        "No visible series",
+        Array.Empty<string>(),
+        Array.Empty<double>(),
+        ChartColor.FromRgb(136, 141, 137));
+
+    string razorUsage = """
+@Html.ChartJs(chart)
+    .SetCanvasId("project-sync-chart")
+    .SetWidth("100%")
+    .SetHeight("100px")
+    .Render()
+""";
+}
+
+@Html.TitleBuilder().SetTitle("ChartJs - Live Examples", TitleLevel.Two).SetIconBootstrap("bi-bar-chart-line").Render()
+
+@using (Html.RowBuilder().Begin())
+{
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Normal state", TitleLevel.Two).SetIconBootstrap("bi-graph-up").Begin())
+        {
+            @Html.ChartJs(syncChart).SetCanvasId("chartjs_sync_normal").SetHeight("120px").Render()
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Realistic data example", TitleLevel.Two).SetIconBootstrap("bi-hdd-network").Begin())
+        {
+            @Html.ChartJs(payloadChart).SetCanvasId("chartjs_payload_by_environment").SetHeight("120px").Render()
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Organization consolidation", TitleLevel.Two).SetIconBootstrap("bi-pie-chart").Begin())
+        {
+            @Html.ChartJs(organizationChart).SetCanvasId("chartjs_organization_usage").SetHeight("140px").Render()
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Empty state", TitleLevel.Two).SetIconBootstrap("bi-inbox").Begin())
+        {
+            @Html.ChartJs(emptyChart).SetCanvasId("chartjs_empty_state").SetHeight("100px").Render()
+            @(Html.AlertBuilder()
+                .SetTitle("No chart data")
+                .SetMessage("The component still renders a stable canvas when the ChartJSCore model has no labels or datasets.")
+                .SetVariant(VariantStyle.Info)
+                .SetIcon(IconStruct.Bootstrap("bi-info-circle"))
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Invalid state", TitleLevel.Two).SetIconBootstrap("bi-exclamation-triangle").Begin())
+        {
+            @Html.ChartJs(null).SetCanvasId("chartjs_invalid_state").SetHeight("100px").Render()
+            @(Html.AlertBuilder()
+                .SetTitle("Missing chart model")
+                .SetMessage("A null chart definition renders the canvas wrapper without emitting Chart.js initialization code.")
+                .SetVariant(VariantStyle.Warning)
+                .SetIcon(IconStruct.Bootstrap("bi-exclamation-triangle"))
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder().SetCol(ColSize.Col12).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Razor usage", TitleLevel.Two).SetIconBootstrap("bi-code-square").Begin())
+        {
+            @(Html.CodeBlock(razorUsage, CodeLanguage.CSharp)
+                .SetTitle("ChartJsBuilder.cshtml")
+                .SetShowLineNumbers()
+                .SetCopyButton()
+                .SetTheme(CodeBlockTheme.Light))
+        }
+    }
+}
+
+@functions
+{
+    private static Chart CreateLineChart(string label, IReadOnlyList<string> labels, IReadOnlyList<double> values, ChartColor color)
+    {
+        Chart chart = CreateBaseChart(Enums.ChartType.Line, labels);
+        chart.Data.Datasets = new List<Dataset>
+        {
+            new LineDataset
+            {
+                Label = label,
+                Data = values.Select(value => (double?)value).ToList(),
+                BackgroundColor = new List<ChartColor> { ChartColor.FromRgba(color.Red, color.Green, color.Blue, 0.2f) },
+                BorderColor = new List<ChartColor> { color },
+                BorderWidth = new List<int> { 2 }
+            }
+        };
+
+        return chart;
+    }
+
+    private static Chart CreateBarChart(string label, IReadOnlyList<string> labels, IReadOnlyList<double> values, ChartColor color)
+    {
+        Chart chart = CreateBaseChart(Enums.ChartType.Bar, labels);
+        chart.Data.Datasets = new List<Dataset>
+        {
+            new BarDataset
+            {
+                Label = label,
+                Data = values.Select(value => (double?)value).ToList(),
+                BackgroundColor = new List<ChartColor> { ChartColor.FromRgba(color.Red, color.Green, color.Blue, 0.25f) },
+                BorderColor = new List<ChartColor> { color },
+                BorderWidth = new List<int> { 1 }
+            }
+        };
+
+        return chart;
+    }
+
+    private static Chart CreateDoughnutChart(string label, IReadOnlyList<string> labels, IReadOnlyList<double> values)
+    {
+        Chart chart = new()
+        {
+            Type = Enums.ChartType.Doughnut,
+            Data = new Data
+            {
+                Labels = labels.ToList(),
+                Datasets = new List<Dataset>
+                {
+                    new DoughnutDataset
+                    {
+                        Label = label,
+                        Data = values.Select(value => (double?)value).ToList(),
+                        BackgroundColor = new List<ChartColor>
+                        {
+                            ChartColor.FromRgb(54, 162, 235),
+                            ChartColor.FromRgb(255, 159, 64),
+                            ChartColor.FromRgb(153, 102, 255)
+                        },
+                        BorderColor = new List<ChartColor>
+                        {
+                            ChartColor.FromRgb(54, 162, 235),
+                            ChartColor.FromRgb(255, 159, 64),
+                            ChartColor.FromRgb(153, 102, 255)
+                        },
+                        BorderWidth = new List<int> { 1 }
+                    }
+                }
+            },
+            Options = new Options
+            {
+                Plugins = new Plugins
+                {
+                    Legend = new Legend { Position = "bottom" }
+                }
+            }
+        };
+
+        return chart;
+    }
+
+    private static Chart CreateBaseChart(Enums.ChartType type, IReadOnlyList<string> labels)
+    {
+        return new Chart
+        {
+            Type = type,
+            Data = new Data
+            {
+                Labels = labels.ToList(),
+                Datasets = new List<Dataset>()
+            },
+            Options = new Options
+            {
+                AspectRatio = 4,
+                MaintainAspectRatio = true,
+                Scales = new Dictionary<string, Scale>
+                {
+                    ["y"] = new()
+                    {
+                        Type = "linear",
+                        Min = 0,
+                        Ticks = new Tick()
+                    }
+                }
+            }
+        };
+    }
+}
