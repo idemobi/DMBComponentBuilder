@@ -138,9 +138,16 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `TimelineSlideEffect.cs`: timeline slide effect enum.
 - `ICanUseTimelineEffects.cs`: fluent effect capability interface.
 
+## Source/Components/Festival
+
+- `FestivalBuilder.cs`: festival visual component builder.
+- `FestivalExtensions.cs`: Razor helper entry points for festival rendering.
+- `FestivalManager.cs`: shared festival injector registry and date selection helper.
+- `GDFFestival.cs`: festival data model.
+- `IFestivalInjector.cs`: contract for packages that provide festival definitions.
+
 ## Other component folders
 
-- `Source/Components/Festival`: festival component builders and helpers.
 - `Source/Components/Separator`: separator component builders and helpers.
 - `Source/Components/Shield`: shield component builders and helpers.
 - `Source/Components/TodoBlock`: todo block builders, helpers, and item model.
