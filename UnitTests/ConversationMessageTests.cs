@@ -32,6 +32,8 @@ public sealed class ConversationMessageTests
             AuthorSubtitle = "Organization owner",
             AvatarBadgeText = "admin",
             AvatarBadgeVariant = VariantStyle.Danger,
+            AvatarBackgroundColor = "#f97316",
+            AvatarForegroundColor = "#ffffff",
             BubbleVariant = VariantStyle.Success,
             CreatedAt = createdAt,
             DateText = "Today",
@@ -42,6 +44,7 @@ public sealed class ConversationMessageTests
             Text = "Hello",
             Variant = VariantStyle.Warning
         };
+        message.AddBadge("Open", VariantStyle.Success);
 
         ConversationMessage clone = message.Clone();
 
@@ -53,6 +56,8 @@ public sealed class ConversationMessageTests
             Assert.That(clone.AuthorSubtitle, Is.EqualTo("Organization owner"));
             Assert.That(clone.AvatarBadgeText, Is.EqualTo("admin"));
             Assert.That(clone.AvatarBadgeVariant, Is.EqualTo(VariantStyle.Danger));
+            Assert.That(clone.AvatarBackgroundColor, Is.EqualTo("#f97316"));
+            Assert.That(clone.AvatarForegroundColor, Is.EqualTo("#ffffff"));
             Assert.That(clone.BubbleVariant, Is.EqualTo(VariantStyle.Success));
             Assert.That(clone.CreatedAt, Is.EqualTo(createdAt));
             Assert.That(clone.DateText, Is.EqualTo("Today"));
@@ -61,6 +66,9 @@ public sealed class ConversationMessageTests
             Assert.That(clone.ParticipantKey, Is.EqualTo("customer-1"));
             Assert.That(clone.Text, Is.EqualTo("Hello"));
             Assert.That(clone.Variant, Is.EqualTo(VariantStyle.Warning));
+            Assert.That(clone.Badges, Has.Count.EqualTo(1));
+            Assert.That(clone.Badges[0].Text, Is.EqualTo("Open"));
+            Assert.That(clone.Badges[0].Variant, Is.EqualTo(VariantStyle.Success));
         });
     }
 

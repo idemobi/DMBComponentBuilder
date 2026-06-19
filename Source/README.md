@@ -4,10 +4,18 @@ Reusable Razor visual components for PageBuilder and BootstrapBuilder applicatio
 
 ## Components
 
+- `AvatarBuilder` renders reusable profile avatars with icons, images, initials,
+  custom colors, sizes, contained badges, and a small JavaScript helper for live
+  preview updates and image fallback.
 - `ConversationBuilder` renders participant-based message threads for support tickets,
   forums, moderation discussions, and other multi-person conversations. Each
-  `ConversationMessage` can optionally render a short badge on the avatar with
-  `AvatarBadgeText` and `AvatarBadgeVariant`.
+  `ConversationMessage` renders its participant avatar through `AvatarBuilder`
+  and can optionally attach a contained badge with `AvatarBadgeText` and
+  `AvatarBadgeVariant`. Profile palettes can be passed exactly with
+  `AvatarBackgroundColor` and `AvatarForegroundColor`. Message-level badges can
+  be added with `ConversationMessage.AddBadge(...)` or the `Badges` collection
+  to render compact status, category, or visibility metadata in the message
+  metadata row.
 - `FestivalBuilder` renders a festival partial from a `GDFFestival` definition.
   `FestivalManager` centralizes the shared injector list and date-based selection
   for applications that provide their own festival definitions.

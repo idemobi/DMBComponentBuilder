@@ -1,0 +1,150 @@
+@{
+    Layout = "_Layout";
+}
+
+@(Html.BlockTitleBuilder()
+    .SetTitle("AvatarBuilder", TitleLevel.Two)
+    .SetIconBootstrap("bi-person-circle")
+    .AsSectionHeading()
+    .Render())
+
+@using (Html.PB_P().AsMuted().Begin())
+{
+    @:Reusable avatars for profile previews, support tickets, forum authors, and compact participant lists.
+}
+
+@using (Html.RowBuilder().SetGap(Gap.G3).AsBottomPadded().Begin())
+{
+    @using (Html.ColBuilder(12, 12, 6, 3, 3, 3).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Normal state", TitleLevel.Three).SetIconBootstrap("bi-person-fill").Begin())
+        {
+            @(Html.AvatarBuilder()
+                .SetDisplayName("JFC")
+                .SetIconBootstrap("bi-gem")
+                .SetVariant(VariantStyle.Success)
+                .SetSize(AvatarSize.Large)
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder(12, 12, 6, 3, 3, 3).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Badge", TitleLevel.Three).SetIconBootstrap("bi-patch-check").Begin())
+        {
+            @(Html.AvatarBuilder()
+                .SetDisplayName("Moderator")
+                .SetIconBootstrap("bi-shield-check")
+                .SetVariant(VariantStyle.Info)
+                .SetSize(AvatarSize.Large)
+                .AddBadge("admin")
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder(12, 12, 6, 3, 3, 3).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Empty state", TitleLevel.Three).SetIconBootstrap("bi-dash-circle").Begin())
+        {
+            @(Html.AvatarBuilder()
+                .SetIcon(IconStruct.Empty)
+                .SetVariant(VariantStyle.Secondary)
+                .SetSize(AvatarSize.Large)
+                .Render())
+        }
+    }
+
+    @using (Html.ColBuilder(12, 12, 6, 3, 3, 3).Begin())
+    {
+        @using (Html.CardBuilder().SetTitle("Image error", TitleLevel.Three).SetIconBootstrap("bi-exclamation-triangle").Begin())
+        {
+            @(Html.AvatarBuilder()
+                .SetDisplayName("Unknown Member")
+                .SetInitials("UM")
+                .SetIconBootstrap("bi-person-fill")
+                .SetImage("/images/team/not-found.jpg", "Unknown member")
+                .SetVariant(VariantStyle.Warning)
+                .SetSize(AvatarSize.Large)
+                .Render())
+        }
+    }
+}
+
+@Html.SeparatorBuilder().UsePageSpacing()
+
+@Html.TitleBuilder().SetTitle("Sizes and colors", TitleLevel.Two).AsSectionHeading().Render()
+
+@using (Html.RowBuilder().SetGap(Gap.G3).AsBottomPadded().Begin())
+{
+    foreach (AvatarSize size in new[] { AvatarSize.Small, AvatarSize.Medium, AvatarSize.Large, AvatarSize.ExtraLarge })
+    {
+        @using (Html.ColBuilder(12, 12, 6, 3, 3, 3).Begin())
+        {
+            @using (Html.CardBuilder().SetTitle(size.ToString(), TitleLevel.Three).SetIconBootstrap("bi-arrows-angle-expand").Begin())
+            {
+                @(Html.AvatarBuilder()
+                    .SetDisplayName(size.ToString())
+                    .SetIconBootstrap("bi-controller")
+                    .SetVariant(VariantStyle.Primary)
+                    .SetSize(size)
+                    .Render())
+            }
+        }
+    }
+}
+
+@using (Html.RowBuilder().SetGap(Gap.G3).AsBottomPadded().Begin())
+{
+    foreach (AvatarSize size in new[] { AvatarSize.Small, AvatarSize.Medium, AvatarSize.Large, AvatarSize.ExtraLarge })
+    {
+        @using (Html.ColBuilder(12, 12, 6, 3, 3, 3).Begin())
+        {
+            @using (Html.CardBuilder().SetTitle($"{size} badge", TitleLevel.Three).SetIconBootstrap("bi-person-badge").Begin())
+            {
+                @(Html.AvatarBuilder()
+                    .SetDisplayName($"{size} moderator")
+                    .SetIconBootstrap("bi-controller")
+                    .SetCustomColors("#84cc16", "#1a2e05")
+                    .SetSize(size)
+                    .AddBadge("admin", VariantStyle.Danger)
+                    .Render())
+            }
+        }
+    }
+}
+
+@using (Html.CardBuilder().SetTitle("Variant gallery", TitleLevel.Three).SetIconBootstrap("bi-palette").Begin())
+{
+    <div class="d-flex flex-wrap align-items-center gap-3">
+        @foreach (VariantStyle variant in new[] { VariantStyle.Primary, VariantStyle.Secondary, VariantStyle.Success, VariantStyle.Info, VariantStyle.Warning, VariantStyle.Danger })
+        {
+            @(Html.AvatarBuilder()
+                .SetDisplayName(variant.ToString())
+                .SetIconBootstrap("bi-person-fill")
+                .SetVariant(variant)
+                .AddBadge(variant.ToString()[..1], variant)
+                .Render())
+        }
+    </div>
+}
+
+@Html.SeparatorBuilder().UsePageSpacing()
+
+@Html.TitleBuilder().SetTitle("Realistic profile preview", TitleLevel.Two).AsSectionHeading().Render()
+
+@using (Html.CardBuilder().SetTitle("Public profile", TitleLevel.Three).SetIconBootstrap("bi-person-badge").Begin())
+{
+    <div class="d-flex flex-wrap align-items-center gap-3">
+        @(Html.AvatarBuilder()
+            .SetDisplayName("JFC")
+            .SetIconBootstrap("bi-gem")
+            .SetCustomColors("#d1fae5", "#064e3b")
+            .SetSize(AvatarSize.Large)
+            .AddBadge("admin", VariantStyle.Danger)
+            .Render())
+        <div class="min-w-0">
+            <div class="fw-semibold">JFC</div>
+            <div class="small text-muted">Public profile preview with a contained badge.</div>
+        </div>
+    </div>
+}

@@ -49,7 +49,7 @@ namespace DMBComponentBuilder
         public string AuthorSubtitle { get; set; } = string.Empty;
 
         /// <summary>
-        ///     Gets or sets the short badge text rendered on the top-right corner of the avatar.
+        ///     Gets or sets the short badge text rendered at the foot of the avatar.
         /// </summary>
         /// <remarks>
         ///     Keep this text short because the badge is attached to the avatar and must remain readable on small screens.
@@ -64,6 +64,24 @@ namespace DMBComponentBuilder
         public VariantStyle AvatarBadgeVariant { get; set; } = VariantStyle.Danger;
 
         /// <summary>
+        ///     Gets or sets the custom avatar background color.
+        /// </summary>
+        /// <remarks>
+        ///     When this value is set, it takes precedence over <see cref="Variant" /> for the avatar surface.
+        /// </remarks>
+        [Documented]
+        public string AvatarBackgroundColor { get; set; } = string.Empty;
+
+        /// <summary>
+        ///     Gets or sets the custom avatar foreground color.
+        /// </summary>
+        /// <remarks>
+        ///     When this value is set with <see cref="AvatarBackgroundColor" />, the avatar can reproduce a profile palette exactly.
+        /// </remarks>
+        [Documented]
+        public string AvatarForegroundColor { get; set; } = string.Empty;
+
+        /// <summary>
         ///     Gets or sets the message bubble variant.
         /// </summary>
         /// <remarks>
@@ -71,6 +89,16 @@ namespace DMBComponentBuilder
         /// </remarks>
         [Documented]
         public VariantStyle? BubbleVariant { get; set; }
+
+        /// <summary>
+        ///     Gets compact badges rendered in the message metadata row.
+        /// </summary>
+        /// <remarks>
+        ///     Use message badges for status, category, visibility, moderation state, or other compact metadata that
+        ///     belongs to the message rather than to the avatar or the bubble content.
+        /// </remarks>
+        [Documented]
+        public List<ConversationMessageBadge> Badges { get; } = new();
 
         /// <summary>
         ///     Gets or sets the message creation date.
@@ -137,19 +165,38 @@ namespace DMBComponentBuilder
         #region Instance methods
 
         /// <summary>
+        ///     Adds a compact badge rendered in the message metadata row.
+        /// </summary>
+        /// <param name="text">The badge text.</param>
+        /// <param name="variant">The Bootstrap variant used to render the badge.</param>
+        /// <returns>The current <see cref="ConversationMessage" /> instance.</returns>
+        [Documented]
+        public ConversationMessage AddBadge(string? text, VariantStyle variant = VariantStyle.Secondary)
+        {
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                Badges.Add(new ConversationMessageBadge(text, variant));
+            }
+
+            return this;
+        }
+
+        /// <summary>
         ///     Creates a shallow copy of this message model.
         /// </summary>
         /// <returns>A new <see cref="ConversationMessage" /> carrying the same values.</returns>
         [Documented]
         public ConversationMessage Clone()
         {
-            return new ConversationMessage
+            ConversationMessage clone = new ConversationMessage
             {
                 AccessoryContent = AccessoryContent,
                 AuthorName = AuthorName,
                 AuthorSubtitle = AuthorSubtitle,
                 AvatarBadgeText = AvatarBadgeText,
                 AvatarBadgeVariant = AvatarBadgeVariant,
+                AvatarBackgroundColor = AvatarBackgroundColor,
+                AvatarForegroundColor = AvatarForegroundColor,
                 BubbleVariant = BubbleVariant,
                 CreatedAt = CreatedAt,
                 DateText = DateText,
@@ -160,6 +207,9 @@ namespace DMBComponentBuilder
                 Text = Text,
                 Variant = Variant
             };
+
+            clone.Badges.AddRange(Badges.Select(badge => badge.Clone()));
+            return clone;
         }
 
         /// <summary>

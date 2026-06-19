@@ -199,12 +199,6 @@ namespace DMBComponentBuilder
             return this;
         }
 
-        private static string BuildAvatarClasses(ConversationMessage message)
-        {
-            string variant = ResolveVariantCss(message.Variant, "secondary");
-            return $"rounded-circle d-flex align-items-center justify-content-center bg-{variant}-subtle text-{variant}-emphasis border flex-shrink-0";
-        }
-
         private string BuildBubbleClasses(ConversationMessage message, bool isCurrentParticipant)
         {
             VariantStyle? bubbleVariant = message.BubbleVariant;
@@ -238,25 +232,19 @@ namespace DMBComponentBuilder
 
         private void WriteAvatar(TextWriter writer, HtmlEncoder encoder, ConversationMessage message)
         {
-            writer.Write("<div class=\"position-relative flex-shrink-0\" style=\"width:2.5rem;height:2.5rem;\">");
-            writer.Write($"<div class=\"{BuildAvatarClasses(message)} w-100 h-100\" aria-hidden=\"true\">");
-
-            if (!message.Icon.IsEmpty)
-            {
-                _htmlHelper.IconBuilder(message.Icon).WriteTo(writer, encoder);
-            }
-
-            writer.Write("</div>");
+            AvatarBuilder avatar = _htmlHelper.AvatarBuilder()
+                .SetDisplayName(message.AuthorName)
+                .SetIcon(message.Icon)
+                .SetVariant(message.Variant)
+                .SetCustomColors(message.AvatarBackgroundColor, message.AvatarForegroundColor)
+                .SetSize(AvatarSize.Medium);
 
             if (!string.IsNullOrWhiteSpace(message.AvatarBadgeText))
             {
-                string badgeVariant = ResolveVariantCss(message.AvatarBadgeVariant, "danger");
-                writer.Write($"<span class=\"position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-{badgeVariant} border border-light\">");
-                encoder.Encode(writer, message.AvatarBadgeText);
-                writer.Write("</span>");
+                avatar.AddBadge(message.AvatarBadgeText, message.AvatarBadgeVariant);
             }
 
-            writer.Write("</div>");
+            avatar.WriteTo(writer, encoder);
         }
 
         private void WriteError(TextWriter writer, HtmlEncoder encoder)
@@ -281,7 +269,7 @@ namespace DMBComponentBuilder
 
             writer.Write($"<div class=\"{rowClasses}\">");
             WriteAvatar(writer, encoder, message);
-            writer.Write($"<div class=\"{bodyClasses}\" style=\"max-width:min(48rem, calc(100% - 3rem));\">");
+            writer.Write($"<div class=\"{bodyClasses}\" style=\"max-width:min(48rem, calc(100% - 4.75rem));min-width:0;\">");
             WriteMessageMeta(writer, encoder, message, metaClasses);
             writer.Write($"<div class=\"{BuildBubbleClasses(message, isCurrentParticipant)}\" style=\"white-space:pre-wrap;\">");
 
@@ -303,10 +291,12 @@ namespace DMBComponentBuilder
         private static void WriteMessageMeta(TextWriter writer, HtmlEncoder encoder, ConversationMessage message, string metaClasses)
         {
             string dateText = message.ResolveDateText();
+            bool hasBadges = message.Badges.Any(badge => !string.IsNullOrWhiteSpace(badge.Text));
 
             if (string.IsNullOrWhiteSpace(message.AuthorName) &&
                 string.IsNullOrWhiteSpace(message.AuthorSubtitle) &&
-                string.IsNullOrWhiteSpace(dateText))
+                string.IsNullOrWhiteSpace(dateText) &&
+                hasBadges == false)
             {
                 return;
             }
@@ -331,6 +321,19 @@ namespace DMBComponentBuilder
             {
                 writer.Write("<span>");
                 encoder.Encode(writer, dateText);
+                writer.Write("</span>");
+            }
+
+            foreach (ConversationMessageBadge badge in message.Badges)
+            {
+                if (string.IsNullOrWhiteSpace(badge.Text))
+                {
+                    continue;
+                }
+
+                string variant = ResolveVariantCss(badge.Variant, "secondary");
+                writer.Write($"<span class=\"badge rounded-pill text-bg-{variant}\">");
+                encoder.Encode(writer, badge.Text);
                 writer.Write("</span>");
             }
 

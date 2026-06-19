@@ -29,6 +29,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
     private static readonly HashSet<string> ModuleControllers = new(StringComparer.OrdinalIgnoreCase)
     {
         "ComponentBuilder",
+        "Avatar",
         "Faq",
         "RatingBadge",
         "FileTree",
@@ -99,6 +100,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
                     ),
                 ActionItemFactory.Group("Components", IconStruct.Bootstrap("bi-ui-checks-grid"))
                     .AddItems(
+                        CreateAction("Avatar", "Index", "AvatarBuilder", "bi-person-circle"),
                         CreateAction("Faq", "Index", "FaqBuilder", "bi-question-square"),
                         CreateAction("RatingBadge", "Index", "RatingBadge", "bi-star-half"),
                         CreateAction("FileTree", "Index", "FileTree", "bi-folder2-open"),
@@ -166,6 +168,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
                     ),
                 ActionItemFactory.Group("Components", IconStruct.Bootstrap("bi-ui-checks-grid"))
                     .AddItems(
+                        CreateAction("Avatar", "Index", "AvatarBuilder", "bi-person-circle", currentController, currentAction),
                         CreateAction("Faq", "Index", "FaqBuilder", "bi-question-square", currentController, currentAction),
                         CreateAction("RatingBadge", "Index", "RatingBadge", "bi-star-half", currentController, currentAction),
                         CreateAction("FileTree", "Index", "FileTree", "bi-folder2-open", currentController, currentAction),
@@ -240,6 +243,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
         return currentController switch
         {
             "Faq" => IconStruct.Bootstrap("bi-question-square"),
+            "Avatar" => IconStruct.Bootstrap("bi-person-circle"),
             "RatingBadge" => IconStruct.Bootstrap("bi-star-half"),
             "FileTree" => IconStruct.Bootstrap("bi-folder2-open"),
             "Conversation" => IconStruct.Bootstrap("bi-chat-dots"),
@@ -265,6 +269,7 @@ public static class DMBComponentBuilderLabsNavigationAgent
     {
         return currentController switch
         {
+            "Avatar" => "AvatarBuilder",
             "Faq" => "FaqBuilder",
             "CheckoutProgress" => "Checkout progress",
             "Step" => "Step by Step",

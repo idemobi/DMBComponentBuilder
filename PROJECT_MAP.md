@@ -47,6 +47,13 @@ When copying this file to another PageBuilder ecosystem project, update this sec
 - `BlockTitleSubtitle.cs`: subtitle data model.
 - `SubtitleSize.cs`: subtitle sizing enum.
 
+## Source/Components/Avatar
+
+- `AvatarBuilder.cs`: reusable avatar visual builder.
+- `AvatarBadge.cs`: avatar badge data model.
+- `AvatarExtensions.cs`: helper entry points.
+- `AvatarSize.cs`: avatar size enum.
+
 ## Source/Components/CheckoutProgress
 
 - `CheckoutProgressBuilder.cs`: checkout progress visual builder.

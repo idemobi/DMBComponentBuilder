@@ -58,7 +58,12 @@
             CreatedAt = new DateTimeOffset(2026, 6, 18, 12, 4, 0, TimeSpan.Zero),
             Text = "Pour le forum, il faut pouvoir distinguer l'auteur courant sans perdre la lisibilite des autres participants.",
             Variant = VariantStyle.Success,
-            Icon = IconStruct.Bootstrap("bi-person-check-fill")
+            Icon = IconStruct.Bootstrap("bi-person-check-fill"),
+            Badges =
+            {
+                new ConversationMessageBadge("Open", VariantStyle.Secondary),
+                new ConversationMessageBadge("Forum", VariantStyle.Primary)
+            }
         },
         new ConversationMessage
         {
