@@ -238,11 +238,22 @@ namespace DMBComponentBuilder
 
         private void WriteAvatar(TextWriter writer, HtmlEncoder encoder, ConversationMessage message)
         {
-            writer.Write($"<div class=\"{BuildAvatarClasses(message)}\" style=\"width:2.5rem;height:2.5rem;\" aria-hidden=\"true\">");
+            writer.Write("<div class=\"position-relative flex-shrink-0\" style=\"width:2.5rem;height:2.5rem;\">");
+            writer.Write($"<div class=\"{BuildAvatarClasses(message)} w-100 h-100\" aria-hidden=\"true\">");
 
             if (!message.Icon.IsEmpty)
             {
                 _htmlHelper.IconBuilder(message.Icon).WriteTo(writer, encoder);
+            }
+
+            writer.Write("</div>");
+
+            if (!string.IsNullOrWhiteSpace(message.AvatarBadgeText))
+            {
+                string badgeVariant = ResolveVariantCss(message.AvatarBadgeVariant, "danger");
+                writer.Write($"<span class=\"position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-{badgeVariant} border border-light\">");
+                encoder.Encode(writer, message.AvatarBadgeText);
+                writer.Write("</span>");
             }
 
             writer.Write("</div>");

@@ -30,6 +30,8 @@ public sealed class ConversationMessageTests
             AccessoryContent = accessoryContent,
             AuthorName = "Customer",
             AuthorSubtitle = "Organization owner",
+            AvatarBadgeText = "admin",
+            AvatarBadgeVariant = VariantStyle.Danger,
             BubbleVariant = VariantStyle.Success,
             CreatedAt = createdAt,
             DateText = "Today",
@@ -49,6 +51,8 @@ public sealed class ConversationMessageTests
             Assert.That(clone.AccessoryContent, Is.SameAs(accessoryContent));
             Assert.That(clone.AuthorName, Is.EqualTo("Customer"));
             Assert.That(clone.AuthorSubtitle, Is.EqualTo("Organization owner"));
+            Assert.That(clone.AvatarBadgeText, Is.EqualTo("admin"));
+            Assert.That(clone.AvatarBadgeVariant, Is.EqualTo(VariantStyle.Danger));
             Assert.That(clone.BubbleVariant, Is.EqualTo(VariantStyle.Success));
             Assert.That(clone.CreatedAt, Is.EqualTo(createdAt));
             Assert.That(clone.DateText, Is.EqualTo("Today"));

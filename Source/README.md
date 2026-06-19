@@ -5,7 +5,9 @@ Reusable Razor visual components for PageBuilder and BootstrapBuilder applicatio
 ## Components
 
 - `ConversationBuilder` renders participant-based message threads for support tickets,
-  forums, moderation discussions, and other multi-person conversations.
+  forums, moderation discussions, and other multi-person conversations. Each
+  `ConversationMessage` can optionally render a short badge on the avatar with
+  `AvatarBadgeText` and `AvatarBadgeVariant`.
 - `FestivalBuilder` renders a festival partial from a `GDFFestival` definition.
   `FestivalManager` centralizes the shared injector list and date-based selection
   for applications that provide their own festival definitions.

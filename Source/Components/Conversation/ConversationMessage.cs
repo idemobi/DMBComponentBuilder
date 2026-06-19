@@ -49,6 +49,21 @@ namespace DMBComponentBuilder
         public string AuthorSubtitle { get; set; } = string.Empty;
 
         /// <summary>
+        ///     Gets or sets the short badge text rendered on the top-right corner of the avatar.
+        /// </summary>
+        /// <remarks>
+        ///     Keep this text short because the badge is attached to the avatar and must remain readable on small screens.
+        /// </remarks>
+        [Documented]
+        public string AvatarBadgeText { get; set; } = string.Empty;
+
+        /// <summary>
+        ///     Gets or sets the color variant used by the optional avatar badge.
+        /// </summary>
+        [Documented]
+        public VariantStyle AvatarBadgeVariant { get; set; } = VariantStyle.Danger;
+
+        /// <summary>
         ///     Gets or sets the message bubble variant.
         /// </summary>
         /// <remarks>
@@ -133,6 +148,8 @@ namespace DMBComponentBuilder
                 AccessoryContent = AccessoryContent,
                 AuthorName = AuthorName,
                 AuthorSubtitle = AuthorSubtitle,
+                AvatarBadgeText = AvatarBadgeText,
+                AvatarBadgeVariant = AvatarBadgeVariant,
                 BubbleVariant = BubbleVariant,
                 CreatedAt = CreatedAt,
                 DateText = DateText,
